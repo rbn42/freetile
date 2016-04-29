@@ -1,11 +1,11 @@
-This is a window tiling and navigation tool based on wmctrl and xdotool. It tries to imitate the very basic functions of i3-wm.
+This is a window tiling and navigation tool based on [stiler](https://github.com/TheWanderer/stiler). It tries to imitate the very basic functions of i3-wm.
 
 ![](https://raw.githubusercontent.com/wiki/rbn42/stiler/show2.gif)
 
 Dependency
 =
 ```bash
-sudo apt install xdotool wmctrl python-docopt -y
+sudo apt install xdotool xprop wmctrl python-docopt -y
 ```
 
 Usage
