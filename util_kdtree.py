@@ -81,11 +81,9 @@ def resize_kdtree(resize_width, resize_height):
 
 
 def getkdtree(winlist, lay):
-    # begin "generate k-d tree"
     origin_lay = [[x, y, x + w, y + h] for x, y, w, h in lay]
     from kdtree import kdtree
     _tree, _map = kdtree(zip(origin_lay, winlist))
-    # end "generate k-d tree"
     return _tree, _map
 
 
