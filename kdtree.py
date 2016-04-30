@@ -5,7 +5,7 @@ import config
 
 
 def kdtree(_input, path=None, treemap=None, parentmeta=None, parent=None):
-    _input=[n for n in _input]
+    _input = [n for n in _input]
     if None == treemap:
         # root
         treemap = {}
@@ -24,7 +24,7 @@ def kdtree(_input, path=None, treemap=None, parentmeta=None, parent=None):
     else:
 
         _input2 = [[pos[depth % 2], pos[depth % 2 + 2]]
-                   for pos, _, _ in _input]  # column first
+                   for pos, _ in _input]  # column first
         children = divide(zip(_input2, _input))
 
         if len(children) < 2 and depth > 0:
@@ -47,9 +47,9 @@ def kdtree(_input, path=None, treemap=None, parentmeta=None, parent=None):
                     node.overlap = True
 
     if node.leaf:
-        for _, key, pos in node.content:
+        for pos, key in node.content:
             treemap[key] = node
-        children_pos = [pos for _, key, pos in node.content]
+        children_pos = [pos for pos, key in node.content]
     else:
         children_pos = [_child.position for _child in node.children]
         node.key = node.children[0].key
@@ -94,13 +94,16 @@ def create_parent(node):
     index = parent.parent.children.index(node)
     parent.parent.children[index] = parent
     return parent
+
+
 def create_sibling(node):
-    sibling=Node()
-    sibling.parent=node.parent
-    sibling.position=[i for i in node.position]
-    i=node.parent.children.index(node)
-    node.parent.children.insert(i+1,sibling)
+    sibling = Node()
+    sibling.parent = node.parent
+    sibling.position = [i for i in node.position]
+    i = node.parent.children.index(node)
+    node.parent.children.insert(i + 1, sibling)
     return sibling
+
 
 class Node:
     parent = None
@@ -201,13 +204,13 @@ def remove_single_child_node(node):
 
 def getLayoutAndKey(node, result=None, min_width=config.MIN_WINDOW_WIDTH, min_height=config.MIN_WINDOW_HEIGHT):
     if None == result:
-        reach_size_limit=False
-        result =[ [], [],reach_size_limit]
+        reach_size_limit = False
+        result = [[], [], reach_size_limit]
     if node.leaf:
         x0, y0, x1, y1 = node.position
         if x1 - x0 < min_width or y1 - y0 < min_height:
             #("reach min size")
-            result[2]=True
+            result[2] = True
             return result
         layout = [x0, y0, x1 - x0, y1 - y0]
         result[0].append(layout)
