@@ -3,32 +3,39 @@
 
 
 def divide(_input):
-    _input=[n for n in _input]
+    '''
+    divide intervals
+    '''
+    # find out separable intervals
+    _input = [n for n in _input]
     _input.sort()
-    l = [i for i, j in _input]
-
-    l += [[1.0, 1.1], [1.3, 1.4]]
-    result = []
-    _min, _max = -0.1, 0.0
+    l = [interval for interval, _id in _input]
     for i0, i1 in l:
         assert not i0 == i1
-        if i0 >= _max:
-            if _max > _min:
-                result.append([_min, _max])
-            _min, _max = i0, i1
-        elif i1 > _max:
-            _max = i1
-    l = result
-    result = [[i0[1], i1[0]] for i0, i1 in zip(l[:-1], l[1:])]
-    nodes = [i0 + i1 for i0, i1 in zip(result[:-1], result[1:])]
-    ######################
+    current_start, current_end = None, None
+    result = []
+    for start, end in l:  # zip(l[:-1], l[1:]):
+        if None == current_start:
+            current_start, current_end = start, end
+        else:
+            if start >= current_end:
+                result.append((current_start, current_end))
+                current_start, current_end = start, end
+            else:
+                current_end = max(end, current_end)
+    result.append((current_start, current_end))
+
+    nodes = result
+    # assign children to intervals
     children = []
-    n = nodes.pop(0)
     l = []
+    current_start, current_end = nodes.pop(0)
     for child in _input:
-        if not child[0][0] < n[-1]:
+        interval, _id = child
+        start, end = interval
+        if not end <= current_end:
             children.append(l)
-            n = nodes.pop(0)
+            current_start, current_end = nodes.pop(0)
             l = []
         l.append(child)
     children.append(l)
@@ -38,4 +45,29 @@ def divide(_input):
 if __name__ == '__main__':
     _input = [[0.3, 0.4], [0.2, 0.5], [0.6, 0.8], [0.8, 0.9], [0.8, 1.0]]
     _input = list(zip(_input, range(len(_input))))
-    divide(_input)
+    # print(_input)
+    _out = [[([0.2, 0.5], 1), ([0.3, 0.4], 0)], [([0.6, 0.8], 2)],
+            [([0.8, 0.9], 3), ([0.8, 1.0], 4)]]
+    try:
+        assert divide(_input) == _out
+    except:
+        print(divide(_input))
+
+    _input = [[-0.1, 0.4],  [0.3, 0.4],
+              [0.2, 0.5], [0.6, 0.8], [0.8, 0.9], [0.8, 1.0]]
+    _input = list(zip(_input, range(len(_input))))
+    _out = [[([-0.1, 0.4], 0), ([0.2, 0.5], 2), ([0.3, 0.4], 1), ], [
+        ([0.6, 0.8], 3)], [([0.8, 0.9], 4), ([0.8, 1.0], 5)]]
+
+    try:
+        assert divide(_input) == _out
+    except:
+        print(divide(_input))
+   # print(divide(_input))
+
+    # print(_input)
+    _input = [[-0.1, 0.4], [1.1, 1.2], [0.3, 0.4],
+              [0.2, 0.5], [0.6, 0.8], [0.8, 0.9], [0.8, 1.0]]
+    _input = list(zip(_input, range(len(_input))))
+    # print(_input)
+    print(divide(_input))

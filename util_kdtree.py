@@ -2,7 +2,7 @@ from util_tile import get_current_tile
 from config import WinBorder, MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT,\
     MAX_KD_TREE_BRANCH
 from util_wmctrl import arrange
-from global_variables import WinList,WinPosInfo,OldWinList, PERSISTENT_DATA
+from global_variables import WinList, WinPosInfo, OldWinList, PERSISTENT_DATA
 from util_xdotool import get_active_window
 from util import sort_win_list
 
@@ -12,7 +12,7 @@ def resize_kdtree(resize_width, resize_height):
     Adjust non-overlapping layout.
     '''
 
-    winlist = sort_win_list(WinList,OldWinList)
+    winlist = sort_win_list(WinList, OldWinList)
     # ignore layouts with less than 2 windows
     if len(winlist) < 2:
         return False
@@ -81,46 +81,11 @@ def resize_kdtree(resize_width, resize_height):
 
 
 def getkdtree(winlist, lay):
-    # begin "normalize positions"
-    '''
-    The kdtree function only accept values between 0 and 1.
-    '''
-    tolerance = 0.0
-    t = tolerance
-    dy = 10
-    sw, sh = 2000 * 10, 1000 * 10
-    normalized = [[(x + t) / sw, (y + dy + t) / sh, (x + w - t) /
-                   sw, (y + dy + h - t) / sh] for x, y, w, h in lay]
-    # end "normalize positions"
-
     # begin "generate k-d tree"
     origin_lay = [[x, y, x + w, y + h] for x, y, w, h in lay]
     from kdtree import kdtree
-    _tree, _map = kdtree(zip(normalized, winlist, origin_lay))
+    _tree, _map = kdtree(zip(origin_lay, winlist))
     # end "generate k-d tree"
-
-    # begin "reload old root"
-    '''
-    wmctrl cannot resize some applications precisely, like gnome-terminal. The side effect is that the overall window size decreases.
-    Reloading old root node position somehow helps prevent these windows shrink too much over time. When the k-d tree is regularized, the size of the root node will be passed to leaves.
-    '''
-#     p1 = _tree.position
-#     p2 = PERSISTENT_DATA.get('overall_position', None)
-#     if not None == p2:
-#         x0, y0, x1, y1 = p2
-#         p2 = [max(1, x0), max(1, y0), min(x1, int(MaxWidthStr)),
-#               min(y1, int(MaxHeightStr))]
-#     if None == p2:
-#         PERSISTENT_DATA['overall_position'] = [i for i in p1]
-#     elif p1[0] < p2[0] or p1[1] < p2[1] or p1[2] > p2[2] or p1[3] > p2[3]:
-#         PERSISTENT_DATA['overall_position'] = [i for i in p1]
-#     else:
-#         # Root nodes
-#         pass
-        #_tree.position = [i for i in p2]
-        #_tree.children[0].position = [i for i in p2]
-        #_tree.children[0].children[0].position = [i for i in p2]
-    # end "reload old root"
     return _tree, _map
 
 
@@ -136,6 +101,7 @@ def insert_window_into_kdtree(winid, target):
     node.key = winid
     node.leaf = True
     return regularize_kd_tree(node.parent)
+
 
 def move_kdtree(target, allow_create_new_node=True):
     '''
@@ -232,13 +198,14 @@ def move_kdtree(target, allow_create_new_node=True):
     return regularize_kd_tree(regularize_node, min_width=1, min_height=1)
 
 
-
 def regularize_windows():
     lay = get_current_tile(WinList, WinPosInfo)
     _tree, _map = getkdtree(WinList, lay)
     if _tree.overlap:
         return False
     return regularize_kd_tree(_tree)
+
+
 def regularize_kd_tree(regularize_node,
                        min_width=MIN_WINDOW_WIDTH,
                        min_height=MIN_WINDOW_HEIGHT):
@@ -256,6 +223,7 @@ def regularize_kd_tree(regularize_node,
         return False
     arrange(a, b)
     return True
+
 
 def insert_focused_window_into_kdtree():
     active = get_active_window()
@@ -276,6 +244,7 @@ def get_last_active_window():
             if not active == get_active_window():
                 return active
     return None
+
 
 def detect_overlap():
     t = PERSISTENT_DATA.get('tile', None)
