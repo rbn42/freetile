@@ -5,7 +5,8 @@ This is a window tiling and navigation tool based on [stiler](//github.com/TheWa
 Dependency
 =
 ```bash
-sudo apt install xdotool xprop wmctrl python-docopt -y
+sudo apt install xdotool wmctrl python-docopt -y
+sudo apt install xprop -y
 ```
 
 Usage
