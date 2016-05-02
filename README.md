@@ -1,6 +1,6 @@
 This is a window tiling and navigation tool based on [stiler](//github.com/TheWanderer/stiler). It tries to imitate the very basic functions of i3-wm.
 
-![](https//raw.githubusercontent.com/wiki/rbn42/stiler/show2.gif)
+![](https://raw.githubusercontent.com/wiki/rbn42/stiler/show2.gif)
 
 Dependency
 =
