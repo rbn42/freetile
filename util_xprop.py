@@ -16,3 +16,13 @@ def get_window_frame_size(winid):
         return [int(i) for i in l]
     except:
         return 0, 0, 0, 0
+
+
+def get_window_state(winid):
+    try:
+        s = execute_and_output('xprop -id %s ' % winid)
+    except:
+        return False
+    if 'window state: Normal' in s:
+        return True
+    return False

@@ -19,7 +19,7 @@
 from execute import execute_and_output
 from config import EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS
 import re
-from util_xprop import get_wm_class
+from util_xprop import get_wm_class, get_window_state
 
 r_wmctrl_lG = '^([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+(.+)$'
 r_wmctrl_d = '(\d)+.+?(\d+)x(\d+).+?(\d+),(\d+).+?(\d+),(\d+).+?(\d+)x(\d+)'
@@ -63,7 +63,7 @@ def initialize_windows(desktop):
 
         winid, x, y, w, h = int(winid, 16), int(x), int(y), int(w), int(h)
         # minimized
-        if 'window state: Normal' not in execute_and_output('xprop -id %s' % winid):
+        if not get_window_state(winid):
             continue
 
         win_list_all.append(winid)
