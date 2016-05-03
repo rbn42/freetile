@@ -4,8 +4,8 @@ BottomPadding = 15
 TopPadding = BottomPadding
 RightPadding = BottomPadding
 NavigateAcrossWorkspaces = True  # availabe in Unity7
-TempFile = "/dev/shm/.kttdb"
-LockFile = "/dev/shm/.ktt.lock"
+TempFile = "/run/shm/.ktt"
+LockFile = "/run/shm/.ktt_lock"
 
 
 # This is the congiguration that works for unity7. If you are using a
