@@ -15,6 +15,7 @@
 #                                                                          #
 ############################################################################
 
+
 from execute import execute_and_output, execute
 
 from global_variables import WinList, WinPosInfo
@@ -23,8 +24,11 @@ import re
 
 def get_active_window_xprop(allow_outofworkspace=False):
     cmd = "xprop -root 32x '\t$0' _NET_ACTIVE_WINDOW"
+    cmd = 'xprop -root _NET_ACTIVE_WINDOW      '
     s = execute_and_output(cmd)
-    active = re.findall('_NET_ACTIVE_WINDOW\(WINDOW\)(.+)', s)
+    #active = re.findall('_NET_ACTIVE_WINDOW\(WINDOW\)(.+)', s)
+    active = re.findall('window id #(.+)', s)
+
     if len(active) < 1:
         return None
     active = int(active[0], 16)
@@ -57,7 +61,10 @@ def minimize_one(windowid):
 
 
 def raise_window(windowid):
-    if False:
-        command = 'xdotool windowactivate %d' % windowid
+    command = 'xdotool windowactivate %d' % windowid
+    execute(command)
+
+
+def raise_window_wmctrl(windowid):
     command = "wmctrl -i -a %d" % windowid
     execute(command)
