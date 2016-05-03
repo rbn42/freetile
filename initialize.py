@@ -19,7 +19,7 @@
 from execute import execute_and_output
 from config import EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS
 import re
-from util_xprop import get_wm_class, get_window_state
+from util_xprop import get_wm_class_and_state
 
 r_wmctrl_lG = '^([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+(.+)$'
 r_wmctrl_d = '(\d)+.+?(\d+)x(\d+).+?(\d+),(\d+).+?(\d+),(\d+).+?(\d+)x(\d+)'
@@ -57,13 +57,14 @@ def initialize_windows(desktop):
         #    continue
         if name in EXCLUDE_APPLICATIONS:
             continue
-        wmclass = set(get_wm_class(winid))
-        if not wmclass == wmclass - set(EXCLUDE_WM_CLASS):
-            continue
 
         winid, x, y, w, h = int(winid, 16), int(x), int(y), int(w), int(h)
-        # minimized
-        if not get_window_state(winid):
+
+        wmclass, minimized = get_wm_class_and_state(winid)
+        if minimized:
+            continue
+        wmclass = set(wmclass)
+        if not wmclass == wmclass - set(EXCLUDE_WM_CLASS):
             continue
 
         win_list_all.append(winid)
