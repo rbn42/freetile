@@ -16,6 +16,8 @@ def get_window_frame_size(winid):
         cmd = 'xprop -id %s _NET_FRAME_EXTENTS'
         s = execute_and_output(cmd % winid)
         l = re.findall('\d+', s)
+        if len(l) < 4:
+            return 0, 0, 0, 0
         return [int(i) for i in l]
     except:
         return 0, 0, 0, 0
