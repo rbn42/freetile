@@ -20,4 +20,4 @@ def execute(cmd):
     t0 = time.time()
     os.system(cmd)
     t1 = time.time()
-#    print('%s:%s' % (t1 - t0, cmd))
+    #print('%s:%s' % (t1 - t0, cmd))

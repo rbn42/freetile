@@ -155,7 +155,8 @@ def moveandresize(target):
     lay = get_current_tile([active], WinPosInfo)[0]
     for i in range(4):
         lay[i] += target[i]
-    move_window(active, *lay)
+    arrange([lay], [active])
+    #move_window(active, *lay)
     return True
 
 

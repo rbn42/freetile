@@ -18,9 +18,9 @@
 from util_xprop import get_window_frame_size
 from execute import execute_and_output, execute
 
-def move_window(windowid, x, y, w, h):
+
+def move_window(windowid, x, y, w, h, sync=True):
     # Unmaximize window
-    unmaximize_one(windowid)
 
     f_left, f_right, f_top, f_bottom = get_window_frame_size(windowid)
     w -= f_left + f_right
@@ -31,32 +31,47 @@ def move_window(windowid, x, y, w, h):
     #    if n in wmclass:
     #        break
     try:
-        if 'Stati' in execute_and_output('xprop -id %s | grep gravi' % windowid):
+        if 'Stati' in execute_and_output('xprop -id %s WM_NORMAL_HINTS| grep gravi' % windowid):
             y += f_top
             x += f_left
     except:
         pass
     # Now move it
     command = "wmctrl -i -r %d -e 0,%d,%d,%d,%d" % (windowid, x, y, w, h)
+    if not sync:
+        command += ' &'
+    return command
     execute(command)
 
-    #command='xdotool windowmove  %d %d %d' %(windowid,x,y)
-    #command='xdotool windowsize  %d %d %d' %(windowid,w,h)
+    #command = 'xdotool windowmove  %d %d %d' % (windowid, x, y)
+    # execute(command)
+    #command = 'xdotool windowsize  %d %d %d' % (windowid, w, h)
+    # execute(command)
     #command = "wmctrl -i -r " + windowid + " -b remove,hidden,shaded"
 #    command = 'xdotool windowmap "%s"' % windowid
 #    command = 'xdotool windowactivate "%s"' % windowid
 
 
-def unmaximize_one(windowid):
+def unmaximize_one(windowid, sync=True):
     command = " wmctrl -i -r %d -bremove,maximized_vert,maximized_horz" % windowid
+    if not sync:
+        command += ' &'
     execute(command)
 
 
-def maximize_one(windowid):
+def maximize_one(windowid, sync=True):
     command = " wmctrl -i -r %d -badd,maximized_vert,maximized_horz" % windowid
-    execute(command) 
+    if not sync:
+        command += ' &'
+    execute(command)
 
 
 def arrange(layout, windows):
+    cmds = []
     for win, lay in zip(windows, layout):
-        move_window(win, *lay)
+        cmd = move_window(win, *lay, sync=False)
+        cmds.append(cmd)
+    for cmd in cmds:
+        execute(cmd)
+    for win in windows:
+        unmaximize_one(win, sync=False)
