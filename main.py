@@ -39,11 +39,7 @@ def change_tile_or_insert_new_window(shift):
         if insert_focused_window_into_kdtree():
             return
     if len(WinList) < len(OldWinList) or len(WinList) > len(OldWinList):
-        print(1)
-        print(WinList)
-        print(OldWinList)
         if regularize_windows():
-            PERSISTENT_DATA['winlist'] = WinList
             return
     if len(WinList) == len(OldWinList):
         change_tile(shift)
@@ -53,17 +49,15 @@ def change_tile_or_insert_new_window(shift):
 
 def regularize():
     '''
-    combine this command with dmenu or rofi
+    Try to regularize windows or add a new window into the K-D tree.
     '''
     if regularize_windows():
-        PERSISTENT_DATA['winlist'] = WinList
         return
     elif insert_focused_window_into_kdtree():
         return
 
 
 def layout_row(num):
-    print('TODO')
     return False
 
 
@@ -209,7 +203,6 @@ def swap(target):
     i1 = winlist.index(target_window_id)
 
     lay = get_current_tile(winlist, WinPosInfo)
-    print(lay)
     arrange([lay[i0], lay[i1]], [winlist[i1], winlist[i0]])
 
     winlist[i0], winlist[i1] = winlist[i1], winlist[i0]

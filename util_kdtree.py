@@ -201,7 +201,10 @@ def regularize_windows():
     _tree, _map = getkdtree(WinList, lay)
     if _tree.overlap:
         return False
-    return regularize_kd_tree(_tree)
+    result = regularize_kd_tree(_tree)
+    if result:
+        PERSISTENT_DATA['winlist'] = WinList
+    return result
 
 
 def regularize_kd_tree(regularize_node,
