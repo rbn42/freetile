@@ -210,6 +210,8 @@ def regularize_windows():
 def regularize_kd_tree(regularize_node,
                        min_width=MIN_WINDOW_WIDTH,
                        min_height=MIN_WINDOW_HEIGHT):
+    if regularize_node.overlap:
+        return False
     if None == regularize_node:
         return False
     # regularize k-d tree
