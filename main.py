@@ -6,11 +6,12 @@ Window tiling for X
 Usage:
   main.py layout (next|prev)
   main.py (focus|move|swap) (up|down|left|right)
+  main.py layout (column|row) <num>
   main.py (grow|shrink) (height|width)
   main.py cycle 
   main.py anticycle 
+  main.py regularize
   main.py (save|load) <layout_id>
-  main.py layout (column|row) <num>
   main.py -h | --help
 
 Options:
@@ -48,6 +49,17 @@ def change_tile_or_insert_new_window(shift):
         change_tile(shift)
     else:
         change_tile(0)
+
+
+def regularize():
+    '''
+    combine this command with dmenu or rofi
+    '''
+    if regularize_windows():
+        PERSISTENT_DATA['winlist'] = WinList
+        return
+    elif insert_focused_window_into_kdtree():
+        return
 
 
 def layout_row(num):
@@ -316,6 +328,7 @@ if __name__ == '__main__':
                 print('not implemented')
             elif arguments['column']:
                 layout_column(int(arguments['<num>']))
+
         elif arguments['grow']:
             if arguments['width']:
                 resize(config.RESIZE_STEP, 0)
@@ -326,6 +339,11 @@ if __name__ == '__main__':
                 resize(-config.RESIZE_STEP, 0)
             else:
                 resize(0, -config.RESIZE_STEP)
+
+        elif arguments['regularize']:
+            # combine this command with dmenu or rofi
+            regularize()
+
         elif arguments['save']:
             print('not implemented')
         elif arguments['load']:
