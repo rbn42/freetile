@@ -155,7 +155,7 @@ def get_columns_tile2(wincount, reverse=False, cols=2):
     return layout[:wincount]
 
 
-def get_columns_tile3(wincount,  column_num=2):
+def get_columns_tile3(wincount, reverse=False,  column_num=2):
     if wincount < 2:
         return get_vertical_tile(wincount)
 
@@ -163,8 +163,12 @@ def get_columns_tile3(wincount,  column_num=2):
     cols = []
     for _ in range(column_num):
         cols.append([])
+
     for i in range(wincount):
-        cols[i % column_num].append(i)
+        if reverse:
+            cols[(-1 - i) % column_num].append(i)
+        else:
+            cols[i % column_num].append(i)
 
     layout = []
     colwidth = int(MaxWidth / column_num)
