@@ -42,3 +42,20 @@ def get_wm_class_and_state(winid):
     wm_class = re.findall('^.+?\=(.+)', s)[0]
     minimized = 'window state: Normal' not in s
     return eval(wm_class), minimized
+
+
+def get_active_window(allow_outofworkspace=False):
+    from global_variables import WinList, WinPosInfo
+    cmd = 'xprop -root _NET_ACTIVE_WINDOW      '
+    s = execute_and_output(cmd)
+    active = re.findall('window id #(.+)', s)
+    if len(active) < 1:
+        return None
+    active = int(active[0], 16)
+    if active not in WinPosInfo:
+        return None
+    if allow_outofworkspace:
+        return active
+    if active not in WinList:
+        return None
+    return active

@@ -66,6 +66,11 @@ def maximize_one(windowid, sync=True):
     execute(command)
 
 
+def raise_window(windowid):
+    command = "wmctrl -i -a %d" % windowid
+    execute(command)
+
+
 def arrange(layout, windows):
     cmds = []
     for win, lay in zip(windows, layout):
