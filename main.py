@@ -58,7 +58,7 @@ def layout_row(num):
 def layout_column(num):
     winlist = sort_win_list(WinList, OldWinList)
     from tiles import get_columns_tile3
-    tile = get_columns_tile3(len(winlist), num)
+    tile = get_columns_tile3(len(winlist), column_num=num)
     arrange(tile, winlist)
 
 
