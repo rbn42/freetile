@@ -334,7 +334,8 @@ if __name__ == '__main__':
                 resize(0, -config.RESIZE_STEP)
 
         elif arguments['regularize']:
-            # combine this command with dmenu or rofi
+            # If you want to automatically add every new window into the K-D tree
+            # layout, combine this command with dmenu or rofi.
             regularize()
 
         elif arguments['save']:
