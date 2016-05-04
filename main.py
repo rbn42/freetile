@@ -312,7 +312,8 @@ if __name__ == '__main__':
             elif arguments['prev']:
                 change_tile_or_insert_new_window(-1)
             elif arguments['row']:
-                layout_row(int(arguments['<num>']))
+                # layout_row(int(arguments['<num>']))
+                print('not implemented')
             elif arguments['column']:
                 layout_column(int(arguments['<num>']))
         elif arguments['grow']:
