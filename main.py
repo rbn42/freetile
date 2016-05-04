@@ -10,6 +10,7 @@ Usage:
   main.py cycle 
   main.py anticycle 
   main.py (save|load) <layout_id>
+  main.py layout (column|row) <num>
   main.py -h | --help
 
 Options:
@@ -49,6 +50,18 @@ def change_tile_or_insert_new_window(shift):
         change_tile(0)
 
 
+def layout_row(num):
+    print('TODO')
+    return False
+
+
+def layout_column(num):
+    winlist = sort_win_list(WinList, OldWinList)
+    from tiles import get_columns_tile3
+    tile = get_columns_tile3(len(winlist), num)
+    arrange(tile, winlist)
+
+
 def change_tile(shift):
     # TODO available tiling layouts
     from tiles import get_columns_tile2, get_horiz_tile, get_vertical_tile, get_fair_tile, get_autogrid_tile, maximize, minimize, get_simple_tile
@@ -57,7 +70,7 @@ def change_tile(shift):
         'col2_r': lambda w: get_columns_tile2(w, reverse=True, cols=2),
         'simple': get_simple_tile,
         'col1': lambda w: get_columns_tile2(w, reverse=False, cols=1),
-        'horiz': get_horiz_tile,
+        'horizontal': get_horiz_tile,
         'vertical': get_vertical_tile,
         'fair': get_fair_tile,
         'autogrid': get_autogrid_tile,
@@ -294,9 +307,14 @@ if __name__ == '__main__':
             focus(target)
 
         elif arguments['layout']:
-            assert not arguments['next'] == arguments['prev']
-            change_tile_or_insert_new_window(
-                shift=-1 if arguments['prev'] else 1)
+            if arguments['next']:
+                change_tile_or_insert_new_window(1)
+            elif arguments['prev']:
+                change_tile_or_insert_new_window(-1)
+            elif arguments['row']:
+                layout_row(int(arguments['<num>']))
+            elif arguments['column']:
+                layout_column(int(arguments['<num>']))
         elif arguments['grow']:
             if arguments['width']:
                 resize(config.RESIZE_STEP, 0)

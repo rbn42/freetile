@@ -71,7 +71,7 @@ def arrange(layout, windows):
     for win, lay in zip(windows, layout):
         cmd = move_window(win, *lay, sync=False)
         cmds.append(cmd)
-    for cmd in cmds:
-        execute(cmd)
     for win in windows:
         unmaximize_one(win, sync=False)
+    for cmd in cmds:
+        execute(cmd)
