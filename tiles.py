@@ -21,6 +21,7 @@ from util_wmctrl import maximize_one
 from global_variables import WinList,  OrigX, MaxHeight,     MaxWidth, OrigY
 from config import WinBorder
 
+
 def minimize(wincount):
     for win in WinList:
         minimize_one(win)
@@ -32,7 +33,6 @@ def maximize(wincount):
         maximize_one(win)
     raise_window(active)
     return None
-
 
 
 def get_simple_tile(wincount):
@@ -88,6 +88,7 @@ def get_fair_tile(wincount):
     return get_columns_tile(wincount, ncolumns)
 # end https://bbs.archlinux.org/viewtopic.php?id=64100&p=7 #151
 
+
 def get_vertical_tile(wincount):
     layout = []
     y = OrigY
@@ -125,7 +126,7 @@ def get_autogrid_tile(wincount):
         windowsleft -= cols
         colwidth = MaxWidth / cols
         for col in range(cols):
-            layout.append(layout_shift(colwidth * col, row * 
+            layout.append(layout_shift(colwidth * col, row *
                                        rowheight, colwidth, rowheight))
     return layout[:wincount]
 # end https://bbs.archlinux.org/viewtopic.php?id=64100&p=6  #150
@@ -151,7 +152,34 @@ def get_columns_tile2(wincount, reverse=False, cols=2):
                 row * rowheight,
                 colwidth,
                 rowheight))
-    return layout[:wincount]  
+    return layout[:wincount]
+
+
+def get_columns_tile3(wincount,  column_num=2):
+    if wincount < 2:
+        return get_vertical_tile(wincount)
+
+    column_num = min(wincount, column_num)
+    cols = []
+    for _ in range(column_num):
+        cols.append([])
+    for i in range(wincount):
+        cols[i % column_num].append(i)
+
+    layout = []
+    colwidth = int(MaxWidth / column_num)
+    for col in range(column_num):
+        rows = len(cols[col])
+        rowheight = MaxHeight / rows
+        for row in range(rows):
+            layout.append(layout_shift(
+                colwidth * col,
+                row * rowheight,
+                colwidth,
+                rowheight))
+    return layout  # [:wincount]
+
+
 def layout_shift(x, y, w, h):
     return (OrigX + x + WinBorder,
             OrigY + y + WinBorder,
