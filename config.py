@@ -4,8 +4,8 @@ BottomPadding = 15
 TopPadding = BottomPadding
 RightPadding = BottomPadding
 NavigateAcrossWorkspaces = True  # availabe in Unity7
-TempFile = "/run/shm/.ktt"
-LockFile = "/run/shm/.ktt_lock"
+TempFile = "/dev/shm/.ktt"
+LockFile = "/dev/shm/.ktt_lock"
 
 
 # This is the congiguration that works for unity7. If you are using a
@@ -25,8 +25,8 @@ MOVE_STEP = 50
 MIN_WINDOW_WIDTH = 50
 MIN_WINDOW_HEIGHT = 50
 
-#NOFRAME_WMCLASS = ['Wine']
+# NOFRAME_WMCLASS = ['Wine']
 
 # In i3-wm's window tree, only one child of a node is allowed to split.
-#MAX_KD_TREE_BRANCH = 1
+# MAX_KD_TREE_BRANCH = 1
 MAX_KD_TREE_BRANCH = 2
