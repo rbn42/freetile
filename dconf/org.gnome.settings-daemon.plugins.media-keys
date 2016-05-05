@@ -1,0 +1,106 @@
+[/]
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom10/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom11/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom12/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom13/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom14/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom15/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom16/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom17/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom18/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom19/']
+
+volume-down='<Super>Page_Down'
+volume-up='<Super>Page_Up'
+terminal='<Control><Alt>t'
+
+[custom-keybindings/custom0]
+binding='<Super>Return'
+command='./bin/rofi.sh'
+name='rofi'
+
+[custom-keybindings/custom1]
+binding='<Super>d'
+command='./bin/rofi.sh'
+name='rofi2'
+
+[custom-keybindings/custom2]
+binding='<Super>j'
+command=' python ./git/kd_tree_tile/main.py focus down'
+name='superj'
+
+[custom-keybindings/custom3]
+binding='<Super>k'
+command='python ./git/kd_tree_tile/main.py focus up'
+name='superk'
+
+[custom-keybindings/custom4]
+binding='<Primary><Super>j'
+command='python ./git/kd_tree_tile/main.py move down'
+name='super ctrl j'
+
+[custom-keybindings/custom5]
+binding='<Primary><Super>k'
+command='python ./git/kd_tree_tile/main.py move up'
+name='super ctrl k'
+
+[custom-keybindings/custom10]
+binding='<Super>l'
+command=' python ./git/kd_tree_tile/main.py focus right'
+name='superl'
+
+[custom-keybindings/custom6]
+binding='<Super>space'
+command='python ./git/kd_tree_tile/main.py layout next'
+name='super space'
+
+[custom-keybindings/custom11]
+binding='<Shift><Super>space'
+command='python ./git/kd_tree_tile/main.py layout prev'
+name='super shift space'
+
+[custom-keybindings/custom7]
+binding='<Primary><Super>h'
+command='python ./git/kd_tree_tile/main.py move left'
+name='super ctrl h'
+
+[custom-keybindings/custom12]
+binding='<Primary><Shift><Super>h'
+command='./git/kd_tree_tile/main.py shrink width'
+name='ctrl super H'
+
+[custom-keybindings/custom8]
+binding='<Primary><Super>l'
+command='python ./git/kd_tree_tile/main.py move right'
+name='super ctrl l'
+
+[custom-keybindings/custom13]
+binding='<Primary><Shift><Super>j'
+command='./git/kd_tree_tile/main.py grow height'
+name='ctrl super J'
+
+[custom-keybindings/custom9]
+binding='<Super>h'
+command=' python ./git/kd_tree_tile/main.py focus left'
+name='superh'
+
+[custom-keybindings/custom14]
+binding='<Primary><Shift><Super>k'
+command='./git/kd_tree_tile/main.py  shrink height'
+name='ctrl super K'
+
+[custom-keybindings/custom15]
+binding='<Primary><Shift><Super>l'
+command='./git/kd_tree_tile/main.py grow width'
+name='ctrl super L'
+
+[custom-keybindings/custom16]
+binding='<Shift><Super>h'
+command='./git/kd_tree_tile/main.py swap left'
+name='superH'
+
+[custom-keybindings/custom17]
+binding='<Shift><Super>j'
+command='./git/kd_tree_tile/main.py swap down'
+name='super J'
+
+[custom-keybindings/custom18]
+binding='<Shift><Super>k'
+command='./git/kd_tree_tile/main.py swap up'
+name='super K'
+
+[custom-keybindings/custom19]
+binding='<Shift><Super>l'
+command='./git/kd_tree_tile/main.py swap right'
+name='super L'
