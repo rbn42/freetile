@@ -3,7 +3,7 @@ LeftPadding = 15
 BottomPadding = 15
 TopPadding = BottomPadding
 RightPadding = BottomPadding
-NavigateAcrossWorkspaces = True  # availabe in Unity7
+NavigateAcrossWorkspaces = True  # availabe in viewports desktops
 TempFile = "/dev/shm/.ktt"
 LockFile = "/dev/shm/.ktt_lock"
 
