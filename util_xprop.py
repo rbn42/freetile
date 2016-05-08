@@ -48,6 +48,7 @@ def get_active_window(allow_outofworkspace=False):
     from global_variables import WinList, WinPosInfo
     cmd = 'xprop -root _NET_ACTIVE_WINDOW      '
     s = execute_and_output(cmd)
+    s = s.split(',')[0]
     active = re.findall('window id #(.+)', s)
     if len(active) < 1:
         return None
@@ -59,3 +60,5 @@ def get_active_window(allow_outofworkspace=False):
     if active not in WinList:
         return None
     return active
+if __name__ == '__main__':
+    print(get_active_window())
