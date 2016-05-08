@@ -20,6 +20,7 @@ from execute import execute_and_output
 from config import EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS
 import re
 from util_xprop import get_wm_class_and_state
+from util_wmctrl import get_windowmanager
 
 r_wmctrl_lG = '^([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+(.+)$'
 r_wmctrl_d = '(\d)+.+?(\d+)x(\d+).+?(\d+),(\d+).+?(\d+),(\d+).+?(\d+)x(\d+)'
@@ -31,6 +32,11 @@ def initialize_desktop():
     current = [x for x in desk_output if x.split()[1] == "*"][0]
     current = re.findall(r_wmctrl_d, current.strip())[0]
     desktop, _, _, desktop_x, desktop_y, orig_x, orig_y, width, height = current
+
+    _name, _class = get_windowmanager()
+    if _class == 'fvwm':
+        from util_xrandr import get_screensize
+        width, height = get_screensize()
 
     return desktop, desktop_x, desktop_y, orig_x, orig_y, width, height
 
