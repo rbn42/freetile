@@ -4,8 +4,8 @@ BottomPadding = 15
 TopPadding = BottomPadding
 RightPadding = BottomPadding
 NavigateAcrossWorkspaces = True  # availabe in viewports desktops
-TempFile = "/dev/shm/.ktt"
-LockFile = "/dev/shm/.ktt_lock"
+TempFile = "/tmp/kd_tree_tile"
+LockFile = "/tmp/kd_tree_tile_lock"
 
 
 # This is the congiguration that works for unity7. If you are using a
