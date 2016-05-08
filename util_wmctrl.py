@@ -17,6 +17,7 @@
 
 from util_xprop import get_window_frame_size
 from execute import execute_and_output, execute
+import re
 
 
 def move_window(windowid, x, y, w, h, sync=True):
@@ -71,6 +72,14 @@ def raise_window(windowid):
     execute(command)
 
 
+def get_windowmanager():
+    cmd = 'wmctrl -m'
+    out = execute_and_output(cmd)
+    _class = re.findall('Class:(.+)', out)[0]
+    _name = re.findall('Name:(.+)', out)[0]
+    return _name.strip(), _class.strip()
+
+
 def arrange(layout, windows):
     cmds = []
     for win, lay in zip(windows, layout):
@@ -80,3 +89,5 @@ def arrange(layout, windows):
         unmaximize_one(win, sync=False)
     for cmd in cmds:
         execute(cmd)
+if __name__ == '__main__':
+    print(get_windowmanager())
