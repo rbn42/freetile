@@ -17,7 +17,7 @@ EXCLUDE_APPLICATIONS = ['<unknown>', 'x-nautilus-desktop', 'unity-launcher',
                         'Docky', 'conky', 'Conky'
                         'screenkey', 'XdndCollectionWindowImp']
 # An alternative method to exclude applications.
-EXCLUDE_WM_CLASS = ['wesnoth-1.12']
+EXCLUDE_WM_CLASS = ['wesnoth-1.12', 'conky', 'Conky']
 
 UNRESIZABLE_APPLICATIONS = ['Screenkey']
 RESIZE_STEP = 50
