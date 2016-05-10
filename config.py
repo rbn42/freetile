@@ -14,7 +14,7 @@ LockFile = "/tmp/kd_tree_tile_lock"
 
 EXCLUDE_APPLICATIONS = ['<unknown>', 'x-nautilus-desktop', 'unity-launcher',
                         'unity-panel', 'Hud', 'unity-dash', 'Desktop',
-                        'Docky',
+                        'Docky', 'conky', 'Conky'
                         'screenkey', 'XdndCollectionWindowImp']
 # An alternative method to exclude applications.
 EXCLUDE_WM_CLASS = ['wesnoth-1.12', 'vlc']
