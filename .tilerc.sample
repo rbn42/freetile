@@ -1,3 +1,4 @@
+#!/usr/bin/python
 WinBorder = 2
 LeftPadding = 15
 BottomPadding = 15
@@ -17,10 +18,9 @@ EXCLUDE_APPLICATIONS = ['<unknown>', 'x-nautilus-desktop', 'unity-launcher',
                         'Docky', 'conky', 'Conky'
                         'screenkey', 'XdndCollectionWindowImp']
 # An alternative method to exclude applications.
-EXCLUDE_WM_CLASS = ['conky', 'Conky', ]
+EXCLUDE_WM_CLASS = ['wesnoth-1.12', 'conky', 'Conky',]# 'vlc']
 
 UNRESIZABLE_APPLICATIONS = ['Screenkey']
-
 RESIZE_STEP = 50
 MOVE_STEP = 50
 MIN_WINDOW_WIDTH = 50
@@ -32,11 +32,3 @@ MIN_WINDOW_HEIGHT = 50
 # MAX_KD_TREE_BRANCH = 1
 MAX_KD_TREE_BRANCH = 2
 
-# overwrite default configuration
-import os.path
-config_file = os.path.expanduser("~/.tilerc")
-try:
-    s = open(config_file).read()
-    exec(s)
-except:
-    pass
