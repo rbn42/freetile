@@ -17,6 +17,13 @@ See
 python main.py -h
 ```
 
+Configuration
+=
+A sample file of configuration is provided.
+```bash
+cp .tilerc.sample ~/tilerc
+```
+
 Recommended Keyboard Mapping
 =
 
