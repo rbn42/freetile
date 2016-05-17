@@ -3,7 +3,7 @@ LeftPadding = 15
 BottomPadding = 15
 TopPadding = BottomPadding
 RightPadding = BottomPadding
-NavigateAcrossWorkspaces = True  # availabe in Unity7
+NavigateAcrossWorkspaces = True  # availabe in viewports desktops
 TempFile = "/tmp/kd_tree_tile"
 LockFile = "/tmp/kd_tree_tile_lock"
 
@@ -14,10 +14,10 @@ LockFile = "/tmp/kd_tree_tile_lock"
 
 EXCLUDE_APPLICATIONS = ['<unknown>', 'x-nautilus-desktop', 'unity-launcher',
                         'unity-panel', 'Hud', 'unity-dash', 'Desktop',
-                        'Docky',
+                        'Docky', 'conky', 'Conky'
                         'screenkey', 'XdndCollectionWindowImp']
 # An alternative method to exclude applications.
-EXCLUDE_WM_CLASS = ['wesnoth-1.12']
+EXCLUDE_WM_CLASS = ['wesnoth-1.12', 'conky', 'Conky',]# 'vlc']
 
 UNRESIZABLE_APPLICATIONS = ['Screenkey']
 RESIZE_STEP = 50
