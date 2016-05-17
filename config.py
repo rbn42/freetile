@@ -1,3 +1,4 @@
+#!/usr/bin/python
 WinBorder = 2
 LeftPadding = 15
 BottomPadding = 15
@@ -26,11 +27,15 @@ MOVE_STEP = 50
 MIN_WINDOW_WIDTH = 50
 MIN_WINDOW_HEIGHT = 50
 
-# NOFRAME_WMCLASS = ['Wine']
+# If you want work with 2x2 grids, which does not exist in i3-wm as I know. 
+ALLOW_2x2_GRID=False
+ALLOW_3x3_GRID=False
 
-# In i3-wm's window tree, only one child of a node is allowed to split.
-# MAX_KD_TREE_BRANCH = 1
-MAX_KD_TREE_BRANCH = 2
+MAX_KD_TREE_BRANCH = 0
+if ALLOW_2x2_GRID:
+    MAX_KD_TREE_BRANCH = 2
+if ALLOW_3x3_GRID:
+    MAX_KD_TREE_BRANCH = 3
 
 # overwrite default configuration
 import os.path
