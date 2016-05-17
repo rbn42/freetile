@@ -158,7 +158,7 @@ def move_kdtree(target, allow_create_new_node=True):
                     # But allow no more than one branch for each node
                     non_leaf_node_count = 0
                     for sibling in new_parent.parent.children:
-                        if not sibling.leaf:
+                        if not sibling.leaf or MAX_KD_TREE_BRANCH < 1:
                             non_leaf_node_count += 1
                             if not non_leaf_node_count < MAX_KD_TREE_BRANCH:
                                 # Just swap them.
