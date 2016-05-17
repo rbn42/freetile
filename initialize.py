@@ -22,7 +22,7 @@ import re
 from util_xprop import get_wm_class_and_state
 from util_wmctrl import get_windowmanager
 
-r_wmctrl_lG = '^([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+(.+)$'
+r_wmctrl_lG = '^([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)(\s+(.*))?$'
 r_wmctrl_d = '(\d)+.+?(\d+)x(\d+).+?(\d+),(\d+).+?(\d+),(\d+).+?(\d+)x(\d+)'
 
 
@@ -53,9 +53,8 @@ def initialize_windows(desktop):
     win_list_all = []
     WinPosInfoAll = {}
     for win in win_output:
-
-        winid, _desktop, x, y, w, h, host, name = re.findall(r_wmctrl_lG, win)[
-            0]
+        _init = re.findall(r_wmctrl_lG, win)[0]
+        winid, _desktop, x, y, w, h, host, _, name = _init
 
         if not _desktop == desktop:
             continue
