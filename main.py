@@ -12,6 +12,7 @@ Usage:
   main.py anticycle 
   main.py regularize
   main.py (save|load) <layout_id>
+  main.py list
   main.py -h | --help
 
 Options:
@@ -105,7 +106,7 @@ def change_tile(shift):
             TILES = ['col1']
         if len(winlist) < 2:
             TILES.append('maximize')
-        #TILES.append('maximize')
+        # TILES.append('maximize')
 
     # TODO unable to compare windows's numbers between different workspaces
 
@@ -255,6 +256,15 @@ def find(center, target, winlist, posinfo):
     return _r
 
 
+def list_windows():
+    print('current workspace')
+    for w in WinList:
+        print('%s,%s' % (w, WinPosInfo[w]))
+    print('all windows')
+    for w in WinListAll:
+        print('%s,%s' % (w, WinPosInfo[w]))
+
+
 def focus(target):
 
     active = get_active_window(allow_outofworkspace=True)
@@ -345,6 +355,9 @@ if __name__ == '__main__':
             print('not implemented')
         elif arguments['load']:
             print('not implemented')
+        # debug
+        elif arguments['list']:
+            list_windows()
 
         store()
 

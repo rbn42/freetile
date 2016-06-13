@@ -27,15 +27,18 @@ MOVE_STEP = 50
 MIN_WINDOW_WIDTH = 50
 MIN_WINDOW_HEIGHT = 50
 
-# If you want work with 2x2 grids, which does not exist in i3-wm as I know. 
-ALLOW_2x2_GRID=False
-ALLOW_3x3_GRID=False
+# If you want work with 2x2 grids, which does not exist in i3-wm as I know.
+ALLOW_2x2_GRID = False
+ALLOW_3x3_GRID = False
 
 MAX_KD_TREE_BRANCH = 0
 if ALLOW_2x2_GRID:
     MAX_KD_TREE_BRANCH = 2
 if ALLOW_3x3_GRID:
     MAX_KD_TREE_BRANCH = 3
+
+# support compiz0.8
+COMPIZ0_8 = False
 
 # overwrite default configuration
 import os.path
