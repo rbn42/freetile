@@ -5,6 +5,9 @@ import config
 
 
 def kdtree(_input, path=None, treemap=None, parentmeta=None, parent=None):
+    """
+    Build up a k-d tree.
+    """
     _input = [n for n in _input]
     if None == treemap:
         # root
@@ -122,6 +125,9 @@ class Node:
 
 
 def regularize(node, border):
+    """
+    Regularize a branch in a k-d tree. A node's position is a rectangle defined by x0,y0,x1,y1. All the children's positions will be adjusted to fit exactly to their parents.
+    """
     x0, y0, x1, y1 = node.position
     if node.leaf:
         return
@@ -182,6 +188,9 @@ def regularize(node, border):
 
 
 def remove_single_child_node(node):
+    """
+    Remove a node from a k-d tree
+    """
     if node.leaf:
         return
     l = []
@@ -203,6 +212,9 @@ def remove_single_child_node(node):
 
 
 def getLayoutAndKey(node, result=None, min_width=config.MIN_WINDOW_WIDTH, min_height=config.MIN_WINDOW_HEIGHT):
+    """
+    Extract layouts and window ids from a k-d tree.
+    """
     if None == result:
         reach_size_limit = False
         result = [[], [], reach_size_limit]

@@ -1,8 +1,8 @@
 from util_tile import get_current_tile
 from config import WinBorder, MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT,\
-    MAX_KD_TREE_BRANCH
+    MAX_KD_TREE_BRANCH, REGULARIZE_FULLSCREEN
 from util_wmctrl import arrange
-from global_variables import WinList, WinPosInfo, OldWinList, PERSISTENT_DATA
+from global_variables import WinList, WinPosInfo, OldWinList, PERSISTENT_DATA, MaxWidth, MaxHeight, OrigX, OrigY
 from util_xdotool import get_active_window
 from util import sort_win_list
 
@@ -201,6 +201,8 @@ def regularize_windows():
     _tree, _map = getkdtree(WinList, lay)
     if _tree.overlap:
         return False
+    if REGULARIZE_FULLSCREEN:
+        _tree.position = [OrigX, OrigY, OrigX + MaxWidth, OrigY + MaxHeight]
     result = regularize_kd_tree(_tree)
     if result:
         PERSISTENT_DATA['winlist'] = WinList

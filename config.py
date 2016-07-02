@@ -40,6 +40,10 @@ if ALLOW_3x3_GRID:
 # support compiz0.8
 COMPIZ0_8 = False
 
+# Allow the regularize algorithm to extend windows to full screen. Does not
+# work very well in some desktop environments.
+REGULARIZE_FULLSCREEN = False
+
 # overwrite default configuration
 import os.path
 config_file = os.path.expanduser("~/.tilerc")
