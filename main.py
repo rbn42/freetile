@@ -28,6 +28,9 @@ from util_xdotool import get_active_window, raise_window
 import util_wmutils
 from config import LockFile
 
+import logger
+import logging
+
 
 def change_tile_or_insert_new_window(shift):
     if len(WinList) < 1:
@@ -53,10 +56,13 @@ def regularize():
     Try to regularize windows or add a new window into the K-D tree.
     '''
     if regularize_windows():
+        logging.info('regularize windows')
         return True
     elif insert_focused_window_into_kdtree():
+        logging.info('insert a window into the K-D Tree')
         return True
     else:
+        logging.info('change layout')
         change_tile_or_insert_new_window(1)
 
 
@@ -339,11 +345,12 @@ if __name__ == '__main__':
             elif arguments['column']:
                 layout_column(int(arguments['<num>']))
             elif arguments['regularize']:
+                logging.info('regularize layout')
                 # If you want to automatically add every new window into the
                 # K-D tree layout, combine this command with dmenu or rofi.
                 regularize()
-                regularize()
-                regularize()
+                # regularize()
+                # regularize()
 
         elif arguments['grow']:
             if arguments['width']:

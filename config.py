@@ -7,6 +7,7 @@ RightPadding = BottomPadding
 NavigateAcrossWorkspaces = True  # availabe in viewports desktops
 TempFile = "/tmp/kd_tree_tile"
 LockFile = "/tmp/kd_tree_tile_lock"
+LogFile = ""  # '/tmp/kd_tree_tile.log'
 
 
 # This is the congiguration that works for unity7. If you are using a
