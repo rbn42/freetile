@@ -349,6 +349,8 @@ if __name__ == '__main__':
                 # K-D tree layout, combine this command with dmenu or rofi.
                 logging.info('regularize layout')
                 regularize()
+                regularize()
+                regularize()
 
         elif arguments['grow']:
             if arguments['width']:
