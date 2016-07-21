@@ -55,9 +55,10 @@ def regularize():
     '''
     Try to regularize windows or add a new window into the K-D tree.
     '''
-    if len(WinList) < 2:
-        logging.info('less than 2 windows found')
-        change_tile_or_insert_new_window(1)
+    if len(WinList) == 1:
+        logging.info('only one window found')
+        from tiles import maximize
+        maximize(1)
     elif regularize_windows():
         logging.info('regularize windows')
         return True
