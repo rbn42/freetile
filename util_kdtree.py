@@ -5,6 +5,7 @@ from util_wmctrl import arrange
 from global_variables import WinList, WinPosInfo, OldWinList, PERSISTENT_DATA, MaxWidth, MaxHeight, OrigX, OrigY
 from util_xdotool import get_active_window
 from util import sort_win_list
+import logging
 
 
 def resize_kdtree(resize_width, resize_height):
@@ -200,6 +201,7 @@ def regularize_windows():
     lay = get_current_tile(WinList, WinPosInfo)
     _tree, _map = getkdtree(WinList, lay)
     if _tree.overlap:
+        logging.info('overlapped windows')
         return False
     if REGULARIZE_FULLSCREEN:
         _tree.position = [OrigX, OrigY, OrigX + MaxWidth, OrigY + MaxHeight]

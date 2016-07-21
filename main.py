@@ -345,12 +345,10 @@ if __name__ == '__main__':
             elif arguments['column']:
                 layout_column(int(arguments['<num>']))
             elif arguments['regularize']:
-                logging.info('regularize layout')
                 # If you want to automatically add every new window into the
                 # K-D tree layout, combine this command with dmenu or rofi.
+                logging.info('regularize layout')
                 regularize()
-                # regularize()
-                # regularize()
 
         elif arguments['grow']:
             if arguments['width']:

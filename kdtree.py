@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 from divide import divide
 import config
+import logging
 
 
 def kdtree(_input, path=None, treemap=None, parentmeta=None, parent=None):
