@@ -4,14 +4,14 @@
 Window tiling for X
 
 Usage:
-  main.py layout (next|prev)
+  main.py layout (next|prev|regularize)
   main.py (focus|move|swap) (up|down|left|right)
   main.py layout (column|row) <num>
   main.py (grow|shrink) (height|width)
   main.py cycle 
   main.py anticycle 
-  main.py regularize
   main.py (save|load) <layout_id>
+  main.py list
   main.py -h | --help
 
 Options:
@@ -25,6 +25,7 @@ from util_kdtree import find_kdtree, resize_kdtree, move_kdtree, insert_focused_
     regularize_windows
 from util_wmctrl import arrange, move_window
 from util_xdotool import get_active_window, raise_window
+import util_wmutils
 from config import LockFile
 
 
@@ -52,9 +53,11 @@ def regularize():
     Try to regularize windows or add a new window into the K-D tree.
     '''
     if regularize_windows():
-        return
+        return True
     elif insert_focused_window_into_kdtree():
-        return
+        return True
+    else:
+        change_tile_or_insert_new_window(1)
 
 
 def layout_row(num):
@@ -105,7 +108,7 @@ def change_tile(shift):
             TILES = ['col1']
         if len(winlist) < 2:
             TILES.append('maximize')
-        #TILES.append('maximize')
+        # TILES.append('maximize')
 
     # TODO unable to compare windows's numbers between different workspaces
 
@@ -255,6 +258,15 @@ def find(center, target, winlist, posinfo):
     return _r
 
 
+def list_windows():
+    print('current workspace')
+    for w in WinList:
+        print('%s,%s' % (w, WinPosInfo[w]))
+    print('all windows')
+    for w in WinListAll:
+        print('%s,%s' % (w, WinPosInfo[w]))
+
+
 def focus(target):
 
     active = get_active_window(allow_outofworkspace=True)
@@ -274,8 +286,10 @@ def focus(target):
 
     if None == target_window_id:
         raise_window(active)
+        # util_wmutils.focus(active)
     else:
         raise_window(target_window_id)
+        # util_wmutils.focus(target_window_id)
     return True
 
 
@@ -324,6 +338,12 @@ if __name__ == '__main__':
                 print('not implemented')
             elif arguments['column']:
                 layout_column(int(arguments['<num>']))
+            elif arguments['regularize']:
+                # If you want to automatically add every new window into the
+                # K-D tree layout, combine this command with dmenu or rofi.
+                regularize()
+                regularize()
+                regularize()
 
         elif arguments['grow']:
             if arguments['width']:
@@ -336,15 +356,13 @@ if __name__ == '__main__':
             else:
                 resize(0, -config.RESIZE_STEP)
 
-        elif arguments['regularize']:
-            # If you want to automatically add every new window into the K-D tree
-            # layout, combine this command with dmenu or rofi.
-            regularize()
-
         elif arguments['save']:
             print('not implemented')
         elif arguments['load']:
             print('not implemented')
+        # debug
+        elif arguments['list']:
+            list_windows()
 
         store()
 

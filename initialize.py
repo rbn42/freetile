@@ -17,7 +17,7 @@
 
 
 from execute import execute_and_output
-from config import EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS
+from config import EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS, COMPIZ0_8
 import re
 from util_xprop import get_wm_class_and_state
 from util_wmctrl import get_windowmanager
@@ -64,6 +64,8 @@ def initialize_windows(desktop):
             continue
 
         winid, x, y, w, h = int(winid, 16), int(x), int(y), int(w), int(h)
+        if COMPIZ0_8:
+            x, y = x / 2, y / 2
 
         wmclass, minimized = get_wm_class_and_state(winid)
         if minimized:
