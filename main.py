@@ -4,13 +4,12 @@
 Window tiling for X
 
 Usage:
-  main.py layout (next|prev)
+  main.py layout (next|prev|regularize)
   main.py (focus|move|swap) (up|down|left|right)
   main.py layout (column|row) <num>
   main.py (grow|shrink) (height|width)
   main.py cycle 
   main.py anticycle 
-  main.py regularize
   main.py (save|load) <layout_id>
   main.py list
   main.py -h | --help
@@ -54,9 +53,11 @@ def regularize():
     Try to regularize windows or add a new window into the K-D tree.
     '''
     if regularize_windows():
-        return
+        return True
     elif insert_focused_window_into_kdtree():
-        return
+        return True
+    else:
+        change_tile_or_insert_new_window(1)
 
 
 def layout_row(num):
@@ -337,6 +338,10 @@ if __name__ == '__main__':
                 print('not implemented')
             elif arguments['column']:
                 layout_column(int(arguments['<num>']))
+            elif arguments['regularize']:
+                # If you want to automatically add every new window into the
+                # K-D tree layout, combine this command with dmenu or rofi.
+                regularize()
 
         elif arguments['grow']:
             if arguments['width']:
@@ -348,11 +353,6 @@ if __name__ == '__main__':
                 resize(-config.RESIZE_STEP, 0)
             else:
                 resize(0, -config.RESIZE_STEP)
-
-        elif arguments['regularize']:
-            # If you want to automatically add every new window into the K-D tree
-            # layout, combine this command with dmenu or rofi.
-            regularize()
 
         elif arguments['save']:
             print('not implemented')
