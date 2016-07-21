@@ -342,6 +342,8 @@ if __name__ == '__main__':
                 # If you want to automatically add every new window into the
                 # K-D tree layout, combine this command with dmenu or rofi.
                 regularize()
+                regularize()
+                regularize()
 
         elif arguments['grow']:
             if arguments['width']:
