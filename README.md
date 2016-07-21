@@ -29,8 +29,7 @@ Recommended Keyboard Mapping
 
 | Keys      | Command   |
 | ------------- |-------------| 
-|`<Super> <Space>`    |  `python main.py layout next` |
-|`<Super> <Shift> <Space>`    |  `python main.py layout prev` |
+|`<Super> <Space>`    |  `python main.py layout regularize` |
 |`<Super> h`    |  `python main.py focus left` |
 |`<Super> <Shift> h`    |  `python main.py swap left` |
 |`<Super> <Ctrl> h`    |  `python main.py move left` |
