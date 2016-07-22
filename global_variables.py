@@ -20,7 +20,7 @@ import os.path
 from initialize import initialize_windows, initialize_desktop
 from config import BottomPadding, RightPadding, LeftPadding, TopPadding,\
     TempFile
-    
+
 desktop, desktop_x, desktop_y, OrigXstr, OrigYstr, MaxWidthStr, MaxHeightStr = initialize_desktop()
 WinList, WinListAll, WinPosInfo = initialize_windows(desktop)
 Desktop = '%s,%s,%s' % (desktop, desktop_x, desktop_y)
