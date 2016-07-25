@@ -4,42 +4,21 @@ very basic functions of i3-wm.
 
 [[https://raw.githubusercontent.com/wiki/rbn42/stiler/show2.gif]]
 * Dependency
-  :PROPERTIES:
-  :CUSTOM_ID: dependency
-  :END:
-
 #+BEGIN_EXAMPLE
     sudo apt install xdotool wmctrl python-docopt -y
     sudo apt install xprop -y
 #+END_EXAMPLE
-
 * Usage
-  :PROPERTIES:
-  :CUSTOM_ID: usage
-  :END:
-
 See
-
 #+BEGIN_EXAMPLE
     python main.py -h
 #+END_EXAMPLE
-
 * Configuration
-  :PROPERTIES:
-  :CUSTOM_ID: configuration
-  :END:
-
 A sample file of configuration is provided.
-
 #+BEGIN_EXAMPLE
     cp .tilerc.sample ~/.tilerc
 #+END_EXAMPLE
-
 * Recommended Keyboard Mapping
-  :PROPERTIES:
-  :CUSTOM_ID: recommended-keyboard-mapping
-  :END:
-
 | Keys                         | Command                          |
 |------------------------------+----------------------------------|
 | =<Super> <Space>=            | =python main.py layout next=     |
