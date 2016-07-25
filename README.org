@@ -3,10 +3,11 @@ This is a window tiling and navigation tool based on
 very basic functions of i3-wm.
 [[https://raw.githubusercontent.com/wiki/rbn42/stiler/show2.gif]]
 * Dependency
-#+BEGIN_EXAMPLE
-    sudo apt install xdotool wmctrl python-docopt -y
-    sudo apt install xprop -y
-#+END_EXAMPLE
+** Ubuntu
+ #+BEGIN_EXAMPLE
+     sudo apt install xdotool wmctrl python-docopt -y
+     sudo apt install xprop -y
+ #+END_EXAMPLE
 * Usage
 See
 #+BEGIN_EXAMPLE
