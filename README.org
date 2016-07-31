@@ -2,7 +2,8 @@ This is a window tiling and navigation tool based on
 [[//github.com/TheWanderer/stiler][stiler]]. It tries to imitate the
 very basic functions of i3-wm.
 [[https://raw.githubusercontent.com/wiki/rbn42/stiler/show2.gif]]
-* So what would this script do when you run it?
+* A simple explanation for people familiar with i3-wm.
+So what would this script do when you run it?
 First, it tries to construct a K-D tree for all windows in the current desktop. 
 If succeeded, your command will be taken like commands of i3's tiling mode.
 And if there exists overlapping windows and the tree construction failed, 
