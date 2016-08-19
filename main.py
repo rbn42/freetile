@@ -183,7 +183,7 @@ def move(target):
 
 
 def moveandresize(target):
-    active = get_active_window()
+    active = get_active_window(allow_outofworkspace=True)
     # cannot find target window
     if None == active:
         return False
