@@ -183,7 +183,7 @@ def move(target):
 
 
 def moveandresize(target):
-    active = get_active_window()
+    active = get_active_window(allow_outofworkspace=True)
     # cannot find target window
     if None == active:
         return False
@@ -279,7 +279,7 @@ def list_windows():
 
 def focus(target):
 
-    active = get_active_window(allow_outofworkspace=True)
+    active = get_active_window(allow_outofworkspace=False)
 
     target_window_id = find_kdtree(active, target, allow_parent_sibling=False)
 
