@@ -279,7 +279,7 @@ def list_windows():
 
 def focus(target):
 
-    active = get_active_window(allow_outofworkspace=True)
+    active = get_active_window(allow_outofworkspace=False)
 
     target_window_id = find_kdtree(active, target, allow_parent_sibling=False)
 
