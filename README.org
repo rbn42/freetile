@@ -2,12 +2,18 @@ This is a window tiling and navigation tool based on
 [[//github.com/TheWanderer/stiler][stiler]]. It tries to imitate the
 very basic functions of i3-wm.
 [[https://raw.githubusercontent.com/wiki/rbn42/stiler/show2.gif]]
-* A simple explanation for people familiar with i3-wm.
+* A Simple Explanation 
+This is a simple explanation for people who are familiar with i3-wm 
+or other tiling window managers.
 So what would this script do when you run it?
-First, it tries to construct a K-D tree for all windows in the current desktop. 
-If succeeded, your command will be taken like commands of i3's tiling mode.
+First, it will try to construct a K-D tree for all windows in the current desktop. 
+** With a K-D tree 
+ If succeeded, it will take your command like commands of i3's tiling mode,
+ to move or to resize a node in the K-D tree.
+** Without a K-D tree
 And if there exists overlapping windows and the tree construction failed, 
-then your command will be taken as commands of i3's floating mode.
+ then your command will be taken as commands of i3's floating mode, that means to move
+ or to resize a window like stacking window managers.
 * Dependency
 ** Ubuntu
  #+BEGIN_EXAMPLE
