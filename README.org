@@ -8,12 +8,12 @@ or other tiling window managers.
 So what would this script do when you run it?
 First, it will try to construct a K-D tree for all windows in the current desktop. 
   - With a K-D tree 
- If succeeded, it will take your command like commands of i3's tiling mode,
- to move or to resize a node in the K-D tree.
+    If succeeded, it will take your command like commands of i3's tiling mode,
+    to move or to resize a node in the K-D tree.
   - Without a K-D tree
-And if there exists overlapping windows and the tree construction failed, 
- then your command will be taken as commands of i3's floating mode, that means to move
- or to resize a window like stacking window managers.
+    And if there exists overlapping windows and the tree construction failed, 
+    then your command will be taken as commands of i3's floating mode, that means to move
+    or to resize a window like stacking window managers.
 * Dependency
 ** Ubuntu
  #+BEGIN_EXAMPLE
