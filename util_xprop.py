@@ -39,9 +39,14 @@ def get_wm_class_and_state(winid):
     cmd = 'xprop -id %s | grep WM_CLASS'
     cmd = 'xprop -id %s WM_CLASS WM_STATE'
     s = execute_and_output(cmd % winid)
-    wm_class = re.findall('^.+?\=(.+)', s)[0]
+    wm_class = re.findall('^.+?\=(.+)', s)
+    if len(wm_class) > 0:
+        wm_class = wm_class[0]
+        wm_class = eval(wm_class)
+    else:
+        wm_class = []
     minimized = 'window state: Normal' not in s
-    return eval(wm_class), minimized
+    return wm_class, minimized
 
 
 def get_active_window(allow_outofworkspace=False):
