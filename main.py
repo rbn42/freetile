@@ -23,7 +23,6 @@ from util import sort_win_list
 from util_kdtree import find_kdtree, resize_kdtree, move_kdtree, insert_focused_window_into_kdtree, regularize_windows
 from helper_xlib import arrange
 from util_xdotool import get_active_window, raise_window
-import util_wmutils
 
 import logger
 import logging
@@ -293,10 +292,8 @@ def focus(target):
 
     if None == target_window_id:
         raise_window(active)
-        # util_wmutils.focus(active)
     else:
         raise_window(target_window_id)
-        # util_wmutils.focus(target_window_id)
     return True
 
 
