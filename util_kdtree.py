@@ -78,11 +78,7 @@ def resize_kdtree(resize_width, resize_height):
         return False
     regularize_node = regularize_node.parent
 
-    if REGULARIZE_FULLSCREEN:
-        _tree.position = [OrigX, OrigY, OrigX + MaxWidth, OrigY + MaxHeight]
-        return regularize_kd_tree(_tree)
-    else:
-        return regularize_kd_tree(regularize_node)
+    return regularize_kd_tree(regularize_node)
 
 
 def getkdtree(winlist, lay):
@@ -202,11 +198,7 @@ def move_kdtree(target, allow_create_new_node=True):
 
     # regularize k-d tree
     regularize_node = regularize_node.parent
-    if REGULARIZE_FULLSCREEN:
-        _tree.position = [OrigX, OrigY, OrigX + MaxWidth, OrigY + MaxHeight]
-        return regularize_kd_tree(_tree)
-    else:
-        return regularize_kd_tree(regularize_node, min_width=1, min_height=1)
+    return regularize_kd_tree(regularize_node, min_width=1, min_height=1)
 
 
 def regularize_windows():
