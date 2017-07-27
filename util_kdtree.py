@@ -1,7 +1,7 @@
 from util_tile import get_current_tile
 from config import WinBorder, MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT,\
     MAX_KD_TREE_BRANCH, REGULARIZE_FULLSCREEN
-from util_wmctrl import arrange
+from helper_xlib import arrange
 from global_variables import WinList, WinPosInfo, OldWinList, PERSISTENT_DATA, MaxWidth, MaxHeight, OrigX, OrigY
 from util_xdotool import get_active_window
 from util import sort_win_list
