@@ -20,55 +20,10 @@ from execute import execute_and_output, execute
 import re
 
 
-def move_window(windowid, x, y, w, h, sync=True):
-    # Unmaximize window
-
-    f_left, f_right, f_top, f_bottom = get_window_frame_size(windowid)
-    w -= f_left + f_right
-    h -= f_top + f_bottom
-
-    #wmclass = get_wm_class(windowid)
-    # for n in config.NOFRAME_WMCLASS:
-    #    if n in wmclass:
-    #        break
-    try:
-        if 'Stati' in execute_and_output('xprop -id %s WM_NORMAL_HINTS| grep gravi' % windowid):
-            y += f_top
-            x += f_left
-    except:
-        pass
-    # Now move it
-    command = "wmctrl -i -r %d -e 0,%d,%d,%d,%d" % (windowid, x, y, w, h)
-    if not sync:
-        command += ' &'
-    return command
-    execute(command)
-
-    #command = 'xdotool windowmove  %d %d %d' % (windowid, x, y)
-    # execute(command)
-    #command = 'xdotool windowsize  %d %d %d' % (windowid, w, h)
-    # execute(command)
-    #command = "wmctrl -i -r " + windowid + " -b remove,hidden,shaded"
-#    command = 'xdotool windowmap "%s"' % windowid
-#    command = 'xdotool windowactivate "%s"' % windowid
-
-
-def unmaximize_one(windowid, sync=True):
-    command = " wmctrl -i -r %d -bremove,maximized_vert,maximized_horz" % windowid
-    if not sync:
-        command += ' &'
-    execute(command)
-
-
 def maximize_one(windowid, sync=True):
     command = " wmctrl -i -r %d -badd,maximized_vert,maximized_horz" % windowid
     if not sync:
         command += ' &'
-    execute(command)
-
-
-def raise_window(windowid):
-    command = "wmctrl -i -a %d" % windowid
     execute(command)
 
 
@@ -78,7 +33,3 @@ def get_windowmanager():
     _class = re.findall('Class:(.+)', out)[0]
     _name = re.findall('Name:(.+)', out)[0]
     return _name.strip(), _class.strip()
-
-
-if __name__ == '__main__':
-    print(get_windowmanager())
