@@ -33,6 +33,8 @@ def arrange(layout, windowids):
     # TODO need true frame extents data after maximized windows unmaximized
     #disp.flush()
     #disp.sync()
+    import time
+    time.sleep(0.1)
 
     window_normal_hints = []
     for window_xlib in windows:
