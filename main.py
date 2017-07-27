@@ -233,7 +233,8 @@ def find(center, target, winlist, posinfo):
     find the nearest window in the target direction.
     '''
     lay = get_current_tile(winlist, posinfo)
-    cal_center = lambda x, y, w, h: [x + w / 2.2, y + h / 2.2]
+
+    def cal_center(x, y, w, h): return [x + w / 2.2, y + h / 2.2]
     if None == center:
         lay_center = MaxWidth / 2.0, MaxHeight / 2.0
     else:
@@ -314,6 +315,7 @@ def store():
     with open(config.TempFile, 'w') as f:
         PERSISTENT_DATA_ALL[Desktop] = PERSISTENT_DATA
         f.write(str(PERSISTENT_DATA_ALL))
+
 
 from global_variables import PERSISTENT_DATA, PERSISTENT_DATA_ALL, WinList, WinPosInfo, WinListAll, MaxHeight, MaxWidth
 from global_variables import Desktop, OldWinList
