@@ -203,8 +203,6 @@ def regularize_windows():
     if _tree.overlap:
         logging.info('overlapped windows')
         return False
-    if REGULARIZE_FULLSCREEN:
-        _tree.position = [OrigX, OrigY, OrigX + MaxWidth, OrigY + MaxHeight]
     result = regularize_kd_tree(_tree)
     if result:
         PERSISTENT_DATA['winlist'] = WinList
@@ -214,6 +212,9 @@ def regularize_windows():
 def regularize_kd_tree(regularize_node,
                        min_width=MIN_WINDOW_WIDTH,
                        min_height=MIN_WINDOW_HEIGHT):
+    if REGULARIZE_FULLSCREEN:
+        regularize_node.position = [OrigX, OrigY, OrigX + MaxWidth, OrigY + MaxHeight]
+
     if regularize_node.overlap:
         return False
     if None == regularize_node:
