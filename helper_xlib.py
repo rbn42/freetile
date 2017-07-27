@@ -1,33 +1,49 @@
 from Xlib import X, display, Xutil, protocol
-from util_wmctrl import unmaximize_one
-from util_xprop import get_window_frame_size
+import Xlib
 
 disp = display.Display()
+screen = disp.screen()
 
 
-def arrange(layout, windows, sync=True):
-    for winid, lay in zip(windows, layout):
+def edit_prop(window, mode, name, value):
+    cm_event = protocol.event.ClientMessage(
+        window=window,
+        client_type=disp.intern_atom(name),
+        data=(32, [mode, disp.intern_atom(value), 0, 0, 0])
+    )
+    disp.send_event(screen.root, cm_event,
+                    (X.SubstructureRedirectMask | X.SubstructureNotifyMask))
+
+
+def arrange(layout, windowids, sync=True):
+    window_normal_hints = []
+    windows = []
+    for windowid in windowids:
+        window_xlib = disp.create_resource_object('window', windowid)
+        wm_normal_hints = window_xlib.get_wm_normal_hints()
+        windows.append(window_xlib)
+        window_normal_hints.append(wm_normal_hints)
+    # unmaximize
+    for window_xlib in windows:
+        edit_prop(window_xlib, 0, '_NET_WM_STATE',
+                  '_NET_WM_STATE_MAXIMIZED_VERT')
+        edit_prop(window_xlib, 0, '_NET_WM_STATE',
+                  '_NET_WM_STATE_MAXIMIZED_HORZ')
+    for windowid, window_xlib, lay, wm_normal_hints in zip(windowids, windows, layout, window_normal_hints):
         x, y, width, height = lay
-        unmaximize_one(winid, sync=False)
-        move_window(winid, *lay, sync=False)
-    if sync:
-        disp.flush()
-
-
-def move_window(windowid, x, y, w, h, sync=True):
-    window_xlib = disp.create_resource_object('window', windowid)
-
-    f_left, f_right, f_top, f_bottom = get_window_frame_size(windowid)
-    w -= f_left + f_right
-    h -= f_top + f_bottom
-
-    wm_normal_hints = window_xlib.get_wm_normal_hints()
+        frame_extents = window_xlib.get_property(disp.intern_atom(
+            "_NET_FRAME_EXTENTS"), Xlib.Xatom.CARDINAL, 0, 32)
+        if None == frame_extents:
+            f_left, f_right, f_top, f_bottom = 0, 0, 0, 0
+        else:
+            f_left, f_right, f_top, f_bottom = frame_extents.value
+        width -= f_left + f_right
+        height -= f_top + f_bottom
     # TODO
-    print(wm_normal_hints)
-    if 'Stati' in str(wm_normal_hints):
-        y += f_top
-        x += f_left
-
-    window_xlib.configure(x=x, y=y, width=w, height=h)
+#    print(wm_normal_hints)
+#    if 'Stati' in str(wm_normal_hints):
+#        y += f_top
+#        x += f_left
+        window_xlib.configure(x=x, y=y, width=width, height=height)
     if sync:
         disp.flush()
