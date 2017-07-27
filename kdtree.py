@@ -225,7 +225,7 @@ def getLayoutAndKey(node, result=None, min_width=config.MIN_WINDOW_WIDTH, min_he
             #("reach min size")
             result[2] = True
             return result
-        layout = [x0, y0, x1 - x0, y1 - y0]
+        layout = [int(x0), int(y0), int(x1 - x0), int(y1 - y0)]
         result[0].append(layout)
         result[1].append(node.key)
     else:
