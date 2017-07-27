@@ -17,7 +17,6 @@ Usage:
 Options:
   -h --help     Show this screen.
 """
-from locker import lock, unlock
 import config
 from util_tile import get_current_tile
 from util import sort_win_list
@@ -25,7 +24,6 @@ from util_kdtree import find_kdtree, resize_kdtree, move_kdtree, insert_focused_
 from helper_xlib import arrange
 from util_xdotool import get_active_window, raise_window
 import util_wmutils
-from config import LockFile
 
 import logger
 import logging
@@ -317,64 +315,61 @@ from global_variables import PERSISTENT_DATA, PERSISTENT_DATA_ALL, WinList, WinP
 from global_variables import Desktop, OldWinList
 
 if __name__ == '__main__':
-    if lock(LockFile):
-        from docopt import docopt
-        arguments = docopt(__doc__)
+    from docopt import docopt
+    arguments = docopt(__doc__)
 
-        for target in ('up', 'down', 'left', 'right'):
-            if arguments[target]:
-                break
+    for target in ('up', 'down', 'left', 'right'):
+        if arguments[target]:
+            break
 
-        if False:
-            pass
-        elif arguments['cycle']:
-            cycle()
-        elif arguments['anticycle']:
-            cycle(reverse=True)
-        elif arguments['swap']:
-            swap(target)
-        elif arguments['move']:
-            move(target)
-        elif arguments['focus']:
-            focus(target)
+    if False:
+        pass
+    elif arguments['cycle']:
+        cycle()
+    elif arguments['anticycle']:
+        cycle(reverse=True)
+    elif arguments['swap']:
+        swap(target)
+    elif arguments['move']:
+        move(target)
+    elif arguments['focus']:
+        focus(target)
 
-        elif arguments['layout']:
-            if arguments['next']:
-                change_tile_or_insert_new_window(1)
-            elif arguments['prev']:
-                change_tile_or_insert_new_window(-1)
-            elif arguments['row']:
-                # layout_row(int(arguments['<num>']))
-                print('not implemented')
-            elif arguments['column']:
-                layout_column(int(arguments['<num>']))
-            elif arguments['regularize']:
-                # If you want to automatically add every new window into the
-                # K-D tree layout, combine this command with dmenu or rofi.
-                logging.info('regularize layout')
-                regularize()
-                # regularize()
-                # regularize()
-
-        elif arguments['grow']:
-            if arguments['width']:
-                resize(config.RESIZE_STEP, 0)
-            else:
-                resize(0, config.RESIZE_STEP)
-        elif arguments['shrink']:
-            if arguments['width']:
-                resize(-config.RESIZE_STEP, 0)
-            else:
-                resize(0, -config.RESIZE_STEP)
-
-        elif arguments['save']:
+    elif arguments['layout']:
+        if arguments['next']:
+            change_tile_or_insert_new_window(1)
+        elif arguments['prev']:
+            change_tile_or_insert_new_window(-1)
+        elif arguments['row']:
+            # layout_row(int(arguments['<num>']))
             print('not implemented')
-        elif arguments['load']:
-            print('not implemented')
-        # debug
-        elif arguments['list']:
-            list_windows()
+        elif arguments['column']:
+            layout_column(int(arguments['<num>']))
+        elif arguments['regularize']:
+            # If you want to automatically add every new window into the
+            # K-D tree layout, combine this command with dmenu or rofi.
+            logging.info('regularize layout')
+            regularize()
+            # regularize()
+            # regularize()
 
-        store()
+    elif arguments['grow']:
+        if arguments['width']:
+            resize(config.RESIZE_STEP, 0)
+        else:
+            resize(0, config.RESIZE_STEP)
+    elif arguments['shrink']:
+        if arguments['width']:
+            resize(-config.RESIZE_STEP, 0)
+        else:
+            resize(0, -config.RESIZE_STEP)
 
-        unlock(LockFile)
+    elif arguments['save']:
+        print('not implemented')
+    elif arguments['load']:
+        print('not implemented')
+    # debug
+    elif arguments['list']:
+        list_windows()
+
+    store()

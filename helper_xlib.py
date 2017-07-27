@@ -3,6 +3,8 @@ import Xlib
 
 disp = display.Display()
 screen = disp.screen()
+#sync lock
+disp.sync()
 
 
 def edit_prop(window, mode, name, value):
