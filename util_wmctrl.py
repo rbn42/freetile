@@ -80,14 +80,5 @@ def get_windowmanager():
     return _name.strip(), _class.strip()
 
 
-def arrange(layout, windows):
-    cmds = []
-    for win, lay in zip(windows, layout):
-        cmd = move_window(win, *lay, sync=False)
-        cmds.append(cmd)
-    for win in windows:
-        unmaximize_one(win, sync=False)
-    for cmd in cmds:
-        execute(cmd)
 if __name__ == '__main__':
     print(get_windowmanager())
