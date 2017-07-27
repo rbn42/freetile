@@ -40,7 +40,7 @@ def arrange(layout, windowids, sync=True):
         width -= f_left + f_right
         height -= f_top + f_bottom
     # TODO
-#    print(wm_normal_hints)
+#        print(wm_normal_hints)
 #    if 'Stati' in str(wm_normal_hints):
 #        y += f_top
 #        x += f_left
