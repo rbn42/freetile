@@ -4,7 +4,8 @@ import Xlib
 disp = display.Display()
 screen = disp.screen()
 #sync lock
-disp.sync()
+#TODO
+#disp.sync()
 
 
 def edit_prop(window, mode, name, value):
@@ -17,7 +18,7 @@ def edit_prop(window, mode, name, value):
                     (X.SubstructureRedirectMask | X.SubstructureNotifyMask))
 
 
-def arrange(layout, windowids, sync=True):
+def arrange(layout, windowids):
     window_normal_hints = []
     windows = []
     for windowid in windowids:
@@ -31,6 +32,10 @@ def arrange(layout, windowids, sync=True):
                   '_NET_WM_STATE_MAXIMIZED_VERT')
         edit_prop(window_xlib, 0, '_NET_WM_STATE',
                   '_NET_WM_STATE_MAXIMIZED_HORZ')
+
+    #disp.flush()
+
+    #move windows
     for windowid, window_xlib, lay, wm_normal_hints in zip(windowids, windows, layout, window_normal_hints):
         x, y, width, height = lay
         frame_extents = window_xlib.get_property(disp.intern_atom(
@@ -47,5 +52,4 @@ def arrange(layout, windowids, sync=True):
 #        y += f_top
 #        x += f_left
         window_xlib.configure(x=x, y=y, width=width, height=height)
-    if sync:
-        disp.flush()
+    disp.flush()
