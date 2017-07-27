@@ -75,7 +75,7 @@ def initialize_windows(desktop):
             continue
 
         win_list_all.append(winid)
-        WinPosInfoAll[winid] = name, [x, y, w, h]
+        WinPosInfoAll[winid] = name, [int(x), int(y), w, h]
 
         if x < 0 or x >= resx or y < 0 or y >= resy:
             continue
