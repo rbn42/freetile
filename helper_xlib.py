@@ -3,9 +3,9 @@ import Xlib
 
 disp = display.Display()
 screen = disp.screen()
-#sync lock
-#TODO
-#disp.sync()
+# sync lock
+# TODO
+# disp.sync()
 
 
 def edit_prop(window, mode, name, value):
@@ -19,13 +19,10 @@ def edit_prop(window, mode, name, value):
 
 
 def arrange(layout, windowids):
-    window_normal_hints = []
     windows = []
     for windowid in windowids:
         window_xlib = disp.create_resource_object('window', windowid)
-        wm_normal_hints = window_xlib.get_wm_normal_hints()
         windows.append(window_xlib)
-        window_normal_hints.append(wm_normal_hints)
     # unmaximize
     for window_xlib in windows:
         edit_prop(window_xlib, 0, '_NET_WM_STATE',
@@ -33,13 +30,21 @@ def arrange(layout, windowids):
         edit_prop(window_xlib, 0, '_NET_WM_STATE',
                   '_NET_WM_STATE_MAXIMIZED_HORZ')
 
+    # TODO need true frame extents data after maximized windows unmaximized
     #disp.flush()
+    #disp.sync()
 
-    #move windows
+    window_normal_hints = []
+    for window_xlib in windows:
+        wm_normal_hints = window_xlib.get_wm_normal_hints()
+        window_normal_hints.append(wm_normal_hints)
+
+    # move windows
     for windowid, window_xlib, lay, wm_normal_hints in zip(windowids, windows, layout, window_normal_hints):
         x, y, width, height = lay
         frame_extents = window_xlib.get_property(disp.intern_atom(
             "_NET_FRAME_EXTENTS"), Xlib.Xatom.CARDINAL, 0, 32)
+        print(frame_extents)
         if None == frame_extents:
             f_left, f_right, f_top, f_bottom = 0, 0, 0, 0
         else:
