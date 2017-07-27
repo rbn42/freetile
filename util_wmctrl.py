@@ -15,7 +15,6 @@
 #                                                                          #
 ############################################################################
 
-from util_xprop import get_window_frame_size
 from execute import execute_and_output, execute
 import re
 
