@@ -46,7 +46,6 @@ def arrange(layout, windowids):
         x, y, width, height = lay
         frame_extents = window_xlib.get_property(disp.intern_atom(
             "_NET_FRAME_EXTENTS"), Xlib.Xatom.CARDINAL, 0, 32)
-        print(frame_extents)
         if None == frame_extents:
             f_left, f_right, f_top, f_bottom = 0, 0, 0, 0
         else:
