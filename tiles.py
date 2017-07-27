@@ -112,6 +112,7 @@ def get_horiz_tile(wincount):
 
     return layout
 
+
 # from https://bbs.archlinux.org/viewtopic.php?id=64100&p=6  #150
 import math
 
@@ -145,7 +146,7 @@ def get_columns_tile2(wincount, reverse=False, cols=2):
     for col in _range:
         rows = min(int(math.ceil(float(wincount) / cols)), windowsleft)
         windowsleft -= rows
-        rowheight = MaxHeight / rows
+        rowheight = int(MaxHeight / rows)
         for row in range(rows):
             layout.append(layout_shift(
                 colwidth * col,
