@@ -23,8 +23,6 @@ from util_tile import get_current_tile
 from util import sort_win_list
 from util_kdtree import find_kdtree, resize_kdtree, move_kdtree, insert_focused_window_into_kdtree,\
     regularize_windows
-#from util_wmctrl import arrange, move_window
-from util_wmctrl import move_window
 from helper_xlib import arrange
 from util_xdotool import get_active_window, raise_window
 import util_wmutils
@@ -193,7 +191,6 @@ def moveandresize(target):
     for i in range(4):
         lay[i] += target[i]
     arrange([lay], [active])
-    #move_window(active, *lay)
     return True
 
 
