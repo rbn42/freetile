@@ -2,9 +2,8 @@ from util_tile import get_current_tile
 from config import WinBorder, MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT,\
     MAX_KD_TREE_BRANCH, REGULARIZE_FULLSCREEN
 from helper_xlib import arrange
-from global_variables import WinList, WinPosInfo, OldWinList, PERSISTENT_DATA, MaxWidth, MaxHeight, OrigX, OrigY
+from global_variables import WinList, WinPosInfo,  PERSISTENT_DATA, MaxWidth, MaxHeight, OrigX, OrigY
 from helper_ewmh import get_active_window
-from util import sort_win_list
 import logging
 
 
@@ -13,7 +12,7 @@ def resize_kdtree(resize_width, resize_height):
     Adjust non-overlapping layout.
     '''
 
-    winlist = sort_win_list(WinList, OldWinList)
+    winlist=WinList
     # ignore layouts with less than 2 windows
     if len(winlist) < 2:
         return False
