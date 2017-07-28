@@ -15,7 +15,7 @@
 #                                                                          #
 ############################################################################
 
-from util_xdotool import get_active_window,  raise_window
+from helper_ewmh import get_active_window,  raise_window
 from helper_xlib import maximize as xlib_maximize
 
 from global_variables import WinList,  OrigX, MaxHeight,     MaxWidth, OrigY

@@ -3,7 +3,7 @@ from config import WinBorder, MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT,\
     MAX_KD_TREE_BRANCH, REGULARIZE_FULLSCREEN
 from helper_xlib import arrange
 from global_variables import WinList, WinPosInfo, OldWinList, PERSISTENT_DATA, MaxWidth, MaxHeight, OrigX, OrigY
-from util_xdotool import get_active_window
+from helper_ewmh import get_active_window
 from util import sort_win_list
 import logging
 

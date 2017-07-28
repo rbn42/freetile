@@ -31,6 +31,8 @@ def get_window(func):
             r = func(win)
         elif t == type(root):
             r = func(win)
+        elif "Xlib.display.Window" in str(win):
+            r = func(win)
         return r
     return func_wrapper
 
