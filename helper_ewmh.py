@@ -1,17 +1,24 @@
 
 from ewmh import EWMH
-ewmh=EWMH()
+ewmh = EWMH()
 from helper_xlib import get_window
+
 
 @get_window
 def raise_window(win):
     ewmh.setActiveWindow(win)
     ewmh.display.flush()
 
+
+def get_window_list():
+    for win in ewmh.getClientList():
+        yield win, ewmh.getWmDesktop(win), ewmh.getWmName(win)
+
+
 def get_active_window(allow_outofworkspace=False):
     from global_variables import WinList, WinPosInfo
-    active=ewmh.getActiveWindow()
-    if None==active:
+    active = ewmh.getActiveWindow()
+    if None == active:
         return None
     active = active.id
     if active not in WinPosInfo:
