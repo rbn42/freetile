@@ -17,11 +17,15 @@
 
 
 import os.path
-from initialize import initialize_windows, initialize_desktop
+from initialize import initialize_windows
+from helper_xlib import get_root_window_property
 from config import BottomPadding, RightPadding, LeftPadding, TopPadding,\
     TempFile
 
-desktop, desktop_x, desktop_y, OrigXstr, OrigYstr, MaxWidthStr, MaxHeightStr = initialize_desktop()
+desktop, =get_root_window_property("_NET_CURRENT_DESKTOP")
+desktop_x, desktop_y, =get_root_window_property("_NET_DESKTOP_VIEWPORT")
+OrigXstr, OrigYstr, MaxWidthStr, MaxHeightStr = get_root_window_property("_NET_WORKAREA")
+
 WinList, WinListAll, WinPosInfo = initialize_windows(desktop)
 Desktop = '%s,%s,%s' % (desktop, desktop_x, desktop_y)
 

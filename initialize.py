@@ -19,26 +19,9 @@
 from execute import execute_and_output
 from config import EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS, COMPIZ0_8
 import re
-from util_xprop import get_wm_class_and_state
-from util_wmctrl import get_windowmanager
+from helper_xlib import get_wm_class_and_state
 
 r_wmctrl_lG = '^([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)(\s+(.*))?$'
-r_wmctrl_d = '(\d)+.+?(\d+)x(\d+).+?(\d+),(\d+).+?(\d+),(\d+).+?(\d+)x(\d+)'
-
-
-def initialize_desktop():
-    desk_output = execute_and_output("wmctrl -d").strip().split("\n")
-
-    current = [x for x in desk_output if x.split()[1] == "*"][0]
-    current = re.findall(r_wmctrl_d, current.strip())[0]
-    desktop, _, _, desktop_x, desktop_y, orig_x, orig_y, width, height = current
-
-    _name, _class = get_windowmanager()
-    if _class == 'fvwm':
-        from util_xrandr import get_screensize
-        width, height = get_screensize()
-
-    return desktop, desktop_x, desktop_y, orig_x, orig_y, width, height
 
 
 def initialize_windows(desktop):
@@ -56,7 +39,7 @@ def initialize_windows(desktop):
         _init = re.findall(r_wmctrl_lG, win)[0]
         winid, _desktop, x, y, w, h, host, _, name = _init
 
-        if not _desktop == desktop:
+        if not int(_desktop) == desktop:
             continue
         # if host == 'N/A':
         #    continue
@@ -67,6 +50,7 @@ def initialize_windows(desktop):
         if COMPIZ0_8:
             x, y = x / 2, y / 2
 
+        
         wmclass, minimized = get_wm_class_and_state(winid)
         if minimized:
             continue

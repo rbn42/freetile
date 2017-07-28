@@ -15,8 +15,8 @@
 #                                                                          #
 ############################################################################
 
-from util_xdotool import get_active_window, minimize_one, raise_window
-from util_wmctrl import maximize_one
+from util_xdotool import get_active_window,  raise_window
+from helper_xlib import maximize as xlib_maximize
 
 from global_variables import WinList,  OrigX, MaxHeight,     MaxWidth, OrigY
 from config import WinBorder
@@ -30,7 +30,7 @@ def minimize(wincount):
 def maximize(wincount):
     active = get_active_window()
     for win in WinList:
-        maximize_one(win)
+        xlib_maximize(win)
     raise_window(active)
     return None
 
