@@ -1,10 +1,13 @@
 from config import EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS
-from helper_xlib import get_wm_class_and_state, get_root_window_property
-from helper_ewmh import get_window_list
+from helper_xlib import get_wm_class_and_state, get_root_window_property,disp
+from helper_ewmh import get_window_list,ewmh
+import Xlib
+
 
 
 def initialize_windows(desktop):
     minx, miny, maxx, maxy = get_root_window_property("_NET_WORKAREA")
+    minx=miny=0
 
     win_list = []
     win_list_all = []
@@ -22,6 +25,10 @@ def initialize_windows(desktop):
             continue
 
         wmclass, minimized = get_wm_class_and_state(winid)
+        dock=disp.intern_atom('_NET_WM_WINDOW_TYPE_DOCK')
+        if dock in ewmh.getWmWindowType(win):
+            continue
+
         if minimized:
             continue
         wmclass = set(wmclass)
