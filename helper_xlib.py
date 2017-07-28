@@ -30,11 +30,11 @@ def arrange(layout, windowids):
         edit_prop(window_xlib, 0, '_NET_WM_STATE',
                   '_NET_WM_STATE_MAXIMIZED_HORZ')
 
-    # TODO need true frame extents data after maximized windows unmaximized
+    # TODO need correct frame extents data after maximized windows unmaximized
     #disp.flush()
     #disp.sync()
     import time
-    time.sleep(0.1)
+    time.sleep(0.01)
 
     window_normal_hints = []
     for window_xlib in windows:
