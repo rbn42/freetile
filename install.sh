@@ -1,1 +1,1 @@
-sudo apt install xdotool wmctrl python-docopt -y
+sudo apt install wmctrl python-docopt -y
