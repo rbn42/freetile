@@ -2,7 +2,7 @@ import os
 import xcffib
 from xcffib.xproto import EventMask
 from xcffib.testing import XvfbTest
-from xcffib.xproto import GetPropertyType, Atom
+from xcffib.xproto import GetPropertyType, Atom,ConfigWindow
 
 conn = xcffib.connect(os.environ['DISPLAY'])
 xproto = xcffib.xproto.xprotoExtension(conn)
@@ -26,6 +26,13 @@ NET_WM_NAME = intern("_NET_WM_NAME")
 NET_FRAME_EXTENTS=intern("_NET_FRAME_EXTENTS")
 NET_WM_STATE= intern("_NET_WM_STATE")
 WM_STATE= intern("WM_STATE")
+
+def arrange(layout, windowids):
+    for lay,winid in zip(layout,windowids):
+        xproto.ConfigureWindow(winid,
+                ConfigWindow.X|ConfigWindow.Y|ConfigWindow.Width|ConfigWindow.Height,
+                lay)
+    conn.flush()
 
 def get_window_list():
     for winid in getProperty(CLIENT_LIST).reply().value.to_atoms():

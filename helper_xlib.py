@@ -7,6 +7,7 @@ root = screen.root
 # sync lock
 # TODO
 # disp.sync()
+import helper_xcb
 
 
 def edit_prop(window, mode, name, value):
@@ -80,6 +81,7 @@ def arrange(layout, windowids):
     windows_normal_hints = [w.get_wm_normal_hints() for w in windows]
     windows_frame_extents = [get_frame_extents(w) for w in windows]
 
+    layout_final=[]
     # move windows
     for windowid, window_xlib, lay, normal_hints, frame_extents in zip(windowids, windows, layout, windows_normal_hints, windows_frame_extents):
         x, y, width, height = lay
@@ -91,5 +93,7 @@ def arrange(layout, windowids):
         if normal_hints.win_gravity == 10:
             y += f_top
             x += f_left
-        window_xlib.configure(x=x, y=y, width=width, height=height)
-    disp.flush()
+        layout_final.append([x,y,width,height])
+    helper_xcb.arrange(layout_final,windowids)
+#        window_xlib.configure(x=x, y=y, width=width, height=height)
+#    disp.flush()
