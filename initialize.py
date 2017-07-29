@@ -6,7 +6,9 @@ import Xlib
 
 
 def initialize_windows(desktop):
-    minx, miny, maxx, maxy = get_root_window_property("_NET_WORKAREA")
+    #TODO
+    minx, miny, maxx, maxy =ewmh.getWorkArea()[:4]
+    # get_root_window_property("_NET_WORKAREA")
     minx=miny=0
 
     win_list = []

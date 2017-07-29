@@ -6,7 +6,10 @@ from config import BottomPadding, RightPadding, LeftPadding, TopPadding,\
 
 desktop, =get_root_window_property("_NET_CURRENT_DESKTOP")
 desktop_x, desktop_y, =get_root_window_property("_NET_DESKTOP_VIEWPORT")
-OrigXstr, OrigYstr, MaxWidthStr, MaxHeightStr = get_root_window_property("_NET_WORKAREA")
+#TODO
+from helper_ewmh import ewmh
+OrigXstr, OrigYstr, MaxWidthStr, MaxHeightStr = ewmh.getWorkArea()[:4]
+#get_root_window_property("_NET_WORKAREA")
 
 WinList, WinListAll, WinPosInfo = initialize_windows(desktop)
 Desktop = '%s,%s,%s' % (desktop, desktop_x, desktop_y)
