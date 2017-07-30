@@ -15,7 +15,7 @@ First, it will try to construct a K-D tree for all windows in the current deskto
 * Dependency
 ** Ubuntu
  #+BEGIN_EXAMPLE
-     sudo apt install wmctrl python-docopt -y
+     sudo apt install python-docopt -y
  #+END_EXAMPLE
 * Usage
 See
