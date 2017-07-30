@@ -2,9 +2,9 @@
 WinBorder = 2
 LeftPadding = 4
 BottomPadding = 4
-TopPadding = 4  
+TopPadding = 4
 RightPadding = 4
-NavigateAcrossWorkspaces = False #True  # availabe in viewports desktops
+NavigateAcrossWorkspaces = False  # True  # availabe in viewports desktops
 TempFile = "/tmp/kd_tree_tile"
 LogFile = ""  # '/tmp/kd_tree_tile.log'
 
@@ -23,6 +23,11 @@ MIN_WINDOW_HEIGHT = 50
 MAX_KD_TREE_BRANCH = 3
 
 REGULARIZE_FULLSCREEN = True
+
+#find out vim server name in window title, and send focusing window command.
+VIM_SERVER_NAME=" - (VIMSERVER\d+)$"
+VIM_NAVIGATION_CMD="""vim --servername {vimserver} --remote-expr "TileFocusWindow('{target}')" """
+VIM_SERVER_NAME=None
 
 # overwrite default configuration
 import os.path

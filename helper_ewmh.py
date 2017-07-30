@@ -12,7 +12,10 @@ def raise_window(win):
 
 def get_window_list():
     for win in ewmh.getClientList():
-        yield win, ewmh.getWmDesktop(win), ewmh.getWmName(win)
+        name = ewmh.getWmName(win)
+        if not None == name:
+            name = name.decode('utf8')
+        yield win, ewmh.getWmDesktop(win), name
 
 
 def get_active_window(allow_outofworkspace=False):

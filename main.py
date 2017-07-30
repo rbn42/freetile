@@ -26,7 +26,8 @@ from helper_ewmh import get_active_window, raise_window
 
 import logger
 import logging
-
+import re
+import subprocess
 
 def change_tile_or_insert_new_window(shift):
     if len(WinList) < 1:
@@ -276,6 +277,18 @@ def list_windows():
 def focus(target):
 
     active = get_active_window(allow_outofworkspace=False)
+
+    if not None == config.VIM_SERVER_NAME:
+        if not None == active:
+            vimserver=re.findall(config.VIM_SERVER_NAME, WinPosInfo[active][0])
+            if len(vimserver) > 0:
+                vimserver=vimserver[0]
+                cmd=config.VIM_NAVIGATION_CMD.format(vimserver=vimserver,
+                        target=target)
+                s = subprocess.check_output(cmd, shell=True).decode('utf8')
+                s=int(s)
+                if s==1:
+                    return
 
     target_window_id = find_kdtree(active, target, allow_parent_sibling=False)
 

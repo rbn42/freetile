@@ -18,9 +18,6 @@ def initialize_windows(desktop):
         winid = win.id
         geo = win.get_geometry()
         x, y, w, h = geo.x, geo.y, geo.width, geo.height
-        if not None == name:
-            name = name.decode('utf8')
-
         if not _desktop == desktop:
             continue
         if name in EXCLUDE_APPLICATIONS:
