@@ -2,9 +2,8 @@ import logging
 from config import (MAX_KD_TREE_BRANCH, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH,
                     REGULARIZE_FULLSCREEN, WinBorder)
 
-from global_variables import WinList, WinPosInfo
-from windowlist import windowlist
 from helper_xlib import arrange
+from windowlist import windowlist
 from workarea import workarea
 
 
@@ -13,7 +12,7 @@ def resize_kdtree(resize_width, resize_height):
     Adjust non-overlapping layout.
     '''
 
-    winlist = WinList
+    winlist = windowlist.windowInCurrentWorkspaceInStackingOrder
     # ignore layouts with less than 2 windows
     if len(winlist) < 2:
         return False
@@ -93,7 +92,8 @@ def getkdtree(winlist, lay):
 
 
 def insert_window_into_kdtree(winid, target):
-    winlist = [w for w in WinList if not w == winid]
+    winlist = [
+        w for w in windowlist.windowInCurrentWorkspaceInStackingOrder if not w == winid]
     lay = windowlist.get_current_layout()
     _tree, _map = getkdtree(winlist, lay)
     target_node = _map[target]
@@ -120,7 +120,8 @@ def move_kdtree(target, allow_create_new_node=True):
     if None == active:
         return False
 
-    winlist = WinList  # sort_win_list(WinList)
+    # sort_win_list(windowlist.windowInCurrentWorkspaceInStackingOrder)
+    winlist = windowlist.windowInCurrentWorkspaceInStackingOrder
     # ignore layouts with less than 2 windows
     if len(winlist) < 2:
         return False
@@ -211,7 +212,8 @@ def move_kdtree(target, allow_create_new_node=True):
 
 def regularize_windows():
     lay = windowlist.get_current_layout()
-    _tree, _map = getkdtree(WinList, lay)
+    _tree, _map = getkdtree(
+        windowlist.windowInCurrentWorkspaceInStackingOrder, lay)
     if _tree.overlap:
         logging.info('overlapped windows')
         return False
@@ -254,16 +256,17 @@ def insert_focused_window_into_kdtree():
 
 def get_last_active_window():
     # assert window list is in stacking order
-    assert windowlist.get_active_window() == WinList[-1]
-    if len(WinList) > 1:
-        return WinList[-2]
+    assert windowlist.get_active_window(
+    ) == windowlist.windowInCurrentWorkspaceInStackingOrder[-1]
+    if len(windowlist.windowInCurrentWorkspaceInStackingOrder) > 1:
+        return windowlist.windowInCurrentWorkspaceInStackingOrder[-2]
     else:
         return None
 
 
 def detect_overlap():
     current_layout = windowlist.get_current_layout()
-    return getkdtree(WinList, current_layout)[0].overlap
+    return getkdtree(windowlist.windowInCurrentWorkspaceInStackingOrder, current_layout)[0].overlap
 
 
 def find_kdtree(center, target, allow_parent_sibling=True):
@@ -275,7 +278,7 @@ def find_kdtree(center, target, allow_parent_sibling=True):
     if None == active:
         return None
 
-    winlist = WinList
+    winlist = windowlist.windowInCurrentWorkspaceInStackingOrder
 
     if active not in winlist:
         return None
