@@ -19,13 +19,12 @@ import logging
 import re
 import subprocess
 
-from global_variables import WinList, WinListAll, WinPosInfo
-from helper_ewmh import get_active_window, raise_window
+from helper_ewmh import  raise_window
 from helper_xlib import maximize as xlib_maximize
 from helper_xlib import arrange
 from util_kdtree import (find_kdtree, insert_focused_window_into_kdtree,
                          move_kdtree, regularize_windows, resize_kdtree)
-from util_tile import get_current_tile
+from windowlist import windowlist
 from workarea import workarea
 
 
@@ -33,10 +32,10 @@ def regularize():
     '''
     Try to regularize windows or add a new window into the K-D tree.
     '''
-    if len(WinList) < 1:
+    if len(windowlist.windowInCurrentWorkspaceInStackingOrder) < 1:
         return True
-    elif len(WinList) < 2:
-        active = get_active_window()
+    elif len(windowlist.windowInCurrentWorkspaceInStackingOrder) < 2:
+        active = windowlist.get_active_window()
         xlib_maximize(active)
         return True
     elif regularize_windows():
@@ -52,7 +51,7 @@ def regularize():
 
 def force_tile():
 
-    winlist = WinList
+    winlist = windowlist.windowInCurrentWorkspaceInStackingOrder
 
     tile = workarea.tile(len(winlist))
     return arrange(tile, winlist)
@@ -77,11 +76,11 @@ def move(target):
 
 
 def moveandresize(target):
-    active = get_active_window(allow_outofworkspace=True)
+    active = windowlist.get_active_window(allow_outofworkspace=True)
     # cannot find target window
     if active is None:
         return False
-    lay = get_current_tile([active], WinPosInfo)[0]
+    lay = windowlist.get_current_layout()[0]
     for i in range(4):
         lay[i] += target[i]
     arrange([lay], [active])
@@ -90,8 +89,8 @@ def moveandresize(target):
 
 def swap(target):
 
-    winlist = WinList
-    active = get_active_window()
+    winlist = windowlist.windowInCurrentWorkspaceInStackingOrder
+    active = windowlist.get_active_window()
 
     if active is None:
         return False
@@ -99,7 +98,7 @@ def swap(target):
     target_window_id = find_kdtree(active, target, allow_parent_sibling=False)
 
     if target_window_id is None:
-        target_window_id = find(active, target, winlist, WinPosInfo)
+        target_window_id = find(active, target, winlist, windowlist.windowInfo)
 
     if target_window_id is None:
         target_window_id = find_kdtree(
@@ -111,7 +110,7 @@ def swap(target):
     i0 = winlist.index(active)
     i1 = winlist.index(target_window_id)
 
-    lay = get_current_tile(winlist, WinPosInfo)
+    lay = windowlist.get_current_layout()
     arrange([lay[i0], lay[i1]], [winlist[i1], winlist[i0]])
 
     winlist[i0], winlist[i1] = winlist[i1], winlist[i0]
@@ -122,13 +121,13 @@ def find(center, target, winlist, posinfo):
     '''
     find the nearest window in the target direction.
     '''
-    lay = get_current_tile(winlist, posinfo)
+    lay = windowlist.get_current_layout()
 
     def cal_center(x, y, w, h): return [x + w / 2.2, y + h / 2.2]
     if None == center:
         lay_center = workarea.width / 2.0, workarea.height / 2.0
     else:
-        lay_center = get_current_tile([center], WinPosInfo)[0]
+        lay_center = windowlist.get_current_layout()[0]
         lay_center = cal_center(*lay_center)
     _min = -1
     _r = None
@@ -163,21 +162,21 @@ def find(center, target, winlist, posinfo):
 
 def list_windows():
     print('current workspace')
-    for w in WinList:
-        print('%s,%s' % (w, WinPosInfo[w]))
+    for w in windowlist.windowInCurrentWorkspaceInStackingOrder:
+        print('%s,%s' % (w, windowlist.windowInfo[w]))
     print('all windows')
-    for w in WinListAll:
-        print('%s,%s' % (w, WinPosInfo[w]))
+    for w in windowlist.windowInfo:
+        print('%s,%s' % (w, windowlist.windowInfo[w]))
 
 
 def focus(target):
 
-    active = get_active_window(allow_outofworkspace=False)
+    active = windowlist.get_active_window(allow_outofworkspace=False)
 
     if not None == config.VIM_SERVER_NAME:
         if not None == active:
             vimserver = re.findall(
-                config.VIM_SERVER_NAME, WinPosInfo[active][0])
+                config.VIM_SERVER_NAME, windowlist.windowInfo[active][0])
             if len(vimserver) > 0:
                 vimserver = vimserver[0]
                 cmd = config.VIM_NAVIGATION_CMD.format(vimserver=vimserver,
@@ -191,10 +190,10 @@ def focus(target):
 
     if None == target_window_id:
         if config.NavigateAcrossWorkspaces:
-            Windows = WinListAll
+            Windows = windowlist.windowInfo.keys()
         else:
-            Windows = WinList
-        target_window_id = find(active, target, Windows, WinPosInfo)
+            Windows = windowlist.windowInCurrentWorkspaceInStackingOrder
+        target_window_id = find(active, target, Windows, windowlist.windowInfo)
 
     if None == target_window_id:
         target_window_id = find_kdtree(
@@ -208,6 +207,7 @@ def focus(target):
 
 
 if __name__ == '__main__':
+    windowlist.reset()
     from docopt import docopt
     arguments = docopt(__doc__)
 

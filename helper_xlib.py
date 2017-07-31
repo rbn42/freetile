@@ -63,7 +63,6 @@ def get_wm_class_and_state(win):
 
 
 def arrange(layout, windowids):
-    print(layout)
     windows = [disp.create_resource_object('window', i)for i in windowids]
     # unmaximize
     for window_xlib in windows:
