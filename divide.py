@@ -42,6 +42,7 @@ def divide(_input):
 
     return children
 
+
 if __name__ == '__main__':
     _input = [[0.3, 0.4], [0.2, 0.5], [0.6, 0.8], [0.8, 0.9], [0.8, 1.0]]
     _input = list(zip(_input, range(len(_input))))

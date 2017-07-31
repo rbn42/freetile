@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 import logging
 from config import LogFile
+
 logfile = LogFile.strip()
 
 if len(logfile) > 0:

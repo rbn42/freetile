@@ -1,5 +1,5 @@
-from Xlib import X, display, Xutil, protocol
 import Xlib
+from Xlib import X, display, protocol
 
 disp = display.Display()
 screen = disp.screen()
@@ -48,7 +48,7 @@ def maximize(win):
 def get_frame_extents(win):
     frame_extents = win.get_property(disp.intern_atom(
         "_NET_FRAME_EXTENTS"), Xlib.Xatom.CARDINAL, 0, 32)
-    if None == frame_extents:
+    if frame_extents is None:
         return 0, 0, 0, 0
     else:
         return frame_extents.value
@@ -63,6 +63,7 @@ def get_wm_class_and_state(win):
 
 
 def arrange(layout, windowids):
+    print(layout)
     windows = [disp.create_resource_object('window', i)for i in windowids]
     # unmaximize
     for window_xlib in windows:

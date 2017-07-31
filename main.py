@@ -4,12 +4,9 @@
 Window tiling for X
 
 Usage:
-  main.py layout (next|prev|regularize)
+  main.py regularize
   main.py (focus|move|swap) (up|down|left|right)
-  main.py layout (column|row) <num>
   main.py (grow|shrink) (height|width)
-  main.py cycle 
-  main.py anticycle 
   main.py (save|load) <layout_id>
   main.py list
   main.py -h | --help
@@ -18,44 +15,31 @@ Options:
   -h --help     Show this screen.
 """
 import config
-from util_tile import get_current_tile
-from util import sort_win_list
-from util_kdtree import find_kdtree, resize_kdtree, move_kdtree, insert_focused_window_into_kdtree, regularize_windows
-from helper_xlib import arrange
-from helper_ewmh import get_active_window, raise_window
-
-import logger
 import logging
 import re
 import subprocess
 
-def change_tile_or_insert_new_window(shift):
-    if len(WinList) < 1:
-        return
-    if shift < 0:
-        change_tile(shift)
-        return
-
-    if len(WinList) == 1 + len(OldWinList):
-        if insert_focused_window_into_kdtree():
-            return
-    if len(WinList) < len(OldWinList) or len(WinList) > len(OldWinList):
-        if regularize_windows():
-            return
-    if len(WinList) == len(OldWinList):
-        change_tile(shift)
-    else:
-        change_tile(0)
+from global_variables import (PERSISTENT_DATA, PERSISTENT_DATA_ALL, Desktop,
+                              WinList, WinListAll, WinPosInfo)
+from helper_ewmh import get_active_window, raise_window
+from helper_xlib import maximize as xlib_maximize
+from helper_xlib import arrange
+from util_kdtree import (find_kdtree, insert_focused_window_into_kdtree,
+                         move_kdtree, regularize_windows, resize_kdtree)
+from util_tile import get_current_tile
+from workarea import workarea
 
 
 def regularize():
     '''
     Try to regularize windows or add a new window into the K-D tree.
     '''
-    if len(WinList) == 1:
-        logging.info('only one window found')
-        from tiles import maximize
-        maximize(1)
+    if len(WinList) < 1:
+        return True
+    elif len(WinList) < 2:
+        active = get_active_window()
+        xlib_maximize(active)
+        return True
     elif regularize_windows():
         logging.info('regularize windows')
         return True
@@ -63,101 +47,19 @@ def regularize():
         logging.info('insert a window into the K-D Tree')
         return True
     else:
-        logging.info('change layout')
-        change_tile_or_insert_new_window(1)
+        logging.info('layout')
+        return force_tile()
 
 
-def layout_row(num):
-    return False
+def force_tile():
 
+    winlist = WinList
 
-def layout_column(num):
-    winlist = sort_win_list(WinList, OldWinList)
-    from tiles import get_columns_tile3
-    tile = get_columns_tile3(len(winlist), column_num=num)
+    tile = workarea.tile(len(winlist))
     arrange(tile, winlist)
 
-
-def change_tile(shift):
-    # TODO available tiling layouts
-    from tiles import get_columns_tile2, get_horiz_tile, get_vertical_tile, get_fair_tile, get_autogrid_tile, maximize, minimize, get_simple_tile
-    tiles_map = {
-        'col2_l': lambda w: get_columns_tile2(w, reverse=False, cols=2),
-        'col2_r': lambda w: get_columns_tile2(w, reverse=True, cols=2),
-        'simple': get_simple_tile,
-        'col1': lambda w: get_columns_tile2(w, reverse=False, cols=1),
-        'horizontal': get_horiz_tile,
-        'vertical': get_vertical_tile,
-        'fair': get_fair_tile,
-        'autogrid': get_autogrid_tile,
-        'maximize': maximize,
-        'minimize': minimize,
-    }
-
-    winlist = sort_win_list(WinList, OldWinList)
-
-    if len(winlist) < 2:
-        TILES = []
-    elif len(winlist) % 2 == 0:
-        TILES = ['col2_l']
-    else:
-        TILES = ['col2_l', 'col2_r']
-    if len(winlist) > 3:
-        TILES.append('simple')
-    if len(winlist) > 1:
-        TILES.append('col1')
-    if len(winlist) < 2:
-        TILES.append('maximize')
-
-    # for rotated screen
-    if MaxWidth < MaxHeight:
-        if len(winlist) > 1:
-            TILES = ['col1']
-        if len(winlist) < 2:
-            TILES.append('maximize')
-        # TILES.append('maximize')
-
-    # TODO unable to compare windows's numbers between different workspaces
-
-    t = PERSISTENT_DATA.get('tile', None)
-    arrange_twice = False
-    NOFRAME_LAYOUTS = ['maximize', 'minimize']
-    if t in NOFRAME_LAYOUTS:
-        # arrange windows twice to get exact frame size
-        arrange_twice = True
-
-    if 0 == shift and t in tiles_map:
-        pass
-    elif t in TILES:
-        i0 = TILES.index(t)
-        i1 = i0 + shift
-        t = TILES[i1 % len(TILES)]
-    else:
-        t = TILES[0]
-
-    tile = tiles_map[t](len(winlist))
-    if not None == tile:
-        arrange(tile, winlist)
-        if arrange_twice:
-            arrange(tile, winlist)
-
     PERSISTENT_DATA['overall_position'] = None
-    PERSISTENT_DATA['tile'] = t
-    PERSISTENT_DATA['winlist'] = winlist
-
-
-def cycle(reverse=False):
-    winlist = sort_win_list(WinList, OldWinList)
-    lay = get_current_tile(winlist, WinPosInfo)
-    shift = -1 if reverse else 1
-    winlist = winlist[shift:] + winlist[:shift]
-    arrange(lay, winlist)
-
-    active = get_active_window()
-    i0 = winlist.index(active)
-    i1 = (i0 + shift) % len(winlist)
-    raise_window(winlist[i1])
-
+    PERSISTENT_DATA['tile'] = 0
     PERSISTENT_DATA['winlist'] = winlist
 
 
@@ -182,7 +84,7 @@ def move(target):
 def moveandresize(target):
     active = get_active_window(allow_outofworkspace=True)
     # cannot find target window
-    if None == active:
+    if active is None:
         return False
     lay = get_current_tile([active], WinPosInfo)[0]
     for i in range(4):
@@ -193,22 +95,22 @@ def moveandresize(target):
 
 def swap(target):
 
-    winlist = sort_win_list(WinList, OldWinList)
+    winlist = WinList  
     active = get_active_window()
 
-    if None == active:
+    if active is None:
         return False
 
     target_window_id = find_kdtree(active, target, allow_parent_sibling=False)
 
-    if None == target_window_id:
+    if target_window_id is None:
         target_window_id = find(active, target, winlist, WinPosInfo)
 
-    if None == target_window_id:
+    if target_window_id is None:
         target_window_id = find_kdtree(
             active, target, allow_parent_sibling=True)
 
-    if None == target_window_id:
+    if target_window_id is None:
         return False
 
     i0 = winlist.index(active)
@@ -230,7 +132,7 @@ def find(center, target, winlist, posinfo):
 
     def cal_center(x, y, w, h): return [x + w / 2.2, y + h / 2.2]
     if None == center:
-        lay_center = MaxWidth / 2.0, MaxHeight / 2.0
+        lay_center = workarea.width / 2.0, workarea.height / 2.0
     else:
         lay_center = get_current_tile([center], WinPosInfo)[0]
         lay_center = cal_center(*lay_center)
@@ -280,14 +182,15 @@ def focus(target):
 
     if not None == config.VIM_SERVER_NAME:
         if not None == active:
-            vimserver=re.findall(config.VIM_SERVER_NAME, WinPosInfo[active][0])
+            vimserver = re.findall(
+                config.VIM_SERVER_NAME, WinPosInfo[active][0])
             if len(vimserver) > 0:
-                vimserver=vimserver[0]
-                cmd=config.VIM_NAVIGATION_CMD.format(vimserver=vimserver,
-                        target=target)
+                vimserver = vimserver[0]
+                cmd = config.VIM_NAVIGATION_CMD.format(vimserver=vimserver,
+                                                       target=target)
                 s = subprocess.check_output(cmd, shell=True).decode('utf8')
-                s=int(s)
-                if s==1:
+                s = int(s)
+                if s == 1:
                     return
 
     target_window_id = find_kdtree(active, target, allow_parent_sibling=False)
@@ -321,9 +224,6 @@ def store():
         f.write(str(PERSISTENT_DATA_ALL))
 
 
-from global_variables import PERSISTENT_DATA, PERSISTENT_DATA_ALL, WinList, WinPosInfo, WinListAll, MaxHeight, MaxWidth
-from global_variables import Desktop, OldWinList
-
 if __name__ == '__main__':
     from docopt import docopt
     arguments = docopt(__doc__)
@@ -334,35 +234,15 @@ if __name__ == '__main__':
 
     if False:
         pass
-    elif arguments['cycle']:
-        cycle()
-    elif arguments['anticycle']:
-        cycle(reverse=True)
     elif arguments['swap']:
         swap(target)
     elif arguments['move']:
         move(target)
     elif arguments['focus']:
         focus(target)
-
-    elif arguments['layout']:
-        if arguments['next']:
-            change_tile_or_insert_new_window(1)
-        elif arguments['prev']:
-            change_tile_or_insert_new_window(-1)
-        elif arguments['row']:
-            # layout_row(int(arguments['<num>']))
-            print('not implemented')
-        elif arguments['column']:
-            layout_column(int(arguments['<num>']))
-        elif arguments['regularize']:
-            # If you want to automatically add every new window into the
-            # K-D tree layout, combine this command with dmenu or rofi.
-            logging.info('regularize layout')
-            regularize()
-            # regularize()
-            # regularize()
-
+    elif arguments['regularize']:
+        logging.info('regularize layout')
+        regularize()
     elif arguments['grow']:
         if arguments['width']:
             resize(config.RESIZE_STEP, 0)

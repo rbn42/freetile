@@ -1,18 +1,20 @@
-from util_tile import get_current_tile
-from config import WinBorder, MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT,\
-    MAX_KD_TREE_BRANCH, REGULARIZE_FULLSCREEN
-from helper_xlib import arrange
-from global_variables import WinList, WinPosInfo,  PERSISTENT_DATA, MaxWidth, MaxHeight, OrigX, OrigY
-from helper_ewmh import get_active_window
 import logging
+from config import (MAX_KD_TREE_BRANCH, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH,
+                    REGULARIZE_FULLSCREEN, WinBorder)
 
+from global_variables import (PERSISTENT_DATA,  WinList, WinPosInfo)
+from helper_ewmh import get_active_window
+from helper_xlib import arrange
+from util_tile import get_current_tile
+
+from workarea import workarea
 
 def resize_kdtree(resize_width, resize_height):
     '''
     Adjust non-overlapping layout.
     '''
 
-    winlist=WinList
+    winlist = WinList
     # ignore layouts with less than 2 windows
     if len(winlist) < 2:
         return False
@@ -78,7 +80,7 @@ def resize_kdtree(resize_width, resize_height):
     regularize_node = regularize_node.parent
 
     if REGULARIZE_FULLSCREEN:
-        _tree.position = [OrigX, OrigY, OrigX + MaxWidth, OrigY + MaxHeight]
+        _tree.position = [workarea.x, workarea.y, workarea.x + workarea.width, workarea.y + workarea.height]
         return regularize_kd_tree(_tree)
     return regularize_kd_tree(regularize_node)
 
@@ -102,7 +104,7 @@ def insert_window_into_kdtree(winid, target):
     node.key = winid
     node.leaf = True
     if REGULARIZE_FULLSCREEN:
-        _tree.position = [OrigX, OrigY, OrigX + MaxWidth, OrigY + MaxHeight]
+        _tree.position = [workarea.x, workarea.y, workarea.x + workarea.width, workarea.y + workarea.height]
         return regularize_kd_tree(_tree)
     return regularize_kd_tree(node.parent)
 
@@ -200,7 +202,7 @@ def move_kdtree(target, allow_create_new_node=True):
     # regularize k-d tree
     regularize_node = regularize_node.parent
     if REGULARIZE_FULLSCREEN:
-        _tree.position = [OrigX, OrigY, OrigX + MaxWidth, OrigY + MaxHeight]
+        _tree.position = [workarea.x, workarea.y, workarea.x + workarea.width, workarea.y + workarea.height]
         return regularize_kd_tree(_tree)
     return regularize_kd_tree(regularize_node, min_width=1, min_height=1)
 
@@ -212,7 +214,7 @@ def regularize_windows():
         logging.info('overlapped windows')
         return False
     if REGULARIZE_FULLSCREEN:
-        _tree.position = [OrigX, OrigY, OrigX + MaxWidth, OrigY + MaxHeight]
+        _tree.position = [workarea.x, workarea.y, workarea.x + workarea.width, workarea.y + workarea.height]
     result = regularize_kd_tree(_tree)
     if result:
         PERSISTENT_DATA['winlist'] = WinList

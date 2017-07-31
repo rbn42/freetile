@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-from divide import divide
 import config
 import logging
+
+from divide import divide
 
 
 def kdtree(_input, path=None, treemap=None, parentmeta=None, parent=None):

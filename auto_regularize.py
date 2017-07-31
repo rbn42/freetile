@@ -1,14 +1,16 @@
 """
 TODO
 """
+import os
+import time
+
+import ewmh
 import setproctitle
+import Xlib
+from Xlib import X, Xutil, display, protocol
+
 setproctitle.setproctitle("kdtreeautotile")
 
-import time
-import Xlib
-from Xlib import X, display, Xutil, protocol
-import os
-import ewmh
 ewmh = ewmh.EWMH()
 disp = display.Display()
 root = disp.screen().root
@@ -41,7 +43,7 @@ IGNORE_STATES = set(IGNORE_STATES)
 
 
 def _execute():
-    os.system('python ./main.py layout regularize &> /dev/null')
+    os.system('python ./main.py regularize &> /dev/null')
 
 
 _execute()
