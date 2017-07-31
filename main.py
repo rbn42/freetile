@@ -122,7 +122,7 @@ def find(center, target, winlist, posinfo):
     lay = windowlist.get_current_layout()
 
     def cal_center(x, y, w, h): return [x + w / 2.2, y + h / 2.2]
-    if None == center:
+    if center is None:
         lay_center = workarea.width / 2.0, workarea.height / 2.0
     else:
         lay_center = windowlist.get_current_layout()[0]
@@ -171,8 +171,8 @@ def focus(target):
 
     active = windowlist.get_active_window(allow_outofworkspace=False)
 
-    if not None == config.VIM_SERVER_NAME:
-        if not None == active:
+    if config.VIM_SERVER_NAME is not None:
+        if active is not None:
             vimserver = re.findall(
                 config.VIM_SERVER_NAME, windowlist.windowInfo[active][0])
             if len(vimserver) > 0:
@@ -186,18 +186,18 @@ def focus(target):
 
     target_window_id = find_kdtree(active, target, allow_parent_sibling=False)
 
-    if None == target_window_id:
+    if target_window_id is None:
         if config.NavigateAcrossWorkspaces:
             Windows = windowlist.windowInfo.keys()
         else:
             Windows = windowlist.windowInCurrentWorkspaceInStackingOrder
         target_window_id = find(active, target, Windows, windowlist.windowInfo)
 
-    if None == target_window_id:
+    if target_window_id is None:
         target_window_id = find_kdtree(
             active, target, allow_parent_sibling=True)
 
-    if None == target_window_id:
+    if target_window_id is None:
         raise_window(active)
     else:
         raise_window(target_window_id)
@@ -240,4 +240,3 @@ if __name__ == '__main__':
     # debug
     elif arguments['list']:
         list_windows()
-

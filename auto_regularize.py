@@ -83,13 +83,18 @@ while True:
             if insert_window(win):
                 print([e.type, *wininfo[win.id]])
                 windowlist.reset()
-                insert_focused_window_into_kdtree(win.id)
+                if not insert_focused_window_into_kdtree(win.id):
+                    break
     elif e.type == X.UnmapNotify:
         win = e.window
         if win.id in wininfo:
             print([e.type, *wininfo.pop(win.id)])
             windowlist.reset(ignore=[win.id])
-            regularize()
+            if not regularize():
+                break
+# Quit loop when detect overlapped windows created by user.
+print('quit autotiling')
+
 #    elif win.id in wininfo:
 #        print([e.type, *wininfo[win.id]])
 #        for attr in vars(X):
