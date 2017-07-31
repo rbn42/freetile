@@ -13,7 +13,8 @@ function! TileFocusWindow(window)
 
     if winnr() == curNr
         return 0
+    else
+        return 1
     endif
-    return 1
 endfunction
 

@@ -5,15 +5,12 @@ BottomPadding = 4
 TopPadding = 4
 RightPadding = 4
 NavigateAcrossWorkspaces = False  # True  # availabe in viewports desktops
-TempFile = "/tmp/kd_tree_tile"
-LogFile = ""  # '/tmp/kd_tree_tile.log'
 
 EXCLUDE_APPLICATIONS = ['<unknown>', 'x-nautilus-desktop', 'unity-launcher',
                         'unity-panel', 'Hud', 'unity-dash', 'Desktop',
                         'Docky', 'conky', 'Conky'
                         'screenkey', 'XdndCollectionWindowImp']
 EXCLUDE_WM_CLASS = ['conky', 'Conky', ]
-UNRESIZABLE_APPLICATIONS = ['Screenkey']
 
 RESIZE_STEP = 72
 MOVE_STEP = 72

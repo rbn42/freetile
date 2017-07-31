@@ -2,12 +2,12 @@ import logging
 from config import (MAX_KD_TREE_BRANCH, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH,
                     REGULARIZE_FULLSCREEN, WinBorder)
 
-from global_variables import (PERSISTENT_DATA,  WinList, WinPosInfo)
+from global_variables import  WinList, WinPosInfo
 from helper_ewmh import get_active_window
 from helper_xlib import arrange
 from util_tile import get_current_tile
-
 from workarea import workarea
+
 
 def resize_kdtree(resize_width, resize_height):
     '''
@@ -21,7 +21,7 @@ def resize_kdtree(resize_width, resize_height):
 
     active = get_active_window()
     # can find target window
-    if None == active:
+    if active is None:
         return False
 
     lay = get_current_tile(winlist, WinPosInfo)
@@ -46,7 +46,7 @@ def resize_kdtree(resize_width, resize_height):
     # resize nodes
     if not resize_current == 0:
         if not current_node.overlap:
-            if not None == current_node.parent:
+            if current_node.parent is not None:
                 node = current_node
                 index = index_current
                 _resize = resize_current
@@ -80,7 +80,8 @@ def resize_kdtree(resize_width, resize_height):
     regularize_node = regularize_node.parent
 
     if REGULARIZE_FULLSCREEN:
-        _tree.position = [workarea.x, workarea.y, workarea.x + workarea.width, workarea.y + workarea.height]
+        _tree.position = [workarea.x, workarea.y, workarea.x +
+                          workarea.width, workarea.y + workarea.height]
         return regularize_kd_tree(_tree)
     return regularize_kd_tree(regularize_node)
 
@@ -104,7 +105,8 @@ def insert_window_into_kdtree(winid, target):
     node.key = winid
     node.leaf = True
     if REGULARIZE_FULLSCREEN:
-        _tree.position = [workarea.x, workarea.y, workarea.x + workarea.width, workarea.y + workarea.height]
+        _tree.position = [workarea.x, workarea.y, workarea.x +
+                          workarea.width, workarea.y + workarea.height]
         return regularize_kd_tree(_tree)
     return regularize_kd_tree(node.parent)
 
@@ -202,7 +204,8 @@ def move_kdtree(target, allow_create_new_node=True):
     # regularize k-d tree
     regularize_node = regularize_node.parent
     if REGULARIZE_FULLSCREEN:
-        _tree.position = [workarea.x, workarea.y, workarea.x + workarea.width, workarea.y + workarea.height]
+        _tree.position = [workarea.x, workarea.y, workarea.x +
+                          workarea.width, workarea.y + workarea.height]
         return regularize_kd_tree(_tree)
     return regularize_kd_tree(regularize_node, min_width=1, min_height=1)
 
@@ -214,11 +217,9 @@ def regularize_windows():
         logging.info('overlapped windows')
         return False
     if REGULARIZE_FULLSCREEN:
-        _tree.position = [workarea.x, workarea.y, workarea.x + workarea.width, workarea.y + workarea.height]
-    result = regularize_kd_tree(_tree)
-    if result:
-        PERSISTENT_DATA['winlist'] = WinList
-    return result
+        _tree.position = [workarea.x, workarea.y, workarea.x +
+                          workarea.width, workarea.y + workarea.height]
+    return regularize_kd_tree(_tree)
 
 
 def regularize_kd_tree(regularize_node,
@@ -249,26 +250,21 @@ def insert_focused_window_into_kdtree():
     last_active = get_last_active_window()
     if None == last_active:
         return False
-    if insert_window_into_kdtree(active, last_active):
-        PERSISTENT_DATA['winlist'] = WinList
-        return True
-    return False
+    return insert_window_into_kdtree(active, last_active)
 
 
 def get_last_active_window():
-    for active in PERSISTENT_DATA.get('active_history', []):
-        if active in WinList:
-            if not active == get_active_window():
-                return active
-    return None
+    #assert window list is in stacking order
+    assert get_active_window()==WinList[-1]
+    if len(WinList)>1:
+        return WinList[-2]
+    else:
+        return None
 
 
 def detect_overlap():
-    t = PERSISTENT_DATA.get('tile', None)
-    OVERLAP_LAYOUT = ['minimize', 'maximize']
-    if not None == t and t not in OVERLAP_LAYOUT:
-        current_layout = get_current_tile(WinList, WinPosInfo)
-        return getkdtree(WinList, current_layout)[0].overlap
+    current_layout = get_current_tile(WinList, WinPosInfo)
+    return getkdtree(WinList, current_layout)[0].overlap
 
 
 def find_kdtree(center, target, allow_parent_sibling=True):
@@ -320,3 +316,4 @@ def find_kdtree(center, target, allow_parent_sibling=True):
         return None
     else:
         return target.key
+

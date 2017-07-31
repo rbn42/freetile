@@ -12,9 +12,12 @@ def raise_window(win):
 
 
 def get_window_list():
-    for win in ewmh.getClientList():
+    """
+    in stacking order.
+    """
+    for win in ewmh.getClientListStacking():
         name = ewmh.getWmName(win)
-        if not None == name:
+        if name is not None:
             name = name.decode('utf8')
         yield win, ewmh.getWmDesktop(win), name
 

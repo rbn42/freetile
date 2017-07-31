@@ -19,8 +19,7 @@ import logging
 import re
 import subprocess
 
-from global_variables import (PERSISTENT_DATA, PERSISTENT_DATA_ALL, Desktop,
-                              WinList, WinListAll, WinPosInfo)
+from global_variables import WinList, WinListAll, WinPosInfo
 from helper_ewmh import get_active_window, raise_window
 from helper_xlib import maximize as xlib_maximize
 from helper_xlib import arrange
@@ -56,11 +55,7 @@ def force_tile():
     winlist = WinList
 
     tile = workarea.tile(len(winlist))
-    arrange(tile, winlist)
-
-    PERSISTENT_DATA['overall_position'] = None
-    PERSISTENT_DATA['tile'] = 0
-    PERSISTENT_DATA['winlist'] = winlist
+    return arrange(tile, winlist)
 
 
 def resize(resize_width, resize_height):
@@ -95,7 +90,7 @@ def moveandresize(target):
 
 def swap(target):
 
-    winlist = WinList  
+    winlist = WinList
     active = get_active_window()
 
     if active is None:
@@ -120,7 +115,6 @@ def swap(target):
     arrange([lay[i0], lay[i1]], [winlist[i1], winlist[i0]])
 
     winlist[i0], winlist[i1] = winlist[i1], winlist[i0]
-    PERSISTENT_DATA['winlist'] = winlist
     return True
 
 
@@ -213,17 +207,6 @@ def focus(target):
     return True
 
 
-def store():
-    active = get_active_window()
-    if not None == active:
-        h = PERSISTENT_DATA.get('active_history', [])
-        h.insert(0, active)
-        PERSISTENT_DATA['active_history'] = h[:1000]
-    with open(config.TempFile, 'w') as f:
-        PERSISTENT_DATA_ALL[Desktop] = PERSISTENT_DATA
-        f.write(str(PERSISTENT_DATA_ALL))
-
-
 if __name__ == '__main__':
     from docopt import docopt
     arguments = docopt(__doc__)
@@ -261,5 +244,3 @@ if __name__ == '__main__':
     # debug
     elif arguments['list']:
         list_windows()
-
-    store()
