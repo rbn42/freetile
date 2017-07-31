@@ -81,6 +81,7 @@ def arrange(layout, windowids):
     windows_normal_hints = [w.get_wm_normal_hints() for w in windows]
     windows_frame_extents = [get_frame_extents(w) for w in windows]
 
+    layout_final = []
     # move windows
     for windowid, window_xlib, lay, normal_hints, frame_extents in zip(
             windowids, windows, layout,
@@ -94,5 +95,8 @@ def arrange(layout, windowids):
         if normal_hints.win_gravity == 10:
             y += f_top
             x += f_left
-        window_xlib.configure(x=x, y=y, width=width, height=height)
-    disp.flush()
+        layout_final.append([x, y, width, height])
+#        window_xlib.configure(x=x, y=y, width=width, height=height)
+    import helper_xcb
+    return helper_xcb.arrange(layout_final, windowids)
+    # disp.flush()
