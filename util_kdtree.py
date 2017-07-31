@@ -3,6 +3,8 @@ from config import (MAX_KD_TREE_BRANCH, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH,
                     REGULARIZE_FULLSCREEN, WinBorder)
 
 from helper_xlib import arrange
+from tree import (build_tree, create_parent, create_sibling, getLayoutAndKey,
+                  regularize, remove_single_child_node)
 from windowlist import windowlist
 from workarea import workarea
 
@@ -58,9 +60,9 @@ def resize_kdtree(resize_width, resize_height):
                     node.position[index] += _resize
 
     if not resize_parent == 0:
-        if not None == current_node.parent:
+        if current_node.parent is not None:
             if not current_node.parent.overlap:
-                if not None == current_node.parent.parent:
+                if current_node.parent.parent is not None:
                     node = current_node.parent
                     index = index_parent
                     _resize = resize_parent
@@ -73,7 +75,7 @@ def resize_kdtree(resize_width, resize_height):
                     else:
                         node.position[index] += _resize
 
-    if None == regularize_node:
+    if regularize_node is None:
         return False
     regularize_node = regularize_node.parent
 
@@ -86,20 +88,19 @@ def resize_kdtree(resize_width, resize_height):
 
 def getkdtree(winlist, lay):
     origin_lay = [[x, y, x + w, y + h] for x, y, w, h in lay]
-    from kdtree import kdtree
-    _tree, _map = kdtree(zip(origin_lay, winlist))
+    _tree, _map = build_tree(zip(origin_lay, winlist))
     return _tree, _map
 
 
 def insert_window_into_kdtree(winid, target):
     winlist = [
-        w for w in windowlist.windowInCurrentWorkspaceInStackingOrder if not w == winid]
+        w for w in windowlist.windowInCurrentWorkspaceInStackingOrder
+        if not w == winid]
     lay = windowlist.get_current_layout()
     _tree, _map = getkdtree(winlist, lay)
     target_node = _map[target]
     if target_node.parent.overlap:
         return False
-    from kdtree import create_sibling
     node = create_sibling(target_node)
     node.key = winid
     node.leaf = True
@@ -117,7 +118,7 @@ def move_kdtree(target, allow_create_new_node=True):
 
     active = windowlist.get_active_window()
     # can find target window
-    if None == active:
+    if active is None:
         return False
 
     # sort_win_list(windowlist.windowInCurrentWorkspaceInStackingOrder)
@@ -175,7 +176,6 @@ def move_kdtree(target, allow_create_new_node=True):
                                 _swap = True
                                 break
                     else:
-                        from kdtree import create_parent
                         new_parent = create_parent(new_parent)
                 if _swap:
                     shift = -1 if target in ['left', 'up'] else 1
@@ -195,7 +195,6 @@ def move_kdtree(target, allow_create_new_node=True):
             regularize_node = regularize_node.parent
 
     # remove nodes which has only one child
-    from kdtree import remove_single_child_node
     remove_single_child_node(regularize_node)
 
     if regularize_node.overlap:
@@ -231,11 +230,9 @@ def regularize_kd_tree(regularize_node,
     if regularize_node is None:
         return False
     # regularize k-d tree
-    from kdtree import regularize
     regularize(regularize_node, border=(2 * WinBorder, WinBorder * 2))
 
     # load k-d tree
-    from kdtree import getLayoutAndKey
     a, b, reach_size_limit = getLayoutAndKey(
         regularize_node, min_width=min_width, min_height=min_height)
     if reach_size_limit:
@@ -321,3 +318,4 @@ def find_kdtree(center, target, allow_parent_sibling=True):
         return None
     else:
         return target.key
+

@@ -15,7 +15,7 @@ def divide(_input):
     current_start, current_end = None, None
     result = []
     for start, end in l:  # zip(l[:-1], l[1:]):
-        if None == current_start:
+        if current_start is None:
             current_start, current_end = start, end
         else:
             if start >= current_end:

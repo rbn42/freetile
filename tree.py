@@ -1,18 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 import config
-import logging
 
 from divide import divide
 
 
-def kdtree(_input, path=None, treemap=None, parentmeta=None, parent=None):
+def build_tree(_input, path=None, treemap=None, parentmeta=None, parent=None):
     """
-    Build up a k-d tree.
+    Build up a 2d tree.
     """
     _input = [n for n in _input]
-    if None == treemap:
-        # root
+    if treemap is None:
+        # root node
         treemap = {}
         path = []
 
@@ -44,8 +43,8 @@ def kdtree(_input, path=None, treemap=None, parentmeta=None, parent=None):
                 children_path = path + [i]
                 _list = [i[1] for i in child]
 
-                node_child = kdtree(_list, path=children_path,
-                                    treemap=treemap, parent=node)
+                node_child = build_tree(_list, path=children_path,
+                                        treemap=treemap, parent=node)
                 node.children.append(node_child)
 
                 if node_child.overlap:
@@ -128,7 +127,9 @@ class Node:
 
 def regularize(node, border):
     """
-    Regularize a branch in a k-d tree. A node's position is a rectangle defined by x0,y0,x1,y1. All the children's positions will be adjusted to fit exactly to their parents.
+    Regularize a branch in a 2d tree. A node's position is a rectangle
+    defined by x0,y0,x1,y1. All the children's positions will be adjusted
+    to fit exactly to their parents.
     """
     x0, y0, x1, y1 = node.position
     if node.leaf:
@@ -156,7 +157,9 @@ def regularize(node, border):
     size = i1 - i0 - len(node.children) * b
     size_sum = 0
     for child, i in zip(node.children, range(len(node.children))):
-        if i > modified_index or 1 + modified_index == len(node.children) and not child.modified:
+        if i > modified_index \
+                or 1 + modified_index == len(node.children) \
+                and not child.modified:
             size_sum += child.position[index1] - child.position[index0]
         else:
             size -= child.position[index1] - child.position[index0]
@@ -191,7 +194,7 @@ def regularize(node, border):
 
 def remove_single_child_node(node):
     """
-    Remove a node from a k-d tree
+    Remove a node from a 2d tree
     """
     if node.leaf:
         return
@@ -199,7 +202,7 @@ def remove_single_child_node(node):
     if len(node.children) == 1:
         child = node.children[0]
         if not child.leaf:
-            if not None == node.parent:
+            if node.parent is not None:
                 i = node.parent.children.index(node)
                 node.parent.children.remove(node)
                 for grandchild in child.children:
@@ -213,17 +216,18 @@ def remove_single_child_node(node):
         remove_single_child_node(child)
 
 
-def getLayoutAndKey(node, result=None, min_width=config.MIN_WINDOW_WIDTH, min_height=config.MIN_WINDOW_HEIGHT):
+def getLayoutAndKey(node, result=None,
+                    min_width=config.MIN_WINDOW_WIDTH,
+                    min_height=config.MIN_WINDOW_HEIGHT):
     """
-    Extract layouts and window ids from a k-d tree.
+    Extract layouts and window ids from a 2d tree.
     """
-    if None == result:
+    if result is None:
         reach_size_limit = False
         result = [[], [], reach_size_limit]
     if node.leaf:
         x0, y0, x1, y1 = node.position
         if x1 - x0 < min_width or y1 - y0 < min_height:
-            #("reach min size")
             result[2] = True
             return result
         layout = [int(x0), int(y0), int(x1 - x0), int(y1 - y0)]
