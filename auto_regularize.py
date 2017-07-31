@@ -10,6 +10,6 @@ while True:
     if time.time()-t>0.1:
         t=time.time()
         e = disp.next_event()
-        if e.type in (X.MappingNotify,X.UnmapNotify):
-            os.system('python ./main.py layout regularize')
-            print(e.type)
+#        if e.type in (X.MappingNotify,X.UnmapNotify):
+        os.system('python ./main.py layout regularize')
+#            print(e.type)
