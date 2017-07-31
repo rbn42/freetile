@@ -34,8 +34,7 @@ def regularize():
     if len(windowlist.windowInCurrentWorkspaceInStackingOrder) < 1:
         return True
     elif len(windowlist.windowInCurrentWorkspaceInStackingOrder) < 2:
-        active = windowlist.get_active_window()
-        maximize(active)
+        maximize(windowlist.windowInCurrentWorkspaceInStackingOrder[0])
         return True
     elif regularize_windows():
         logging.info('regularize windows')
