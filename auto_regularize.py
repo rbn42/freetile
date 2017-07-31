@@ -49,7 +49,8 @@ while True:
             n = win.get_wm_name()
             t = ewmh.getWmWindowType(win)
             print([e.type, n, c, t, ])
-            if len(ALLOW_TYPES.intersection(t)) < 1 or len(set(t) - ALLOW_TYPES) > 0:
+            # or len(set(t) - ALLOW_TYPES) > 0:
+            if len(ALLOW_TYPES.intersection(t)) < 1:
                 print('continue%s' % str(t))
                 continue
             if not None == c and 'Popup' in c:
