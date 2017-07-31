@@ -28,11 +28,17 @@ IGNORE_TYPES = [
     348,  # docky setting
     #        disp.intern_atom('_NET_WM_WINDOW_TYPE_NORMAL'),
 ]
+IGNORE_STATES = [
+    disp.intern_atom('_NET_WM_STATE_ABOVE'),
+    disp.intern_atom('_NET_WM_STATE_STICKY'),
+    disp.intern_atom('_NET_WM_TASKBAR'),
+    disp.intern_atom('_NET_WM_STATE_SKIP_PAGER'),
+]
 ALLOW_TYPES = [
     disp.intern_atom('_NET_WM_WINDOW_TYPE_NORMAL'),
 ]
-print(IGNORE_TYPES)
 IGNORE_TYPES = set(IGNORE_TYPES)
+IGNORE_STATES = set(IGNORE_STATES)
 ALLOW_TYPES = set(ALLOW_TYPES)
 
 
@@ -50,24 +56,23 @@ while True:
         if e.type == X.MapNotify:
             c = win.get_wm_class()
             n = win.get_wm_name()
+            s = ewmh.getWmState(win)
             t = ewmh.getWmWindowType(win)
-            wininfo[win.id] = c, n, t
+            wininfo[win.id] = c, n, t, s
         elif e.type == X.UnmapNotify:
             if win.id not in wininfo:
                 continue
-            c, n, t = wininfo[win.id]
+            c, n, t, s = wininfo[win.id]
         else:
             print(e.type)
-        print([e.type, n, c, t, ])
-        # or len(set(t) - ALLOW_TYPES) > 0:
+        print([e.type, n, c, t, s])
+        if len(IGNORE_STATES.intersection(s)) > 0:
+            continue
         if len(ALLOW_TYPES.intersection(t)) < 1:
-            print('continue%s' % str(t))
             continue
         if not None == c and 'Popup' in c:
-            print('continue%s' % str(c))
             continue
         if 'rofi' == n:
-            print('continue%s' % n)
             continue
 
         print('excute')
