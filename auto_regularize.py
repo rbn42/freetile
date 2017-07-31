@@ -4,6 +4,7 @@ TODO
 import setproctitle
 setproctitle.setproctitle("kdtreeautotile")
 
+import time
 import Xlib
 from Xlib import X, display, Xutil, protocol
 import os
@@ -69,14 +70,15 @@ while True:
     ):
         win = e.window
         if e.type == X.MapNotify:
+            time.sleep(0.2)
             if win.id not in [w.id for w in ewmh.getClientList()]:
                 print('not a client')
                 continue
             insert_window(win)
+            print([e.type, *wininfo[win.id]])
         elif e.type == X.UnmapNotify:
-            if win.id not in wininfo:
+            if win.id in wininfo:
+                print([e.type, *wininfo.pop(win.id)])
+            else:
                 continue
-        else:
-            print(e.type)
-        print([e.type, *wininfo[win.id]])
         os.system('python ./main.py layout regularize &> /dev/null')
