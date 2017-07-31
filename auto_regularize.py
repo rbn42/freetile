@@ -12,6 +12,7 @@ import ewmh
 ewmh = ewmh.EWMH()
 disp = display.Display()
 root = disp.screen().root
+# | X.SubstructureRedirectMask)
 root.change_attributes(event_mask=X.SubstructureNotifyMask)
 
 wininfo = {}
@@ -38,7 +39,12 @@ IGNORE_STATES = [
 IGNORE_TYPES = set(IGNORE_TYPES)
 IGNORE_STATES = set(IGNORE_STATES)
 
-os.system('python ./main.py layout regularize &> /dev/null')
+
+def _execute():
+    os.system('python ./main.py layout regularize &> /dev/null')
+
+
+_execute()
 
 
 def insert_window(win):
@@ -62,23 +68,20 @@ for win in ewmh.getClientList():
 
 while True:
     e = disp.next_event()
-    if e.type in (
-            X.UnmapNotify,
-            X.MapNotify,
-            # X.ReparentNotify,
-            # X.DestroyNotify
-    ):
+    if e.type == X.MapNotify:
+        time.sleep(0.2)
         win = e.window
-        if e.type == X.MapNotify:
-            time.sleep(0.2)
-            if win.id not in [w.id for w in ewmh.getClientList()]:
-                print('not a client')
-                continue
+        if win.id in [w.id for w in ewmh.getClientList()]:
             insert_window(win)
             print([e.type, *wininfo[win.id]])
-        elif e.type == X.UnmapNotify:
-            if win.id in wininfo:
-                print([e.type, *wininfo.pop(win.id)])
-            else:
-                continue
-        os.system('python ./main.py layout regularize &> /dev/null')
+            _execute()
+    elif e.type == X.UnmapNotify:
+        win = e.window
+        if win.id in wininfo:
+            print([e.type, *wininfo.pop(win.id)])
+            _execute()
+#    elif win.id in wininfo:
+#        print([e.type, *wininfo[win.id]])
+#        for attr in vars(X):
+#            if vars(X)[attr] == e.type:
+#                print(attr)
