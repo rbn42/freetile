@@ -45,6 +45,14 @@ def insert_window(win):
     n = win.get_wm_name()
     s = ewmh.getWmState(win)
     t = ewmh.getWmWindowType(win)
+
+    if len(IGNORE_STATES.intersection(s)) > 0:
+        return
+    if len(IGNORE_TYPES.intersection(t)) < 0 or len(t) < 1:
+        return
+    if not None == c and 'Popup' in c:
+        return
+
     wininfo[win.id] = c, n, t, s
 
 
@@ -56,7 +64,6 @@ while True:
     if e.type in (
             X.UnmapNotify,
             X.MapNotify,
-        # X.MappingNotify, # what is this?
             # X.ReparentNotify,
             # X.DestroyNotify
     ):
@@ -71,14 +78,5 @@ while True:
                 continue
         else:
             print(e.type)
-        c, n, t, s = wininfo[win.id]
-        print([e.type, n, c, t, s])
-        if len(IGNORE_STATES.intersection(s)) > 0:
-            continue
-        if len(IGNORE_TYPES.intersection(t)) < 0 or len(t) < 1:
-            continue
-        if not None == c and 'Popup' in c:
-            continue
-
-        print('excute')
+        print([e.type, *wininfo[win.id]])
         os.system('python ./main.py layout regularize &> /dev/null')
