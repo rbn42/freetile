@@ -38,6 +38,19 @@ IGNORE_TYPES = set(IGNORE_TYPES)
 IGNORE_STATES = set(IGNORE_STATES)
 
 os.system('python ./main.py layout regularize &> /dev/null')
+
+
+def insert_window(win):
+    c = win.get_wm_class()
+    n = win.get_wm_name()
+    s = ewmh.getWmState(win)
+    t = ewmh.getWmWindowType(win)
+    wininfo[win.id] = c, n, t, s
+
+
+for win in ewmh.getClientList():
+    insert_window(win)
+
 while True:
     e = disp.next_event()
     if e.type in (
@@ -52,17 +65,13 @@ while True:
             if win.id not in [w.id for w in ewmh.getClientList()]:
                 print('not a client')
                 continue
-            c = win.get_wm_class()
-            n = win.get_wm_name()
-            s = ewmh.getWmState(win)
-            t = ewmh.getWmWindowType(win)
-            wininfo[win.id] = c, n, t, s
+            insert_window(win)
         elif e.type == X.UnmapNotify:
             if win.id not in wininfo:
                 continue
-            c, n, t, s = wininfo[win.id]
         else:
             print(e.type)
+        c, n, t, s = wininfo[win.id]
         print([e.type, n, c, t, s])
         if len(IGNORE_STATES.intersection(s)) > 0:
             continue
