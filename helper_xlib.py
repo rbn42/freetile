@@ -20,7 +20,8 @@ def edit_prop(window, mode, name, value):
 
 
 def get_root_window_property(name):
-    return root.get_property(disp.intern_atom(name), Xlib.Xatom.CARDINAL, 0, 32).value
+    return root.get_property(disp.intern_atom(name),
+                             Xlib.Xatom.CARDINAL, 0, 32).value
 
 
 def get_window(func):
@@ -75,13 +76,15 @@ def arrange(layout, windowids):
     # disp.flush()
     # disp.sync()
     import time
-    time.sleep(0.01)
+    time.sleep(0.1)
 
     windows_normal_hints = [w.get_wm_normal_hints() for w in windows]
     windows_frame_extents = [get_frame_extents(w) for w in windows]
 
     # move windows
-    for windowid, window_xlib, lay, normal_hints, frame_extents in zip(windowids, windows, layout, windows_normal_hints, windows_frame_extents):
+    for windowid, window_xlib, lay, normal_hints, frame_extents in zip(
+            windowids, windows, layout,
+            windows_normal_hints, windows_frame_extents):
         x, y, width, height = lay
         f_left, f_right, f_top, f_bottom = frame_extents
         width -= f_left + f_right

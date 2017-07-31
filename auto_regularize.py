@@ -1,17 +1,17 @@
 """
 TODO
 """
-import os
 import time
 
-import ewmh
 import setproctitle
-import Xlib
-from Xlib import X, Xutil, display, protocol
+from helper_ewmh import ewmh
+from main import regularize
+from util_kdtree import insert_focused_window_into_kdtree
+from windowlist import windowlist
+from Xlib import X, display
 
 setproctitle.setproctitle("kdtreeautotile")
 
-ewmh = ewmh.EWMH()
 disp = display.Display()
 root = disp.screen().root
 # | X.SubstructureRedirectMask)
@@ -42,11 +42,12 @@ IGNORE_TYPES = set(IGNORE_TYPES)
 IGNORE_STATES = set(IGNORE_STATES)
 
 
-def _execute():
-    os.system('python ./main.py regularize &> /dev/null')
+# def _execute():
+# import os
+# os.system('python ./main.py regularize &> /dev/null')
 
-
-_execute()
+windowlist.reset()
+regularize()
 
 
 def insert_window(win):
@@ -59,7 +60,7 @@ def insert_window(win):
         return False
     if len(IGNORE_TYPES.intersection(t)) < 0 or len(t) < 1:
         return False
-    if not None == c and 'Popup' in c:
+    if c is not None and 'Popup' in c:
         return False
 
     wininfo[win.id] = c, n, t, s
@@ -77,12 +78,14 @@ while True:
         if win.id in [w.id for w in ewmh.getClientList()]:
             if insert_window(win):
                 print([e.type, *wininfo[win.id]])
-                _execute()
+                windowlist.reset()
+                insert_focused_window_into_kdtree(win.id)
     elif e.type == X.UnmapNotify:
         win = e.window
         if win.id in wininfo:
             print([e.type, *wininfo.pop(win.id)])
-            _execute()
+            windowlist.reset(ignore=[win.id])
+            regularize()
 #    elif win.id in wininfo:
 #        print([e.type, *wininfo[win.id]])
 #        for attr in vars(X):

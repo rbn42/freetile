@@ -19,9 +19,8 @@ import logging
 import re
 import subprocess
 
-from helper_ewmh import  raise_window
-from helper_xlib import maximize as xlib_maximize
-from helper_xlib import arrange
+from helper_ewmh import raise_window
+from helper_xlib import arrange, maximize
 from util_kdtree import (find_kdtree, insert_focused_window_into_kdtree,
                          move_kdtree, regularize_windows, resize_kdtree)
 from windowlist import windowlist
@@ -36,7 +35,7 @@ def regularize():
         return True
     elif len(windowlist.windowInCurrentWorkspaceInStackingOrder) < 2:
         active = windowlist.get_active_window()
-        xlib_maximize(active)
+        maximize(active)
         return True
     elif regularize_windows():
         logging.info('regularize windows')
@@ -215,9 +214,7 @@ if __name__ == '__main__':
         if arguments[target]:
             break
 
-    if False:
-        pass
-    elif arguments['swap']:
+    if arguments['swap']:
         swap(target)
     elif arguments['move']:
         move(target)
@@ -244,3 +241,4 @@ if __name__ == '__main__':
     # debug
     elif arguments['list']:
         list_windows()
+

@@ -10,11 +10,11 @@ class WindowList:
     windowInCurrentWorkspaceInStackingOrder = []
     windowInfo = {}
 
-    def reset(self):
+    def reset(self, ignore=[]):
         desktop, = get_root_window_property("_NET_CURRENT_DESKTOP")
         self.windowInCurrentWorkspaceInStackingOrder = []
         self.windowInfo = {}
-        for win, _desktop, name in get_window_list():
+        for win, _desktop, name in get_window_list(ignore):
             winid = win.id
             geo = win.get_geometry()
             x, y, w, h = geo.x, geo.y, geo.width, geo.height

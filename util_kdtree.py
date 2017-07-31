@@ -228,7 +228,7 @@ def regularize_kd_tree(regularize_node,
                        min_height=MIN_WINDOW_HEIGHT):
     if regularize_node.overlap:
         return False
-    if None == regularize_node:
+    if regularize_node is None:
         return False
     # regularize k-d tree
     from kdtree import regularize
@@ -244,12 +244,15 @@ def regularize_kd_tree(regularize_node,
     return True
 
 
-def insert_focused_window_into_kdtree():
-    active = windowlist.get_active_window()
-    if None == active:
+def insert_focused_window_into_kdtree(newwin=None):
+    if newwin is None:
+        active = windowlist.get_active_window()
+    else:
+        active = newwin
+    if active is None:
         return False
     last_active = get_last_active_window()
-    if None == last_active:
+    if last_active is None:
         return False
     return insert_window_into_kdtree(active, last_active)
 
