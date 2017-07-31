@@ -23,9 +23,9 @@ IGNORE_TYPES = [
     disp.intern_atom('_NET_WM_WINDOW_TYPE_UTILITY'),
     disp.intern_atom('_NET_WM_WINDOW_TYPE_SPLASH'),
     disp.intern_atom('_NET_WM_WINDOW_TYPE_DIALOG'),
-#    390,  # emerald
-#    391,  # volnoti
-#    348,  # docky setting
+    #    390,  # emerald
+    #    391,  # volnoti
+    #    348,  # docky setting
     #        disp.intern_atom('_NET_WM_WINDOW_TYPE_NORMAL'),
 ]
 IGNORE_STATES = [
@@ -54,6 +54,9 @@ while True:
     ):
         win = e.window
         if e.type == X.MapNotify:
+            if win.id not in [w.id for w in ewmh.getClientList()]:
+                print('not a client')
+                continue
             try:
                 c = win.get_wm_class()
                 n = win.get_wm_name()
@@ -72,7 +75,7 @@ while True:
         print([e.type, n, c, t, s])
         if len(IGNORE_STATES.intersection(s)) > 0:
             continue
-        if len(IGNORE_TYPES.intersection(t)) < 0 or len(t)<1:
+        if len(IGNORE_TYPES.intersection(t)) < 0 or len(t) < 1:
             continue
         if not None == c and 'Popup' in c:
             continue
