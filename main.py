@@ -125,7 +125,7 @@ def find(center, target, winlist, posinfo):
     if center is None:
         lay_center = workarea.width / 2.0, workarea.height / 2.0
     else:
-        lay_center = windowlist.get_current_layout()[0]
+        lay_center = windowlist.windowInfo[center][1]
         lay_center = cal_center(*lay_center)
     _min = -1
     _r = None
