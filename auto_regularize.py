@@ -31,16 +31,11 @@ IGNORE_TYPES = [
 IGNORE_STATES = [
     disp.intern_atom('_NET_WM_STATE_ABOVE'),
     disp.intern_atom('_NET_WM_STATE_STICKY'),
-    disp.intern_atom('_NET_WM_TASKBAR'),
+    disp.intern_atom('_NET_WM_STATE_SKIP_TASKBAR'),
     disp.intern_atom('_NET_WM_STATE_SKIP_PAGER'),
-]
-ALLOW_TYPES = [
-    disp.intern_atom('_NET_WM_WINDOW_TYPE_NORMAL'),
 ]
 IGNORE_TYPES = set(IGNORE_TYPES)
 IGNORE_STATES = set(IGNORE_STATES)
-#$ALLOW_TYPES = set(ALLOW_TYPES)
-
 
 os.system('python ./main.py layout regularize &> /dev/null')
 while True:
@@ -57,14 +52,10 @@ while True:
             if win.id not in [w.id for w in ewmh.getClientList()]:
                 print('not a client')
                 continue
-            try:
-                c = win.get_wm_class()
-                n = win.get_wm_name()
-                s = ewmh.getWmState(win)
-                t = ewmh.getWmWindowType(win)
-            except Xlib.error.BadWindow:
-                print('error')
-                continue
+            c = win.get_wm_class()
+            n = win.get_wm_name()
+            s = ewmh.getWmState(win)
+            t = ewmh.getWmWindowType(win)
             wininfo[win.id] = c, n, t, s
         elif e.type == X.UnmapNotify:
             if win.id not in wininfo:
@@ -79,10 +70,6 @@ while True:
             continue
         if not None == c and 'Popup' in c:
             continue
-#        if '' == n:
-#            continue
 
         print('excute')
         os.system('python ./main.py layout regularize &> /dev/null')
-#        for _ in range(disp.pending_events()):
-#            disp.next_event()
