@@ -61,7 +61,8 @@ while True:
                 continue
         except Xlib.error.BadWindow:
             print("error%s" % e.type)
-            continue
+            if not X.UnmapNotify==e.type:
+                continue
         print('excute')
         os.system('python ./main.py layout regularize &> /dev/null')
 #        for _ in range(disp.pending_events()):
