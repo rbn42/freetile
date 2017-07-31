@@ -54,13 +54,14 @@ def insert_window(win):
     t = ewmh.getWmWindowType(win)
 
     if len(IGNORE_STATES.intersection(s)) > 0:
-        return
+        return False
     if len(IGNORE_TYPES.intersection(t)) < 0 or len(t) < 1:
-        return
+        return False
     if not None == c and 'Popup' in c:
-        return
+        return False
 
     wininfo[win.id] = c, n, t, s
+    return True
 
 
 for win in ewmh.getClientList():
@@ -72,9 +73,9 @@ while True:
         time.sleep(0.2)
         win = e.window
         if win.id in [w.id for w in ewmh.getClientList()]:
-            insert_window(win)
-            print([e.type, *wininfo[win.id]])
-            _execute()
+            if insert_window(win):
+                print([e.type, *wininfo[win.id]])
+                _execute()
     elif e.type == X.UnmapNotify:
         win = e.window
         if win.id in wininfo:
