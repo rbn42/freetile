@@ -13,6 +13,8 @@ disp = display.Display()
 root = disp.screen().root
 root.change_attributes(event_mask=X.SubstructureNotifyMask)
 
+wininfo = {}
+
 IGNORE_TYPES = [
     disp.intern_atom('_NET_WM_WINDOW_TYPE_DESKTOP'),
     disp.intern_atom('_NET_WM_WINDOW_TYPE_DOCK'),
@@ -40,29 +42,34 @@ while True:
     if e.type in (
             X.UnmapNotify,
             X.MapNotify,
+        # X.MappingNotify, # what is this?
             # X.ReparentNotify,
             # X.DestroyNotify
     ):
         win = e.window
-        try:
+        if e.type == X.MapNotify:
             c = win.get_wm_class()
             n = win.get_wm_name()
             t = ewmh.getWmWindowType(win)
-            print([e.type, n, c, t, ])
-            # or len(set(t) - ALLOW_TYPES) > 0:
-            if len(ALLOW_TYPES.intersection(t)) < 1:
-                print('continue%s' % str(t))
+            wininfo[win.id] = c, n, t
+        elif e.type == X.UnmapNotify:
+            if win.id not in wininfo:
                 continue
-            if not None == c and 'Popup' in c:
-                print('continue%s' % str(c))
-                continue
-            if 'rofi' == n:
-                print('continue%s' % n)
-                continue
-        except Xlib.error.BadWindow:
-            print("error%s" % e.type)
-            if not X.UnmapNotify==e.type:
-                continue
+            c, n, t = wininfo[win.id]
+        else:
+            print(e.type)
+        print([e.type, n, c, t, ])
+        # or len(set(t) - ALLOW_TYPES) > 0:
+        if len(ALLOW_TYPES.intersection(t)) < 1:
+            print('continue%s' % str(t))
+            continue
+        if not None == c and 'Popup' in c:
+            print('continue%s' % str(c))
+            continue
+        if 'rofi' == n:
+            print('continue%s' % n)
+            continue
+
         print('excute')
         os.system('python ./main.py layout regularize &> /dev/null')
 #        for _ in range(disp.pending_events()):
