@@ -23,9 +23,9 @@ IGNORE_TYPES = [
     disp.intern_atom('_NET_WM_WINDOW_TYPE_UTILITY'),
     disp.intern_atom('_NET_WM_WINDOW_TYPE_SPLASH'),
     disp.intern_atom('_NET_WM_WINDOW_TYPE_DIALOG'),
-    390,  # emerald
-    391,  # volnoti
-    348,  # docky setting
+#    390,  # emerald
+#    391,  # volnoti
+#    348,  # docky setting
     #        disp.intern_atom('_NET_WM_WINDOW_TYPE_NORMAL'),
 ]
 IGNORE_STATES = [
@@ -39,7 +39,7 @@ ALLOW_TYPES = [
 ]
 IGNORE_TYPES = set(IGNORE_TYPES)
 IGNORE_STATES = set(IGNORE_STATES)
-ALLOW_TYPES = set(ALLOW_TYPES)
+#$ALLOW_TYPES = set(ALLOW_TYPES)
 
 
 os.system('python ./main.py layout regularize &> /dev/null')
@@ -54,10 +54,14 @@ while True:
     ):
         win = e.window
         if e.type == X.MapNotify:
-            c = win.get_wm_class()
-            n = win.get_wm_name()
-            s = ewmh.getWmState(win)
-            t = ewmh.getWmWindowType(win)
+            try:
+                c = win.get_wm_class()
+                n = win.get_wm_name()
+                s = ewmh.getWmState(win)
+                t = ewmh.getWmWindowType(win)
+            except Xlib.error.BadWindow:
+                print('error')
+                continue
             wininfo[win.id] = c, n, t, s
         elif e.type == X.UnmapNotify:
             if win.id not in wininfo:
@@ -68,12 +72,12 @@ while True:
         print([e.type, n, c, t, s])
         if len(IGNORE_STATES.intersection(s)) > 0:
             continue
-        if len(ALLOW_TYPES.intersection(t)) < 1:
+        if len(IGNORE_TYPES.intersection(t)) < 0 or len(t)<1:
             continue
         if not None == c and 'Popup' in c:
             continue
-        if 'rofi' == n:
-            continue
+#        if '' == n:
+#            continue
 
         print('excute')
         os.system('python ./main.py layout regularize &> /dev/null')
