@@ -87,7 +87,6 @@ def moveandresize(target):
 
 def swap(target):
 
-    winlist = windowlist.windowInCurrentWorkspaceInStackingOrder
     active = windowlist.get_active_window()
 
     if active is None:
@@ -96,7 +95,7 @@ def swap(target):
     target_window_id = find_kdtree(active, target, allow_parent_sibling=False)
 
     if target_window_id is None:
-        target_window_id = find(active, target, winlist, windowlist.windowInfo)
+        target_window_id = find(active, target)
 
     if target_window_id is None:
         target_window_id = find_kdtree(
@@ -105,21 +104,17 @@ def swap(target):
     if target_window_id is None:
         return False
 
-    i0 = winlist.index(active)
-    i1 = winlist.index(target_window_id)
+    lay0 = windowlist.windowInfo[active][1]
+    lay1 = windowlist.windowInfo[target_window_id][1]
 
-    lay = windowlist.get_current_layout()
-    arrange([lay[i0], lay[i1]], [winlist[i1], winlist[i0]])
-
-    winlist[i0], winlist[i1] = winlist[i1], winlist[i0]
+    arrange([lay0, lay1], [target_window_id, active])
     return True
 
 
-def find(center, target, winlist, posinfo):
+def find(center, target, allow_outofworkspace=False):
     '''
     find the nearest window in the target direction.
     '''
-    lay = windowlist.get_current_layout()
 
     def cal_center(x, y, w, h): return [x + w / 2.2, y + h / 2.2]
     if center is None:
@@ -129,7 +124,12 @@ def find(center, target, winlist, posinfo):
         lay_center = cal_center(*lay_center)
     _min = -1
     _r = None
-    for w, l in zip(winlist, lay):
+    if allow_outofworkspace:
+        winlist = windowlist.windowInfo
+    else:
+        winlist = windowlist.windowInCurrentWorkspaceInStackingOrder
+    for w in winlist:
+        l = windowlist.windowInfo[w][1]
         l = cal_center(*l)
         bias1, bias2 = 1.0, 1.0
         bias = 4.0
@@ -187,11 +187,9 @@ def focus(target):
     target_window_id = find_kdtree(active, target, allow_parent_sibling=False)
 
     if target_window_id is None:
-        if config.NavigateAcrossWorkspaces:
-            Windows = windowlist.windowInfo.keys()
-        else:
-            Windows = windowlist.windowInCurrentWorkspaceInStackingOrder
-        target_window_id = find(active, target, Windows, windowlist.windowInfo)
+        target_window_id = find(
+            active, target,
+            allow_outofworkspace=config.NavigateAcrossWorkspaces)
 
     if target_window_id is None:
         target_window_id = find_kdtree(

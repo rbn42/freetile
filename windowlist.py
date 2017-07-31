@@ -9,9 +9,12 @@ from workarea import workarea
 class WindowList:
     windowInCurrentWorkspaceInStackingOrder = []
     windowInfo = {}
+    ewmhactive = None
 
     def reset(self, ignore=[]):
-        desktop, = get_root_window_property("_NET_CURRENT_DESKTOP")
+        # get_root_window_property("_NET_CURRENT_DESKTOP")
+        desktop = ewmh.getCurrentDesktop()
+        self.ewmhactive = ewmh.getActiveWindow()
         self.windowInCurrentWorkspaceInStackingOrder = []
         self.windowInfo = {}
         for win, _desktop, name in get_window_list(ignore):
@@ -56,7 +59,7 @@ class WindowList:
         return l
 
     def get_active_window(self, allow_outofworkspace=False):
-        active = ewmh.getActiveWindow()
+        active = self.ewmhactive
         if active is None:
             return None
         active = active.id
