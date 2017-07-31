@@ -1,6 +1,9 @@
 """
 TODO
 """
+import setproctitle
+setproctitle.setproctitle("kdtreeautotile")
+
 import Xlib
 from Xlib import X, display, Xutil, protocol
 import os
@@ -28,7 +31,10 @@ ALLOW_TYPES = [
 ]
 print(IGNORE_TYPES)
 IGNORE_TYPES = set(IGNORE_TYPES)
-ALLOW_TYPES= set(ALLOW_TYPES)
+ALLOW_TYPES = set(ALLOW_TYPES)
+
+
+os.system('python ./main.py layout regularize &> /dev/null')
 while True:
     e = disp.next_event()
     if e.type in (
@@ -43,7 +49,7 @@ while True:
             n = win.get_wm_name()
             t = ewmh.getWmWindowType(win)
             print([e.type, n, c, t, ])
-            if len(ALLOW_TYPES.intersection(t)) < 1:
+            if len(ALLOW_TYPES.intersection(t)) < 1 or len(set(t) - ALLOW_TYPES) > 0:
                 print('continue%s' % str(t))
                 continue
             if not None == c and 'Popup' in c:
