@@ -1,7 +1,6 @@
 """
 TODO
 """
-import time
 
 import setproctitle
 from helper_ewmh import ewmh
@@ -73,9 +72,14 @@ for win in ewmh.getClientList():
 while True:
     e = disp.next_event()
     if e.type == X.MapNotify:
-        time.sleep(0.2)
         win = e.window
-        if win.id in [w.id for w in ewmh.getClientList()]:
+        for _ in range(50):
+            try:
+                lst = ewmh.getClientList()
+            except:
+                print('fail %s' % _)
+                continue
+        if win.id in [w.id for w in lst]:
             if insert_window(win):
                 print([e.type, *wininfo[win.id]])
                 windowlist.reset()
