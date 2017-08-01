@@ -83,6 +83,9 @@ while True:
             if insert_window(win):
                 print([e.type, *wininfo[win.id]])
                 windowlist.reset()
+                if len(windowlist.windowInCurrentWorkspaceInStackingOrder) < 1:
+                    # quit auto tiling when no window exists.
+                    break
                 if not insert_focused_window_into_kdtree(win.id):
                     break
     elif e.type == X.UnmapNotify:
