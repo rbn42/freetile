@@ -16,9 +16,8 @@ Options:
 """
 import config
 import logging
-import re
-import subprocess
 
+import helper_vim
 from helper_ewmh import raise_window
 from helper_xlib import arrange, maximize
 from util_kdtree import (find_kdtree, insert_focused_window_into_kdtree,
@@ -171,18 +170,10 @@ def focus(target):
 
     active = windowlist.get_active_window(allow_outofworkspace=False)
 
-    if config.VIM_SERVER_NAME is not None:
-        if active is not None:
-            vimserver = re.findall(
-                config.VIM_SERVER_NAME, windowlist.windowInfo[active][0])
-            if len(vimserver) > 0:
-                vimserver = vimserver[0]
-                cmd = config.VIM_NAVIGATION_CMD.format(vimserver=vimserver,
-                                                       target=target)
-                s = subprocess.check_output(cmd, shell=True).decode('utf8')
-                s = int(s)
-                if s == 1:
-                    return
+    if active is not None:
+        window_name = windowlist.windowInfo[active][0]
+        if helper_vim.navigate(window_name, target):
+            return
 
     target_window_id = find_kdtree(active, target, allow_parent_sibling=False)
 
