@@ -26,6 +26,10 @@ VIM_SERVER_NAME = " - (VIMSERVER\d+)$"
 VIM_NAVIGATION_CMD = """vim --servername {vimserver} --remote-expr "TileFocusWindow('{target}')" """
 VIM_SERVER_NAME = None
 
+EMACS_WINDOW_NAME = ".+emacs.+"
+EMACS_NAVIGATION_CMD = "emacsclient -e '(evil-window-{target} 1)'"
+EMACS_WINDOW_NAME = None
+
 # overwrite default configuration
 import os.path
 
