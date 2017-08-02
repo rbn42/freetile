@@ -8,7 +8,8 @@ from workarea import workarea
 
 class WindowList:
     windowInCurrentWorkspaceInStackingOrder = []
-    windowInfo = {}
+    windowPostion = {}
+    windowName = {}
     ewmhactive = None
 
     def reset(self, ignore=[]):
@@ -16,7 +17,9 @@ class WindowList:
         desktop = ewmh.getCurrentDesktop()
         self.ewmhactive = ewmh.getActiveWindow()
         self.windowInCurrentWorkspaceInStackingOrder = []
-        self.windowInfo = {}
+        self.windowName = {}
+        self.windowPostion = {}
+
         for win, _desktop, name in get_window_list(ignore):
             winid = win.id
             geo = win.get_geometry()
@@ -37,39 +40,30 @@ class WindowList:
             if not wmclass == wmclass - set(EXCLUDE_WM_CLASS):
                 continue
 
-            self.windowInfo[winid] = name, [int(x), int(y), w, h]
+            self.windowName[winid] = name
 
             if not (0 <= x < workarea.width and 0 <= y < workarea.height):
                 continue
 
+            f_left, f_right, f_top, f_bottom = get_frame_extents(winid)
+            self.windowPostion[winid] = [int(x) - f_left, int(y) - f_top,
+                                         w + f_left + f_right, h + f_top + f_bottom]
+
             self.windowInCurrentWorkspaceInStackingOrder.append(winid)
 
     def get_current_layout(self):
-        l = []
-        for _id in self.windowInCurrentWorkspaceInStackingOrder:
-            _name, _pos = self.windowInfo[_id]
-            x, y, w, h = _pos
-            f_left, f_right, f_top, f_bottom = get_frame_extents(_id)
-            y -= f_top
-            x -= f_left
-            h += f_top + f_bottom
-            w += f_left + f_right
-
-            l.append([x, y, w, h])
-        return l
+        return [self.windowPostion[_id]
+                for _id in self.windowInCurrentWorkspaceInStackingOrder]
 
     def get_active_window(self, allow_outofworkspace=False):
         active = self.ewmhactive
         if active is None:
             return None
         active = active.id
-        if active not in self.windowInfo:
-            return None
-        if allow_outofworkspace:
+        if active in self.windowInCurrentWorkspaceInStackingOrder:
             return active
-        if active not in self.windowInCurrentWorkspaceInStackingOrder:
-            return None
-        return active
+        if allow_outofworkspace and active in self.windowName:
+            return active
 
 
 windowlist = WindowList()

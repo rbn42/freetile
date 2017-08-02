@@ -8,7 +8,6 @@ Usage:
   main.py (focus|move|swap) (up|down|left|right)
   main.py (grow|shrink) (height|width)
   main.py (save|load) <layout_id>
-  main.py list
   main.py -h | --help
 
 Options:
@@ -104,8 +103,8 @@ def swap(target):
     if target_window_id is None:
         return False
 
-    lay0 = windowlist.windowInfo[active][1]
-    lay1 = windowlist.windowInfo[target_window_id][1]
+    lay0 = windowlist.windowPostion[active]
+    lay1 = windowlist.windowPostion[target_window_id]
 
     arrange([lay0, lay1], [target_window_id, active])
     return True
@@ -120,16 +119,16 @@ def find(center, target, allow_outofworkspace=False):
     if center is None:
         lay_center = workarea.width / 2.0, workarea.height / 2.0
     else:
-        lay_center = windowlist.windowInfo[center][1]
+        lay_center = windowlist.windowPostion[center]
         lay_center = cal_center(*lay_center)
     _min = -1
     _r = None
     if allow_outofworkspace:
-        winlist = windowlist.windowInfo
+        winlist = windowlist.windowName
     else:
         winlist = windowlist.windowInCurrentWorkspaceInStackingOrder
     for w in winlist:
-        l = windowlist.windowInfo[w][1]
+        l = windowlist.windowPostion[w]
         l = cal_center(*l)
         bias1, bias2 = 1.0, 1.0
         bias = 4.0
@@ -158,21 +157,12 @@ def find(center, target, allow_outofworkspace=False):
     return _r
 
 
-def list_windows():
-    print('current workspace')
-    for w in windowlist.windowInCurrentWorkspaceInStackingOrder:
-        print('%s,%s' % (w, windowlist.windowInfo[w]))
-    print('all windows')
-    for w in windowlist.windowInfo:
-        print('%s,%s' % (w, windowlist.windowInfo[w]))
-
-
 def focus(target):
 
     active = windowlist.get_active_window(allow_outofworkspace=False)
 
     if active is not None:
-        window_name = windowlist.windowInfo[active][0]
+        window_name = windowlist.windowName[active]
         if helper.vim.navigate(window_name, target):
             return
         if helper.emacs.navigate(window_name, target):
@@ -229,6 +219,3 @@ if __name__ == '__main__':
         print('not implemented')
     elif arguments['load']:
         print('not implemented')
-    # debug
-    elif arguments['list']:
-        list_windows()
