@@ -9,7 +9,7 @@ def divide(_input):
     # find out separable intervals
     _input = [n for n in _input]
     _input.sort()
-    l = [interval for interval, _id in _input]
+    l = [interval for interval, value in _input]
     for i0, i1 in l:
         assert not i0 == i1
     current_start, current_end = None, None
@@ -31,7 +31,7 @@ def divide(_input):
     l = []
     current_start, current_end = nodes.pop(0)
     for child in _input:
-        interval, _id = child
+        interval, value = child
         start, end = interval
         if not end <= current_end:
             children.append(l)
