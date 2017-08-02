@@ -3,7 +3,7 @@ from config import (MAX_KD_TREE_BRANCH, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH,
                     REGULARIZE_FULLSCREEN, WinBorder)
 
 from helper.xlib import arrange
-from tree2 import Node
+from tree2 import Node,leafnodemap
 
 from windowlist import windowlist
 from workarea import workarea
@@ -27,7 +27,7 @@ def resize_kdtree(resize_width, resize_height):
     lay = windowlist.get_current_layout()
     # generate k-d tree
     _tree = getkdtree(winlist, lay)
-    current_node = Node._map[active]
+    current_node = leafnodemap[active]
 
     # determine the size of current node and parent node.
     if current_node.depth() % 2 == 0:
@@ -87,8 +87,11 @@ def resize_kdtree(resize_width, resize_height):
 
 
 def getkdtree(winlist, lay):
+    print('gettree')
     origin_lay = [[x, y, x + w, y + h] for x, y, w, h in lay]
-    return Node(list(zip(origin_lay, winlist)))
+    n=Node(list(zip(origin_lay, winlist))).create_parent().create_parent()
+    n.print()
+    return n
 
 
 def insert_window_into_kdtree(winid, target):
@@ -97,12 +100,11 @@ def insert_window_into_kdtree(winid, target):
         if not w == winid]
     lay = windowlist.get_current_layout()
     _tree = getkdtree(winlist, lay)
-    target_node = Node._map[target]
+    target_node = leafnodemap[target]
     if target_node.parent.overlap:
         return False
     node = target_node.create_sibling()
     node.key = winid
-    node.leaf = True
     if REGULARIZE_FULLSCREEN:
         _tree.position = [workarea.x, workarea.y, workarea.x +
                           workarea.width, workarea.y + workarea.height]
@@ -129,7 +131,7 @@ def move_kdtree(target, allow_create_new_node=True):
     lay = windowlist.get_current_layout()
     # generate k-d tree
     _tree = getkdtree(winlist, lay)
-    current_node = Node._map[active]
+    current_node = leafnodemap[active]
 
     # whether promote node to its parent's level
     if current_node.depth() % 2 == 0:
@@ -164,11 +166,11 @@ def move_kdtree(target, allow_create_new_node=True):
                 # If there is a leaf node at the target direction, build a new
                 # parent node for the leaf node and the current node.
                 _swap = False or not allow_create_new_node
-                if new_parent.leaf and not _swap:
+                if new_parent.leaf() and not _swap:
                     # But allow no more than one branch for each node
                     non_leaf_node_count = 0
                     for sibling in new_parent.parent.children:
-                        if not sibling.leaf or MAX_KD_TREE_BRANCH < 1:
+                        if not sibling.leaf() or MAX_KD_TREE_BRANCH < 1:
                             non_leaf_node_count += 1
                             if not non_leaf_node_count < MAX_KD_TREE_BRANCH:
                                 # Just swap them.
@@ -283,7 +285,7 @@ def find_kdtree(center, target, allow_parent_sibling=True):
         return None
     lay = windowlist.get_current_layout()
     _tree= getkdtree(winlist, lay)
-    current_node = Node._map[active]
+    current_node = leafnodemap[active]
 
     if current_node.depth() % 2 == 0:
         promote = target in ['right', 'left']
@@ -311,7 +313,7 @@ def find_kdtree(center, target, allow_parent_sibling=True):
 
     if promoted:
         if not allow_parent_sibling:
-            if not target.leaf:
+            if not target.leaf():
                 return None
     if None == target or target.overlap:
         return None

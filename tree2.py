@@ -4,6 +4,8 @@ import config
 
 from divide import divide
 
+leafnodemap = {}
+
 
 class Node:
     """
@@ -14,22 +16,36 @@ class Node:
     key = None
     position = None
     modified = False
-    _map={}
+
+    def print(self):
+        tab = '  ' * self.depth()
+        print('%s%s,%s,%s' % (tab,
+                              self.key, self.position, self.modified))
+        if self.children is not None:
+            for child in self.children:
+                child.print()
+
+    def leaf(self):
+        return self.children is None
 
     def __init__(self, _input, parent=None):
         # create empty node
         if _input is None:
             return
+        self.parent = parent
 
         if len(_input) == 1:
             pos, key = _input[0]
             self.key = key
-            self._map[key]=self
+            leafnodemap[key] = self
         else:
             _input2 = [[pos[self.depth() % 2], pos[self.depth() % 2 + 2]]
                        for pos, v in _input]  # column first
             intervals = divide(zip(_input2, _input))
             if len(intervals) == 1:
+                print('overlap')
+                print(_input)
+                print(self.depth())
                 pass
             else:
                 self.children = []
@@ -38,7 +54,6 @@ class Node:
                     node_child = Node(_list, parent=self)
                     self.children.append(node_child)
 
-        self.parent = parent
         self.position = self.init_position(_input)
 
     def init_position(self, _input):
@@ -81,8 +96,10 @@ class Node:
         parent.parent = self.parent
         parent.children = [self]
         parent.position = list(self.position)
-        index = self.parent.children.index(self)
-        self.parent.children[index] = parent
+        if self.parent is not None:
+            index = self.parent.children.index(self)
+            self.parent.children[index] = parent
+        self.parent = parent
         return parent
 
     def create_sibling(self):
