@@ -2,7 +2,7 @@ import logging
 from config import (MAX_KD_TREE_BRANCH, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH,
                     REGULARIZE_FULLSCREEN, WinBorder)
 
-from helper_xlib import arrange
+from helper.xlib import arrange
 from tree import (build_tree, create_parent, create_sibling, getLayoutAndKey,
                   regularize, remove_single_child_node)
 from windowlist import windowlist

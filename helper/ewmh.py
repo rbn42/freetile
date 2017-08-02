@@ -1,5 +1,5 @@
 from ewmh import EWMH
-from helper_xlib import get_window
+from helper.xlib import get_window
 
 ewmh = EWMH()
 

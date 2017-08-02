@@ -2,7 +2,7 @@ import math
 from config import (BottomPadding, LeftPadding, RightPadding, TopPadding,
                     WinBorder)
 
-from helper_ewmh import ewmh
+from helper.ewmh import ewmh
 
 
 class WorkArea:

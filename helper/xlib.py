@@ -97,6 +97,6 @@ def arrange(layout, windowids):
             x += f_left
         layout_final.append([x, y, width, height])
 #        window_xlib.configure(x=x, y=y, width=width, height=height)
-    import helper_xcb
-    return helper_xcb.arrange(layout_final, windowids)
+    import helper.xcb
+    return helper.xcb.arrange(layout_final, windowids)
     # disp.flush()

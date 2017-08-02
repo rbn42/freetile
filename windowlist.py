@@ -1,7 +1,7 @@
 from config import EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS
 
-from helper_ewmh import ewmh, get_window_list
-from helper_xlib import (disp, get_frame_extents, get_root_window_property,
+from helper.ewmh import ewmh, get_window_list
+from helper.xlib import (disp, get_frame_extents, get_root_window_property,
                          get_wm_class_and_state)
 from workarea import workarea
 
