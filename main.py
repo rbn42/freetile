@@ -16,8 +16,8 @@ Options:
 import config
 import logging
 
-import helper.vim
 import helper.emacs
+import helper.vim
 from helper.ewmh import raise_window
 from helper.xlib import arrange, maximize
 from util_kdtree import (find_kdtree, insert_focused_window_into_kdtree,
@@ -30,14 +30,18 @@ def regularize():
     '''
     Try to regularize windows or add a new window into the K-D tree.
     '''
-    if len(windowlist.windowInCurrentWorkspaceInStackingOrder) < 1:
+    num = len(windowlist.windowInCurrentWorkspaceInStackingOrder)
+    if num == 0:
         return True
-    elif len(windowlist.windowInCurrentWorkspaceInStackingOrder) < 2:
+    elif num == 1:
         maximize(windowlist.windowInCurrentWorkspaceInStackingOrder[0])
         return True
     elif regularize_windows():
         logging.info('regularize windows')
         return True
+    elif num == 2:
+        logging.info('layout')
+        return force_tile()
     elif insert_focused_window_into_kdtree():
         logging.info('insert a window into the K-D Tree')
         return True
