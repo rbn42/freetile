@@ -34,21 +34,20 @@ class Node:
         The dimension expected to be controlled by current node and divided between children. 
         """
         # column first
-        index_min=self.depth() % self.DIMENSION
-        index_max=self.depth() % self.DIMENSION + self.DIMENSION
-        return index_min,index_max 
+        index_min = self.depth() % self.DIMENSION
+        index_max = self.depth() % self.DIMENSION + self.DIMENSION
+        return index_min, index_max
 
     def targets(self):
-        dmin,dmax=self.parent.dimension()
+        dmin, dmax = self.parent.dimension()
         if dmin == 0:
             return 'left', 'right'
         elif dmin == 1:
             return 'up', 'down'
 
-
     def interval_size(self):
-        dmin,dmax=self.parent.dimension()
-        return self.position[dmax]-self.position[dmin]
+        dmin, dmax = self.parent.dimension()
+        return self.position[dmax] - self.position[dmin]
 
     def __init__(self, _input, parent=None):
         # create empty node
@@ -134,11 +133,11 @@ class Node:
         """
         if self.leaf():
             return
-        dmin, dmax = self.dimension() 
+        dmin, dmax = self.dimension()
 
         for child in self.children:
-            for i in range(self.DIMENSION):
-                if i not in [dmin,dmax]:
+            for i in range(2 * self.DIMENSION):
+                if i not in [dmin, dmax]:
                     child.position[i] = self.position[i]
         i0 = self.position[dmin]
         i1 = self.position[dmax]
@@ -168,15 +167,11 @@ class Node:
             if size == size_sum:
                 _size = child.interval_size()
             elif modified_by_user:
-                assert len(self.children) > 1
-                _size = child.interval_size()
-                # if not child.modified:
-                if index > modified_index:
+                if index > modified_index or modified_index + 1 == len(self.children) and not child.modified:
                     _size = _size * size / size_sum
                     _size = int(_size)
-                if modified_index + 1 == len(self.children) and not child.modified:
-                    _size = _size * size / size_sum
-                    _size = int(_size)
+                else:
+                    _size = child.interval_size()
             else:
                 _size = int(size) / len(self.children)
             child.position[dmin] = i
