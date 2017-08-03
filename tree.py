@@ -167,11 +167,10 @@ class Node:
             if size == size_sum:
                 _size = child.interval_size()
             elif modified_by_user:
+                _size = child.interval_size()
                 if index > modified_index or modified_index + 1 == len(self.children) and not child.modified:
                     _size = _size * size / size_sum
                     _size = int(_size)
-                else:
-                    _size = child.interval_size()
             else:
                 _size = int(size) / len(self.children)
             child.position[dmin] = i
