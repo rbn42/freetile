@@ -81,7 +81,7 @@ def moveandresize(target):
     # cannot find target window
     if active is None:
         return False
-    lay = windowlist.get_current_layout()[0]
+    lay = windowlist.windowGeometry[active]
     for i in range(4):
         lay[i] += target[i]
     arrange([lay], [active])
