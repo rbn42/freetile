@@ -81,6 +81,12 @@ class WindowList:
         return [self.windowGeometry[_id]
                 for _id in self.windowInCurrentWorkspaceInStackingOrder]
 
+    def get_id_and_layout(self, num_window_from_stack_bottom=None):
+        ids = self.windowInCurrentWorkspaceInStackingOrder
+        if num_window_from_stack_bottom is not None:
+            ids = ids[: num_window_from_stack_bottom]
+        return ids, [self.windowGeometry[i] for i in ids]
+
     def get_active_window(self, allow_outofworkspace=False):
         active = self.ewmhactive
         if active is None:

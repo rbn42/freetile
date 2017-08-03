@@ -213,15 +213,75 @@ def move_kdtree(target, allow_create_new_node=True):
 
 def regularize_windows():
     lay = windowlist.get_current_layout()
-    _tree = getkdtree(
+    tree = getkdtree(
         windowlist.windowInCurrentWorkspaceInStackingOrder, lay)
-    if _tree.overlap():
+    if tree.overlap():
         logging.info('overlapped windows')
         return False
     if REGULARIZE_FULLSCREEN:
-        _tree.position = [workarea.x, workarea.y, workarea.x +
-                          workarea.width, workarea.y + workarea.height]
-    return regularize_kd_tree(_tree)
+        tree.position = [workarea.x, workarea.y, workarea.x +
+                         workarea.width, workarea.y + workarea.height]
+    tree.regularize(gap=(WindowGap, WindowGap))
+    # load k-d tree
+    a, b, reach_size_limit = tree.getLayout(windowlist.minGeometry)
+    if reach_size_limit:
+        logging.info('reach window minimal size')
+        return False
+    windowlist.arrange(a, b)
+    return True
+
+
+def search_for_regularized_windows(_min, _max):
+    """
+    search for regularized windows from stack bottom
+    """
+    result = None
+    while _min <= _max:
+        num = int(_min / 2 + _max / 2)
+        winlist, layout = windowlist.get_id_and_layout(num)
+        tree = getkdtree(winlist, layout)
+        if tree.overlap():
+            _max = num - 1
+        else:
+            result = tree, winlist, num
+            _min = num + 1
+    return result
+
+
+def regularize_or_insert_windows():
+    stack = windowlist.windowInCurrentWorkspaceInStackingOrder
+    num = len(stack)
+    minimum_tiling_window = int(num * 2 / 3)  # 2
+    minimum_tiling_window = max(2, minimum_tiling_window)
+
+    result = search_for_regularized_windows(minimum_tiling_window, num)
+    tree, winlist, num = result
+    if tree is None:
+        return False
+
+    target = winlist[-1]
+    target_node = tree.leafnodemap()[target]
+
+    if target_node.parent.children_resized(gap=(WindowGap, WindowGap)):
+        # if node is resized by user, dont resize it in the same axis
+        # again.
+        target_node.create_parent()
+    # add all the rest windows to tree.
+    for winid in stack[num:]:
+        node = target_node.create_sibling()
+        node.key = winid
+
+    if REGULARIZE_FULLSCREEN:
+        tree.position = [workarea.x, workarea.y, workarea.x +
+                         workarea.width, workarea.y + workarea.height]
+    tree.regularize(gap=(WindowGap, WindowGap))
+    # load k-d tree
+    a, b, reach_size_limit = tree.getLayout(windowlist.minGeometry)
+    if reach_size_limit:
+        logging.info('reach window minimal size')
+        return True
+    windowlist.arrange(a, b)
+    return True
 
 
 def regularize_kd_tree(regularize_node,

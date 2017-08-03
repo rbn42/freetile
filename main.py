@@ -18,8 +18,8 @@ import logging
 
 import helper.emacs
 import helper.vim
-from util_kdtree import (find_kdtree, insert_focused_window_into_kdtree,
-                         move_kdtree, regularize_windows, resize_kdtree)
+from util_kdtree import (find_kdtree, move_kdtree,
+                         regularize_or_insert_windows, resize_kdtree)
 from windowlist import windowlist
 from workarea import workarea
 
@@ -28,27 +28,23 @@ def regularize():
     '''
     Try to regularize windows or add a new window into the K-D tree.
     '''
-    num = len(windowlist.windowInCurrentWorkspaceInStackingOrder)
+    stack = windowlist.windowInCurrentWorkspaceInStackingOrder
+    num = len(stack)
     if num == 0:
         pass
     elif num == 1:
-        windowlist.maximize_window(
-            windowlist.windowInCurrentWorkspaceInStackingOrder[0])
-    elif regularize_windows():
-        logging.info('regularize windows')
-    elif num == 2:
-        logging.info('layout')
-        force_tile()
-    elif insert_focused_window_into_kdtree():
-        logging.info('insert a window into the K-D Tree')
+        windowlist.maximize_window(stack[0])
     else:
-        logging.info('layout')
-        force_tile()
+        if regularize_or_insert_windows():
+            logging.info('regularize windows')
+        else:
+            logging.info('force tiling')
+            force_tile()
 
-    # Make sure the current active window is raised to top of the stack.
-    # The stack order will be used to find out previous active windows.
-    active = windowlist.get_active_window()
-    windowlist.raise_window(active)
+        # Make sure the current active window is raised to top of the stack.
+        # The stack order will be used to find out previous active windows.
+        active = windowlist.get_active_window()
+        windowlist.raise_window(active)
 
 
 def force_tile():
