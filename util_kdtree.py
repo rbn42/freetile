@@ -104,7 +104,7 @@ def insert_window_into_kdtree(winid, target):
     target_node = _tree.leafnodemap()[target]
     if target_node.parent.children_resized(gap=(WindowGap, WindowGap)):
         # if node is resized by user, dont resize it in the same axis again.
-        pnode=target_node.create_parent()
+        pnode = target_node.create_parent()
     node = target_node.create_sibling()
     node.key = winid
     if REGULARIZE_FULLSCREEN:
@@ -260,12 +260,11 @@ def insert_focused_window_into_kdtree(newwin=None):
 
 def get_last_active_window():
     # assert window list is in stacking order
-    assert windowlist.get_active_window(
-    ) == windowlist.windowInCurrentWorkspaceInStackingOrder[-1]
-    if len(windowlist.windowInCurrentWorkspaceInStackingOrder) > 1:
-        return windowlist.windowInCurrentWorkspaceInStackingOrder[-2]
-    else:
-        return None
+    active = windowlist.get_active_window()
+    lst = windowlist.windowInCurrentWorkspaceInStackingOrder
+    index = lst.index(active)
+    index = (index - 1) % len(lst)
+    return lst[index]
 
 
 def find_kdtree(center, target, allow_parent_sibling=True):
@@ -319,4 +318,3 @@ def find_kdtree(center, target, allow_parent_sibling=True):
         return None
     else:
         return target.key
-
