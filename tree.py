@@ -246,7 +246,7 @@ class Node:
             if x1 - x0 < minw or y1 - y0 < minh:
                 return None, None, True,
             else:
-                layout = [int(x0), int(y0), int(x1 - x0), int(y1 - y0)]
+                layout = [x0, y0, x1 - x0, y1 - y0]
                 return [layout], [self.key], False,
         else:
             layouts, values = [], []

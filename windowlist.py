@@ -42,8 +42,6 @@ class WindowList:
         for win, _desktop, name in get_window_list(ignore):
             winid = win.id
             self.windowObjectMap[winid] = win
-            geo = win.get_geometry()
-            x, y, w, h = geo.x, geo.y, geo.width, geo.height
             if not _desktop == desktop:
                 continue
             if name in EXCLUDE_APPLICATIONS:
@@ -62,7 +60,9 @@ class WindowList:
 
             self.windowName[winid] = name
 
-            if not (0 <= x < workarea.width and 0 <= y < workarea.height):
+            geo = win.get_geometry()
+            if not (0 <= geo.x < workarea.width and 0 <=
+                    geo.y < workarea.height):
                 continue
 
             wnh = win.get_wm_normal_hints()
@@ -71,10 +71,10 @@ class WindowList:
             minh = max(MIN_WINDOW_HEIGHT, wnh.min_height + f_top, f_right)
             self.minGeometry[winid] = minw, minh
             self.windowGeometry[winid] = [
-                int(x) - f_left,
-                int(y) - f_top,
-                w + f_left + f_right,
-                h + f_top + f_bottom]
+                geo.x - f_left,
+                geo.y - f_top,
+                geo.width + f_left + f_right,
+                geo.height + f_top + f_bottom]
 
             self.windowInCurrentWorkspaceInStackingOrder.append(winid)
 
