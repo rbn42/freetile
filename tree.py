@@ -16,6 +16,7 @@ class Node:
     key = None
     position = None
     modified = False
+    DIMENSION = 2
 
     def print(self):
         tab = '  ' * self.depth()
@@ -28,6 +29,27 @@ class Node:
     def leaf(self):
         return self.children is None
 
+    def dimension(self):
+        """
+        The dimension expected to be controlled by current node and divided between children. 
+        """
+        # column first
+        index_min=self.depth() % self.DIMENSION
+        index_max=self.depth() % self.DIMENSION + self.DIMENSION
+        return index_min,index_max 
+
+    def targets(self):
+        dmin,dmax=self.parent.dimension()
+        if dmin == 0:
+            return 'left', 'right'
+        elif dmin == 1:
+            return 'up', 'down'
+
+
+    def interval_size(self):
+        dmin,dmax=self.parent.dimension()
+        return self.position[dmax]-self.position[dmin]
+
     def __init__(self, _input, parent=None):
         # create empty node
         if _input is None:
@@ -39,8 +61,8 @@ class Node:
             self.key = key
             leafnodemap[key] = self
         else:
-            _input2 = [[pos[self.depth() % 2], pos[self.depth() % 2 + 2]]
-                       for pos, v in _input]  # column first
+            dmin, dmax = self.dimension()
+            _input2 = [[pos[dmin], pos[dmax]] for pos, v in _input]
             intervals = divide(zip(_input2, _input))
             if len(intervals) == 1 and self.depth() > 0:
                 pass
@@ -112,18 +134,15 @@ class Node:
         """
         if self.leaf():
             return
-        x0, y0, x1, y1 = self.position
+        dmin, dmax = self.dimension() 
+
         for child in self.children:
-            if self.depth() % 2 == 0:
-                child.position[1], child.position[3] = y0, y1
-            else:
-                child.position[0], child.position[2] = x0, x1
-        if self.depth() % 2 == 0:
-            i0, i1, b = x0, x1, border[0]
-            index0, index1 = 0, 2
-        else:
-            i0, i1, b = y0, y1, border[1]
-            index0, index1 = 1, 3
+            for i in range(self.DIMENSION):
+                if i not in [dmin,dmax]:
+                    child.position[i] = self.position[i]
+        i0 = self.position[dmin]
+        i1 = self.position[dmax]
+        b = border[dmin]
 
         modified_by_user = False
         modified_index = -1
@@ -139,18 +158,18 @@ class Node:
             if i > modified_index \
                     or 1 + modified_index == len(self.children) \
                     and not child.modified:
-                size_sum += child.position[index1] - child.position[index0]
+                size_sum += child.interval_size()
             else:
-                size -= child.position[index1] - child.position[index0]
+                size -= child.interval_size()
 
         i = i0
         for child, index in zip(self.children, range(len(self.children))):
             i += b
             if size == size_sum:
-                _size = child.position[index1] - child.position[index0]
+                _size = child.interval_size()
             elif modified_by_user:
                 assert len(self.children) > 1
-                _size = child.position[index1] - child.position[index0]
+                _size = child.interval_size()
                 # if not child.modified:
                 if index > modified_index:
                     _size = _size * size / size_sum
@@ -160,10 +179,10 @@ class Node:
                     _size = int(_size)
             else:
                 _size = int(size) / len(self.children)
-            child.position[index0] = i
+            child.position[dmin] = i
             i += _size
-            child.position[index1] = i
-        self.children[-1].position[index1] = i1
+            child.position[dmax] = i
+        self.children[-1].position[dmax] = i1
 
         for child, i in zip(self.children, range(len(self.children))):
             child.regularize(border)
@@ -200,18 +219,19 @@ class Node:
         if self.children is None:
             x0, y0, x1, y1 = self.position
             if x1 - x0 < min_width or y1 - y0 < min_height:
-                return [], [], True,
-            layout = [int(x0), int(y0), int(x1 - x0), int(y1 - y0)]
-            return [layout], [self.key], False,
+                return None, None, True,
+            else:
+                layout = [int(x0), int(y0), int(x1 - x0), int(y1 - y0)]
+                return [layout], [self.key], False,
         else:
             layouts, values = [], []
             for child in self.children:
                 l, v, reach_size_limit, = child.getLayout()
+                if reach_size_limit:
+                    break
                 layouts += l
                 values += v
-                if reach_size_limit:
-                    return layouts, values, reach_size_limit,
-            return layouts, values, False
+            return layouts, values, reach_size_limit
 
 
 if __name__ == '__main__':
