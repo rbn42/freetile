@@ -35,7 +35,12 @@ def regularize():
     elif num == 1:
         windowlist.maximize_window(stack[0])
     else:
-        if regularize_or_insert_windows():
+        """
+        Allow to insert 1/3 new windows to a regularized layout of the rest 2/3 windows.
+        """
+        minimum_regularized_window = int(num * 2 / 3)  # 2
+        minimum_regularized_window = max(2, minimum_regularized_window)
+        if regularize_or_insert_windows(minimum_regularized_window):
             logging.info('regularize windows')
         else:
             logging.info('force tiling')

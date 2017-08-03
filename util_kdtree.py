@@ -248,16 +248,14 @@ def search_for_regularized_windows(_min, _max):
     return result
 
 
-def regularize_or_insert_windows():
+def regularize_or_insert_windows(minimum_regularized_window):
     stack = windowlist.windowInCurrentWorkspaceInStackingOrder
     num = len(stack)
-    minimum_tiling_window = int(num * 2 / 3)  # 2
-    minimum_tiling_window = max(2, minimum_tiling_window)
 
-    result = search_for_regularized_windows(minimum_tiling_window, num)
-    tree, winlist, num = result
-    if tree is None:
+    result = search_for_regularized_windows(minimum_regularized_window, num)
+    if result is None:
         return False
+    tree, winlist, num = result
 
     target = winlist[-1]
     target_node = tree.leafnodemap()[target]
