@@ -4,7 +4,6 @@ import config
 
 from divide import divide
 
-leafnodemap = {}
 
 
 class Node:
@@ -17,6 +16,7 @@ class Node:
     position = None
     modified = False
     DIMENSION = 2
+    __leafnodemap = None
 
     def print(self):
         tab = '  ' * self.depth()
@@ -28,6 +28,12 @@ class Node:
 
     def leaf(self):
         return self.children is None
+    def leafnodemap(self):
+        if self.parent is None:
+            #root
+            return self.__leafnodemap
+        else:
+            return self.parent.leafnodemap()
 
     def dimension(self):
         """
@@ -53,12 +59,16 @@ class Node:
         # create empty node
         if _input is None:
             return
-        self.parent = parent
+        if parent is None:
+            #root
+            self.__leafnodemap={}
+        else:
+            self.parent = parent
 
         if len(_input) == 1:
             pos, key = _input[0]
             self.key = key
-            leafnodemap[key] = self
+            self.leafnodemap()[key] = self
         else:
             dmin, dmax = self.dimension()
             _input2 = [[pos[dmin], pos[dmax]] for pos, v in _input]
@@ -107,10 +117,14 @@ class Node:
         new_parent.parent = self.parent
         new_parent.children = [self]
         new_parent.position = list(self.position)
+        
 
         if self.parent is not None:
             index = self.parent.children.index(self)
             self.parent.children[index] = new_parent
+        else:
+            #root
+            new_parent.__leafnodemap=self.__leafnodemap
 
         self.parent = new_parent
 
