@@ -81,8 +81,8 @@ def resize_kdtree(resize_width, resize_height):
     if REGULARIZE_FULLSCREEN:
         _tree.position = [workarea.x, workarea.y, workarea.x +
                           workarea.width, workarea.y + workarea.height]
-        return regularize_kd_tree(_tree,ignore_size_limit_error=True)
-    return regularize_kd_tree(regularize_node,ignore_size_limit_error=True)
+        return regularize_kd_tree(_tree, ignore_size_limit_error=True)
+    return regularize_kd_tree(regularize_node, ignore_size_limit_error=True)
 
 
 def getkdtree(winlist, lay):
@@ -106,8 +106,8 @@ def insert_window_into_kdtree(winid, target):
     if REGULARIZE_FULLSCREEN:
         _tree.position = [workarea.x, workarea.y, workarea.x +
                           workarea.width, workarea.y + workarea.height]
-        return regularize_kd_tree(_tree)
-    return regularize_kd_tree(node.parent)
+        return regularize_kd_tree(_tree, ignore_size_limit_error=True)
+    return regularize_kd_tree(node.parent, ignore_size_limit_error=True)
 
 
 def move_kdtree(target, allow_create_new_node=True):
@@ -204,7 +204,7 @@ def move_kdtree(target, allow_create_new_node=True):
     if REGULARIZE_FULLSCREEN:
         _tree.position = [workarea.x, workarea.y, workarea.x +
                           workarea.width, workarea.y + workarea.height]
-        return regularize_kd_tree(_tree,ignore_size_limit_error=True)
+        return regularize_kd_tree(_tree, ignore_size_limit_error=True)
     return regularize_kd_tree(regularize_node, ignore_size_limit_error=True)
 
 
@@ -233,6 +233,7 @@ def regularize_kd_tree(regularize_node,
     # load k-d tree
     a, b, reach_size_limit = regularize_node.getLayout(windowlist.minGeometry)
     if reach_size_limit:
+        logging.info('reach window minimal size')
         if ignore_size_limit_error:
             return True
         return False

@@ -107,8 +107,8 @@ def swap(target):
     if target_window_id is None:
         return False
 
-    lay0 = windowlist.windowPostion[active]
-    lay1 = windowlist.windowPostion[target_window_id]
+    lay0 = windowlist.windowGeometry[active]
+    lay1 = windowlist.windowGeometry[target_window_id]
 
     arrange([lay0, lay1], [target_window_id, active])
     return True
@@ -123,7 +123,7 @@ def find(center, target, allow_outofworkspace=False):
     if center is None:
         lay_center = workarea.width / 2.0, workarea.height / 2.0
     else:
-        lay_center = windowlist.windowPostion[center]
+        lay_center = windowlist.windowGeometry[center]
         lay_center = cal_center(*lay_center)
     _min = -1
     _r = None
@@ -132,7 +132,7 @@ def find(center, target, allow_outofworkspace=False):
     else:
         winlist = windowlist.windowInCurrentWorkspaceInStackingOrder
     for w in winlist:
-        l = windowlist.windowPostion[w]
+        l = windowlist.windowGeometry[w]
         l = cal_center(*l)
         bias1, bias2 = 1.0, 1.0
         bias = 4.0

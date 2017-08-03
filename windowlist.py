@@ -9,7 +9,7 @@ from workarea import workarea
 
 class WindowList:
     windowInCurrentWorkspaceInStackingOrder = []
-    windowPostion = {}
+    windowGeometry = {}
     windowName = {}
     minGeometry = {}
     ewmhactive = None
@@ -20,7 +20,7 @@ class WindowList:
         self.ewmhactive = ewmh.getActiveWindow()
         self.windowInCurrentWorkspaceInStackingOrder = []
         self.windowName = {}
-        self.windowPostion = {}
+        self.windowGeometry = {}
         self.minGeometry = {}
 
         for win, _desktop, name in get_window_list(ignore):
@@ -50,16 +50,16 @@ class WindowList:
 
             wnh = win.get_wm_normal_hints()
             f_left, f_right, f_top, f_bottom = get_frame_extents(winid)
-            minw = max(MIN_WINDOW_WIDTH, wnh.min_width + f_left, f_right)
-            minh = max(MIN_WINDOW_HEIGHT, wnh.min_height + f_top, f_right)
+            minw = max(MIN_WINDOW_WIDTH, wnh.min_width)  # + f_left, f_right)
+            minh = max(MIN_WINDOW_HEIGHT, wnh.min_height)  # + f_top, f_right)
             self.minGeometry[winid] = minw, minh
-            self.windowPostion[winid] = [int(x) - f_left, int(y) - f_top,
+            self.windowGeometry[winid] = [int(x) - f_left, int(y) - f_top,
                                          w + f_left + f_right, h + f_top + f_bottom]
 
             self.windowInCurrentWorkspaceInStackingOrder.append(winid)
 
     def get_current_layout(self):
-        return [self.windowPostion[_id]
+        return [self.windowGeometry[_id]
                 for _id in self.windowInCurrentWorkspaceInStackingOrder]
 
     def get_active_window(self, allow_outofworkspace=False):
