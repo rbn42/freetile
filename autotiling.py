@@ -3,7 +3,7 @@ TODO
 """
 
 import setproctitle
-from helper.ewmh import ewmh
+from helper.helper_ewmh import ewmh
 from main import regularize
 from util_kdtree import insert_focused_window_into_kdtree
 from windowlist import windowlist

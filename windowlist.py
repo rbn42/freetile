@@ -2,7 +2,7 @@ from config import (EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS, MIN_WINDOW_HEIGHT,
                     MIN_WINDOW_WIDTH)
 
 import helper.xcb
-from helper.ewmh import (ewmh, get_window_list, maximize_window, raise_window,
+from helper.helper_ewmh import (ewmh, get_window_list, maximize_window, raise_window,
                          unmaximize_window)
 from helper.xlib import (disp, get_frame_extents, get_root_window_property,
                          get_wm_class_and_state)
