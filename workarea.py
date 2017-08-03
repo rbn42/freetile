@@ -1,6 +1,6 @@
 import math
 from config import (BottomPadding, LeftPadding, RightPadding, TopPadding,
-                    WinBorder)
+                    WindowGap)
 
 from helper.ewmh import ewmh
 
@@ -20,30 +20,28 @@ class WorkArea:
         self.x = x + LeftPadding
         self.y = y + TopPadding
 
-    def layout_shift(self, x, y, w, h):
-        return (self.x + x + WinBorder,
-                self.y + y + WinBorder,
-                w - 2 * WinBorder,
-                h - 2 * WinBorder)
-
     def tile(self, wincount):
         # for rotated screen
         cols = 1 if workarea.width < workarea.height else 2
         layout = []
-        colwidth = int(self.width / cols)
+        colwidth = int((self.width + WindowGap) / cols) - WindowGap
         windowsleft = wincount
+        x = self.x
         for col in range(cols):
+            if col == cols - 1:
+                colwidth = self.width - x
             rows = min(int(math.ceil(float(wincount) / cols)), windowsleft)
             windowsleft -= rows
-            rowheight = int(self.height / rows)
+            rowheight = int((WindowGap + self.height) / rows) - WindowGap
+            y = self.y
             for row in range(rows):
-                layout.append(self.layout_shift(
-                    colwidth * col,
-                    row * rowheight,
-                    colwidth,
-                    rowheight))
+                if row == rows - 1:
+                    rowheight = self.height - y
+                layout.append([x, y, colwidth, rowheight])
+                y += rowheight + WindowGap
+            x += colwidth + WindowGap
+
         return layout[:wincount]
 
 
 workarea = WorkArea()
-

@@ -1,5 +1,5 @@
 #!/usr/bin/python
-WinBorder = 2
+WindowGap = 4
 LeftPadding = 4
 BottomPadding = 4
 TopPadding = 4

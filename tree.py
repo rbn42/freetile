@@ -125,7 +125,7 @@ class Node:
         self.parent.children.insert(index + 1, sibling)
         return sibling
 
-    def regularize(self, border):
+    def regularize(self, gap):
         """
         Regularize a branch in a 2d tree. A node's position is a rectangle
         defined by x0,y0,x1,y1. All the children's positions will be adjusted
@@ -141,7 +141,7 @@ class Node:
                     child.position[i] = self.position[i]
         i0 = self.position[dmin]
         i1 = self.position[dmax]
-        b = border[dmin]
+        b = gap[dmin]
 
         modified_by_user = False
         modified_index = -1
@@ -176,10 +176,10 @@ class Node:
             child.position[dmin] = i
             i += _size
             child.position[dmax] = i
-        self.children[-1].position[dmax] = i1
+        self.children[-1].position[dmax] = self.position[dmax]
 
         for child, i in zip(self.children, range(len(self.children))):
-            child.regularize(border)
+            child.regularize(gap)
 
     def remove_from_tree(self):
         """

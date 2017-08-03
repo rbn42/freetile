@@ -1,6 +1,6 @@
 import logging
 from config import (MAX_KD_TREE_BRANCH, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH,
-                    REGULARIZE_FULLSCREEN, WinBorder)
+                    REGULARIZE_FULLSCREEN, WindowGap)
 
 from helper.xlib import arrange
 from tree import Node, leafnodemap
@@ -230,7 +230,7 @@ def regularize_kd_tree(regularize_node,
     if regularize_node.overlap():
         return False
     # regularize k-d tree
-    regularize_node.regularize(border=(2 * WinBorder, WinBorder * 2))
+    regularize_node.regularize(gap=(WindowGap, WindowGap))
 
     # load k-d tree
     a, b, reach_size_limit = regularize_node.getLayout(windowlist.minGeometry)
