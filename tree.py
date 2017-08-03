@@ -147,8 +147,8 @@ class Node:
         for index in range(size):
             child = self.children[index]
             min_expect = i
-            max_expect = i+ interval
-            i+=interval+gap
+            max_expect = i + interval
+            i += interval + gap
             if index == size - 1:
                 max_expect = end
             cmin = child.position[dmin]
@@ -201,10 +201,9 @@ class Node:
             elif modified_by_user:
                 _size = child.interval_size()
                 if index > modified_index or modified_index + 1 == len(self.children) and not child.modified:
-                    _size = _size * size / size_sum
-                    _size = int(_size)
+                    _size = int(_size * size / size_sum)
             else:
-                _size = int(size) / len(self.children)
+                _size = int(size / len(self.children))
             child.position[dmin] = i
             i += _size
             child.position[dmax] = i
