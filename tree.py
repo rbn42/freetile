@@ -11,14 +11,15 @@ class Node:
     children = None
     key = None
     position = None
-    modified = False
+    """node resized by user"""
+    resized = False
     DIMENSION = 2
     __leafnodemap = None
 
     def print(self):
         tab = '  ' * self.depth()
         print('%s%s,%s,%s' % (tab,
-                              self.key, self.position, self.modified))
+                              self.key, self.position, self.resized))
         if self.children is not None:
             for child in self.children:
                 child.print()
@@ -174,42 +175,57 @@ class Node:
         i0 = self.position[dmin]
         i1 = self.position[dmax]
         b = gap[dmin]
+        num = len(self.children)
 
-        modified_by_user = False
-        modified_index = -1
-        for child, i in zip(self.children, range(len(self.children))):
-            if child.modified:
-                modified_index = i
-                modified_by_user = True
+        resizeed_index = -1
+        for i in range(num):
+            child = self.children[i]
+            if child.resized:
+                resizeed_index = i
 
         i0 = i0 - b
-        size = i1 - i0 - len(self.children) * b
+        size = i1 - i0 - num * b
         size_sum = 0
-        for child, i in zip(self.children, range(len(self.children))):
-            if i > modified_index \
-                    or 1 + modified_index == len(self.children) \
-                    and not child.modified:
+        if resizeed_index < 0:
+            for child in self.children:
                 size_sum += child.interval_size()
-            else:
-                size -= child.interval_size()
+            i = i0
+            default_interval_size = int(size / num)
+            for child in self.children:
+                i += b
+                child.position[dmin] = i
+                if size == size_sum:
+                    i += child.interval_size()
+                else:
+                    i += default_interval_size
+                    # i += int(child.interval_size() * size / size_sum)
+                child.position[dmax] = i
+        else:
+            for i in range(num):
+                child = self.children[i]
+                if i > resizeed_index \
+                        or 1 + resizeed_index == num \
+                        and not child.resized:
+                    size_sum += child.interval_size()
+                else:
+                    size -= child.interval_size()
 
-        i = i0
-        for child, index in zip(self.children, range(len(self.children))):
-            i += b
-            if size == size_sum:
-                _size = child.interval_size()
-            elif modified_by_user:
-                _size = child.interval_size()
-                if index > modified_index or modified_index + \
-                        1 == len(self.children) and not child.modified:
-                    _size = int(_size * size / size_sum)
-            else:
-                _size = int(size / len(self.children))
-            child.position[dmin] = i
-            i += _size
-            child.position[dmax] = i
+            i = i0
+            for index in range(num):
+                child = self.children[index]
+                i += b
+                if size == size_sum:
+                    _size = child.interval_size()
+                else:
+                    _size = child.interval_size()
+                    if index > resizeed_index or resizeed_index + \
+                            1 == num and not child.resized:
+                        _size = int(_size * size / size_sum)
+                child.position[dmin] = i
+                i += _size
+                child.position[dmax] = i
+
         self.children[-1].position[dmax] = self.position[dmax]
-
         for child, i in zip(self.children, range(len(self.children))):
             child.regularize(gap)
 

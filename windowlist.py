@@ -2,13 +2,9 @@ from config import (EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS, MIN_WINDOW_HEIGHT,
                     MIN_WINDOW_WIDTH)
 
 import helper.xcb
-from helper.helper_ewmh import (
-    ewmh,
-    get_window_list,
-    maximize_window,
-    raise_window,
-    unmaximize_window)
-from helper.xlib import (disp, get_frame_extents, get_wm_class_and_state)
+from helper.helper_ewmh import (ewmh, get_window_list, maximize_window,
+                                raise_window, unmaximize_window)
+from helper.xlib import disp, get_frame_extents, get_wm_class_and_state
 from workarea import workarea
 
 
@@ -80,12 +76,6 @@ class WindowList:
     def get_current_layout(self):
         return [self.windowGeometry[_id]
                 for _id in self.windowInCurrentWorkspaceInStackingOrder]
-
-    def get_id_and_layout(self, num_window_from_stack_bottom=None):
-        ids = self.windowInCurrentWorkspaceInStackingOrder
-        if num_window_from_stack_bottom is not None:
-            ids = ids[: num_window_from_stack_bottom]
-        return ids, [self.windowGeometry[i] for i in ids]
 
     def get_active_window(self, allow_outofworkspace=False):
         active = self.ewmhactive

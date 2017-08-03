@@ -49,7 +49,7 @@ def resize_kdtree(resize_width, resize_height):
                 node = current_node
                 index = index_current
                 _resize = resize_current
-                node.modified = True
+                node.resized = True
                 regularize_node = node.parent
                 # invert the operation if the node is the last child of its
                 # parent
@@ -65,7 +65,7 @@ def resize_kdtree(resize_width, resize_height):
                     node = current_node.parent
                     index = index_parent
                     _resize = resize_parent
-                    node.modified = True
+                    node.resized = True
                     regularize_node = node.parent
                     # invert the operation if the node is the last child of its
                     # parent
@@ -231,14 +231,15 @@ def regularize_windows():
     return True
 
 
-def search_for_regularized_windows(_min, _max):
+def search_for_regularized_windows(_min, _max, stack, layout_stack):
     """
     search for regularized windows from stack bottom
     """
     result = None
     while _min <= _max:
         num = int(_min / 2 + _max / 2)
-        winlist, layout = windowlist.get_id_and_layout(num)
+        winlist = stack[:num]
+        layout = layout_stack[:num]
         tree = getkdtree(winlist, layout)
         if tree.overlap():
             _max = num - 1
@@ -248,17 +249,21 @@ def search_for_regularized_windows(_min, _max):
     return result
 
 
-def regularize_or_insert_windows(minimum_regularized_window):
+def regularize_or_insert_windows(min_regularized_window):
     stack = windowlist.windowInCurrentWorkspaceInStackingOrder
+    layout_stack = windowlist.get_current_layout()
     num = len(stack)
 
-    result = search_for_regularized_windows(minimum_regularized_window, num)
+    result = search_for_regularized_windows(
+        min_regularized_window, num, stack, layout_stack)
     if result is None:
         return False
     tree, winlist, num = result
 
     target = winlist[-1]
     target_node = tree.leafnodemap()[target]
+
+    tree.regularize(gap=(WindowGap, WindowGap))
 
     if target_node.parent.children_resized(gap=(WindowGap, WindowGap)):
         # if node is resized by user, dont resize it in the same axis
