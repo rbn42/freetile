@@ -16,7 +16,7 @@ def navigate(window_name, target_direction):
             cmd = EMACS_NAVIGATION_CMD.format(target=target_direction)
             try:
                 s = subprocess.check_output(cmd, shell=True).decode('utf8')
-            except:
+            except BaseException:
                 return False
             if debug:
                 print(s)

@@ -14,12 +14,14 @@ def maximize_window(win):
                     '_NET_WM_STATE_MAXIMIZED_HORZ')
     ewmh.display.flush()
 
-def unmaximize_window(win,flush=False):
+
+def unmaximize_window(win, flush=False):
     ewmh.setWmState(win, 0,
                     '_NET_WM_STATE_MAXIMIZED_VERT',
                     '_NET_WM_STATE_MAXIMIZED_HORZ')
-    if flush:   
+    if flush:
         ewmh.display.flush()
+
 
 def get_window_list(ignore=[]):
     """
