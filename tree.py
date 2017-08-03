@@ -35,7 +35,7 @@ class Node:
 
     def dimension(self):
         """
-        The dimension expected to be controlled by current node and divided between children. 
+        The dimension expected to be controlled by current node and divided between children.
         """
         # column first
         index_min = self.depth() % self.DIMENSION
@@ -200,7 +200,8 @@ class Node:
                 _size = child.interval_size()
             elif modified_by_user:
                 _size = child.interval_size()
-                if index > modified_index or modified_index + 1 == len(self.children) and not child.modified:
+                if index > modified_index or modified_index + \
+                        1 == len(self.children) and not child.modified:
                     _size = int(_size * size / size_sum)
             else:
                 _size = int(size / len(self.children))

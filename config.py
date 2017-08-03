@@ -37,5 +37,5 @@ config_file = os.path.expanduser("~/.tilerc")
 try:
     s = open(config_file).read()
     exec(s)
-except:
+except BaseException:
     pass

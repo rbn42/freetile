@@ -2,8 +2,12 @@ from config import (EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS, MIN_WINDOW_HEIGHT,
                     MIN_WINDOW_WIDTH)
 
 import helper.xcb
-from helper.helper_ewmh import (ewmh, get_window_list, maximize_window, raise_window,
-                         unmaximize_window)
+from helper.helper_ewmh import (
+    ewmh,
+    get_window_list,
+    maximize_window,
+    raise_window,
+    unmaximize_window)
 from helper.xlib import (disp, get_frame_extents, get_root_window_property,
                          get_wm_class_and_state)
 from workarea import workarea
@@ -66,8 +70,11 @@ class WindowList:
             minw = max(MIN_WINDOW_WIDTH, wnh.min_width + f_left, f_right)
             minh = max(MIN_WINDOW_HEIGHT, wnh.min_height + f_top, f_right)
             self.minGeometry[winid] = minw, minh
-            self.windowGeometry[winid] = [int(x) - f_left, int(y) - f_top,
-                                          w + f_left + f_right, h + f_top + f_bottom]
+            self.windowGeometry[winid] = [
+                int(x) - f_left,
+                int(y) - f_top,
+                w + f_left + f_right,
+                h + f_top + f_bottom]
 
             self.windowInCurrentWorkspaceInStackingOrder.append(winid)
 

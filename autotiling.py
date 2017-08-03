@@ -74,7 +74,7 @@ def add_window(win):
     for _ in range(50):
         try:
             lst = ewmh.getClientList()
-        except:
+        except BaseException:
             print('fail %s' % _)
             return True
     if win.id in [w.id for w in lst]:
@@ -83,8 +83,8 @@ def add_window(win):
             disp.flush()
             disp.sync()
             windowlist.reset()
-            num=len(windowlist.windowInCurrentWorkspaceInStackingOrder)
-            if num==2:
+            num = len(windowlist.windowInCurrentWorkspaceInStackingOrder)
+            if num == 2:
                 from main import force_tile
                 force_tile()
                 return True

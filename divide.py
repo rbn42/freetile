@@ -7,8 +7,7 @@ def divide(_input):
     divide intervals
     '''
     # find out separable intervals
-    _input = [n for n in _input]
-    _input.sort()
+    _input = sorted([n for n in _input])
     l = [interval for interval, value in _input]
     for i0, i1 in l:
         assert not i0 == i1
@@ -51,10 +50,10 @@ if __name__ == '__main__':
             [([0.8, 0.9], 3), ([0.8, 1.0], 4)]]
     try:
         assert divide(_input) == _out
-    except:
+    except BaseException:
         print(divide(_input))
 
-    _input = [[-0.1, 0.4],  [0.3, 0.4],
+    _input = [[-0.1, 0.4], [0.3, 0.4],
               [0.2, 0.5], [0.6, 0.8], [0.8, 0.9], [0.8, 1.0]]
     _input = list(zip(_input, range(len(_input))))
     _out = [[([-0.1, 0.4], 0), ([0.2, 0.5], 2), ([0.3, 0.4], 1), ], [
@@ -62,7 +61,7 @@ if __name__ == '__main__':
 
     try:
         assert divide(_input) == _out
-    except:
+    except BaseException:
         print(divide(_input))
    # print(divide(_input))
 
