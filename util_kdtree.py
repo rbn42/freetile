@@ -259,7 +259,6 @@ def insert_focused_window_into_kdtree(newwin=None):
 
 
 def get_last_active_window():
-    # assert window list is in stacking order
     active = windowlist.get_active_window()
     lst = windowlist.windowInCurrentWorkspaceInStackingOrder
     index = lst.index(active)
