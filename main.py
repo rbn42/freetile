@@ -30,25 +30,25 @@ def regularize():
     '''
     num = len(windowlist.windowInCurrentWorkspaceInStackingOrder)
     if num == 0:
-        return True
+        pass
     elif num == 1:
         windowlist.maximize_window(
             windowlist.windowInCurrentWorkspaceInStackingOrder[0])
-        return True
     elif regularize_windows():
         logging.info('regularize windows')
-        return True
     elif num == 2:
         logging.info('layout')
         force_tile()
-        return True
     elif insert_focused_window_into_kdtree():
         logging.info('insert a window into the K-D Tree')
-        return True
     else:
         logging.info('layout')
         force_tile()
-        return True
+
+    # Make sure the current active window is raised to top of the stack.
+    # The stack order will be used to find out previous active windows.
+    active = windowlist.get_active_window()
+    windowlist.raise_window(active)
 
 
 def force_tile():

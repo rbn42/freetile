@@ -8,8 +8,7 @@ from helper.helper_ewmh import (
     maximize_window,
     raise_window,
     unmaximize_window)
-from helper.xlib import (disp, get_frame_extents, get_root_window_property,
-                         get_wm_class_and_state)
+from helper.xlib import (disp, get_frame_extents, get_wm_class_and_state)
 from workarea import workarea
 
 

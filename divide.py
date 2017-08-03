@@ -63,8 +63,7 @@ if __name__ == '__main__':
         assert divide(_input) == _out
     except BaseException:
         print(divide(_input))
-   # print(divide(_input))
-
+    # print(divide(_input))
     # print(_input)
     _input = [[-0.1, 0.4], [1.1, 1.2], [0.3, 0.4],
               [0.2, 0.5], [0.6, 0.8], [0.8, 0.9], [0.8, 1.0]]

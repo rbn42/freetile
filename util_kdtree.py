@@ -103,7 +103,7 @@ def insert_window_into_kdtree(winid, target):
     target_node = _tree.leafnodemap()[target]
     if target_node.parent.children_resized(gap=(WindowGap, WindowGap)):
         # if node is resized by user, dont resize it in the same axis again.
-        pnode = target_node.create_parent()
+        target_node.create_parent()
     node = target_node.create_sibling()
     node.key = winid
     if REGULARIZE_FULLSCREEN:
