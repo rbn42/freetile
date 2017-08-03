@@ -3,8 +3,7 @@ from config import (MAX_KD_TREE_BRANCH, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH,
                     REGULARIZE_FULLSCREEN, WinBorder)
 
 from helper.xlib import arrange
-from tree2 import Node,leafnodemap
-
+from tree import Node, leafnodemap
 from windowlist import windowlist
 from workarea import workarea
 
@@ -45,7 +44,7 @@ def resize_kdtree(resize_width, resize_height):
 
     # resize nodes
     if not resize_current == 0:
-        if not current_node.overlap:
+        if not current_node.overlap():
             if current_node.parent is not None:
                 node = current_node
                 index = index_current
@@ -61,7 +60,7 @@ def resize_kdtree(resize_width, resize_height):
 
     if not resize_parent == 0:
         if current_node.parent is not None:
-            if not current_node.parent.overlap:
+            if not current_node.parent.overlap():
                 if current_node.parent.parent is not None:
                     node = current_node.parent
                     index = index_parent
@@ -87,10 +86,8 @@ def resize_kdtree(resize_width, resize_height):
 
 
 def getkdtree(winlist, lay):
-    print('gettree')
     origin_lay = [[x, y, x + w, y + h] for x, y, w, h in lay]
-    n=Node(list(zip(origin_lay, winlist))).create_parent().create_parent()
-    n.print()
+    n = Node(list(zip(origin_lay, winlist))).create_parent().create_parent()
     return n
 
 
@@ -100,9 +97,10 @@ def insert_window_into_kdtree(winid, target):
         if not w == winid]
     lay = windowlist.get_current_layout()
     _tree = getkdtree(winlist, lay)
-    target_node = leafnodemap[target]
-    if target_node.parent.overlap:
+    if target not in leafnodemap:
+        # overlapped
         return False
+    target_node = leafnodemap[target]
     node = target_node.create_sibling()
     node.key = winid
     if REGULARIZE_FULLSCREEN:
@@ -198,7 +196,7 @@ def move_kdtree(target, allow_create_new_node=True):
     # remove nodes which has only one child
     regularize_node.remove_from_tree()
 
-    if regularize_node.overlap:
+    if regularize_node.overlap():
         return False
 
     # regularize k-d tree
@@ -214,7 +212,7 @@ def regularize_windows():
     lay = windowlist.get_current_layout()
     _tree = getkdtree(
         windowlist.windowInCurrentWorkspaceInStackingOrder, lay)
-    if _tree.overlap:
+    if _tree.overlap():
         logging.info('overlapped windows')
         return False
     if REGULARIZE_FULLSCREEN:
@@ -226,16 +224,16 @@ def regularize_windows():
 def regularize_kd_tree(regularize_node,
                        min_width=MIN_WINDOW_WIDTH,
                        min_height=MIN_WINDOW_HEIGHT):
-    if regularize_node.overlap:
+    if regularize_node.overlap():
         return False
     if regularize_node is None:
         return False
     # regularize k-d tree
-    regularize_node.regularize( border=(2 * WinBorder, WinBorder * 2))
+    regularize_node.regularize(border=(2 * WinBorder, WinBorder * 2))
 
     # load k-d tree
     a, b, reach_size_limit = regularize_node.getLayout(
-         min_width=min_width, min_height=min_height)
+        min_width=min_width, min_height=min_height)
     if reach_size_limit:
         return False
     arrange(a, b)
@@ -267,7 +265,7 @@ def get_last_active_window():
 
 def detect_overlap():
     current_layout = windowlist.get_current_layout()
-    return getkdtree(windowlist.windowInCurrentWorkspaceInStackingOrder, current_layout)[0].overlap
+    return getkdtree(windowlist.windowInCurrentWorkspaceInStackingOrder, current_layout)[0].overlap()
 
 
 def find_kdtree(center, target, allow_parent_sibling=True):
@@ -284,7 +282,7 @@ def find_kdtree(center, target, allow_parent_sibling=True):
     if active not in winlist:
         return None
     lay = windowlist.get_current_layout()
-    _tree= getkdtree(winlist, lay)
+    _tree = getkdtree(winlist, lay)
     current_node = leafnodemap[active]
 
     if current_node.depth() % 2 == 0:
@@ -315,8 +313,7 @@ def find_kdtree(center, target, allow_parent_sibling=True):
         if not allow_parent_sibling:
             if not target.leaf():
                 return None
-    if None == target or target.overlap:
+    if None == target or target.overlap():
         return None
     else:
         return target.key
-
