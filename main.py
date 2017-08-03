@@ -18,8 +18,6 @@ import logging
 
 import helper.emacs
 import helper.vim
-from helper.ewmh import raise_window
-from helper.xlib import arrange, maximize
 from util_kdtree import (find_kdtree, insert_focused_window_into_kdtree,
                          move_kdtree, regularize_windows, resize_kdtree)
 from windowlist import windowlist
@@ -34,7 +32,7 @@ def regularize():
     if num == 0:
         return True
     elif num == 1:
-        maximize(windowlist.windowInCurrentWorkspaceInStackingOrder[0])
+        windowlist.maximize_window(windowlist.windowInCurrentWorkspaceInStackingOrder[0])
         return True
     elif regularize_windows():
         logging.info('regularize windows')
@@ -55,7 +53,7 @@ def force_tile():
     winlist = windowlist.windowInCurrentWorkspaceInStackingOrder
 
     tile = workarea.tile(len(winlist))
-    return arrange(tile, winlist)
+    return windowlist.arrange(tile, winlist)
 
 
 def resize(resize_width, resize_height):
@@ -84,7 +82,7 @@ def moveandresize(target):
     lay = windowlist.windowGeometry[active]
     for i in range(4):
         lay[i] += target[i]
-    arrange([lay], [active])
+    windowlist.arrange([lay], [active])
     return True
 
 
@@ -110,7 +108,7 @@ def swap(target):
     lay0 = windowlist.windowGeometry[active]
     lay1 = windowlist.windowGeometry[target_window_id]
 
-    arrange([lay0, lay1], [target_window_id, active])
+    windowlist.arrange([lay0, lay1], [target_window_id, active])
     return True
 
 
@@ -184,9 +182,9 @@ def focus(target):
             active, target, allow_parent_sibling=True)
 
     if target_window_id is None:
-        raise_window(active)
+        windowlist.raise_window(active)
     else:
-        raise_window(target_window_id)
+        windowlist.raise_window(target_window_id)
     return True
 
 

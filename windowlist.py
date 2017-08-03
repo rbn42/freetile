@@ -1,7 +1,9 @@
 from config import (EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS, MIN_WINDOW_HEIGHT,
                     MIN_WINDOW_WIDTH)
 
-from helper.ewmh import ewmh, get_window_list
+import helper.xcb
+from helper.ewmh import (ewmh, get_window_list, maximize_window, raise_window,
+                         unmaximize_window)
 from helper.xlib import (disp, get_frame_extents, get_root_window_property,
                          get_wm_class_and_state)
 from workarea import workarea
@@ -12,7 +14,16 @@ class WindowList:
     windowGeometry = {}
     windowName = {}
     minGeometry = {}
+    windowObjectMap = {}
     ewmhactive = None
+
+    def maximize_window(self, winid):
+        win = self.windowObjectMap[winid]
+        maximize_window(win)
+
+    def raise_window(self, winid):
+        win = self.windowObjectMap[winid]
+        raise_window(win)
 
     def reset(self, ignore=[]):
         # get_root_window_property("_NET_CURRENT_DESKTOP")
@@ -22,9 +33,11 @@ class WindowList:
         self.windowName = {}
         self.windowGeometry = {}
         self.minGeometry = {}
+        self.windowObjectMap = {}
 
         for win, _desktop, name in get_window_list(ignore):
             winid = win.id
+            self.windowObjectMap[winid] = win
             geo = win.get_geometry()
             x, y, w, h = geo.x, geo.y, geo.width, geo.height
             if not _desktop == desktop:
@@ -49,7 +62,7 @@ class WindowList:
                 continue
 
             wnh = win.get_wm_normal_hints()
-            f_left, f_right, f_top, f_bottom = get_frame_extents(winid)
+            f_left, f_right, f_top, f_bottom = get_frame_extents(win)
             minw = max(MIN_WINDOW_WIDTH, wnh.min_width + f_left, f_right)
             minh = max(MIN_WINDOW_HEIGHT, wnh.min_height + f_top, f_right)
             self.minGeometry[winid] = minw, minh
@@ -71,6 +84,35 @@ class WindowList:
             return active
         if allow_outofworkspace and active in self.windowName:
             return active
+
+    def arrange(self, layout, windowids):
+        windows = [self.windowObjectMap[wid]for wid in windowids]
+        # unmaximize
+        for win in windows:
+            unmaximize_window(win)
+
+        # TODO need correct frame extents after maximized windows unmaximized
+        # disp.flush()
+        # disp.sync()
+        import time
+        time.sleep(0.1)
+
+        layout_final = []
+        # move windows
+        for win, lay, in zip(windows, layout, ):
+            normal_hints = win.get_wm_normal_hints()
+
+            x, y, width, height = lay
+            f_left, f_right, f_top, f_bottom = get_frame_extents(win)
+            width -= f_left + f_right
+            height -= f_top + f_bottom
+
+            # window gravity: Static
+            if normal_hints.win_gravity == 10:
+                y += f_top
+                x += f_left
+            layout_final.append([x, y, width, height])
+        return helper.xcb.arrange(layout_final, windowids)
 
 
 windowlist = WindowList()

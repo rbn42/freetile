@@ -1,7 +1,6 @@
 import logging
 from config import MAX_KD_TREE_BRANCH, REGULARIZE_FULLSCREEN, WindowGap
 
-from helper.xlib import arrange
 from tree import Node
 from windowlist import windowlist
 from workarea import workarea
@@ -241,7 +240,7 @@ def regularize_kd_tree(regularize_node,
         if ignore_size_limit_error:
             return True
         return False
-    arrange(a, b)
+    windowlist.arrange(a, b)
     return True
 
 
