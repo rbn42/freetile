@@ -34,6 +34,8 @@ def get_window(func):
             r = func(win)
         elif "Xlib.display.Window" in str(win):
             r = func(win)
+        else:
+            print(str(win))
         return r
     return func_wrapper
 

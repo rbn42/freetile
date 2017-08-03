@@ -50,11 +50,11 @@ class WindowList:
 
             wnh = win.get_wm_normal_hints()
             f_left, f_right, f_top, f_bottom = get_frame_extents(winid)
-            minw = max(MIN_WINDOW_WIDTH, wnh.min_width)  # + f_left, f_right)
-            minh = max(MIN_WINDOW_HEIGHT, wnh.min_height)  # + f_top, f_right)
+            minw = max(MIN_WINDOW_WIDTH, wnh.min_width + f_left, f_right)
+            minh = max(MIN_WINDOW_HEIGHT, wnh.min_height + f_top, f_right)
             self.minGeometry[winid] = minw, minh
             self.windowGeometry[winid] = [int(x) - f_left, int(y) - f_top,
-                                         w + f_left + f_right, h + f_top + f_bottom]
+                                          w + f_left + f_right, h + f_top + f_bottom]
 
             self.windowInCurrentWorkspaceInStackingOrder.append(winid)
 

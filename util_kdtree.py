@@ -26,6 +26,8 @@ def resize_kdtree(resize_width, resize_height):
     lay = windowlist.get_current_layout()
     # generate k-d tree
     _tree = getkdtree(winlist, lay)
+    if active not in leafnodemap:
+        return False
     current_node = leafnodemap[active]
 
     # determine the size of current node and parent node.
@@ -279,6 +281,8 @@ def find_kdtree(center, target, allow_parent_sibling=True):
         return None
     lay = windowlist.get_current_layout()
     _tree = getkdtree(winlist, lay)
+    if active not in leafnodemap:
+        return None
     current_node = leafnodemap[active]
 
     if current_node.depth() % 2 == 0:
