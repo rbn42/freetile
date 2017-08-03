@@ -224,9 +224,9 @@ def regularize_windows():
 def regularize_kd_tree(regularize_node,
                        min_width=MIN_WINDOW_WIDTH,
                        min_height=MIN_WINDOW_HEIGHT):
-    if regularize_node.overlap():
-        return False
     if regularize_node is None:
+        return False
+    if regularize_node.overlap():
         return False
     # regularize k-d tree
     regularize_node.regularize(border=(2 * WinBorder, WinBorder * 2))
@@ -261,11 +261,6 @@ def get_last_active_window():
         return windowlist.windowInCurrentWorkspaceInStackingOrder[-2]
     else:
         return None
-
-
-def detect_overlap():
-    current_layout = windowlist.get_current_layout()
-    return getkdtree(windowlist.windowInCurrentWorkspaceInStackingOrder, current_layout)[0].overlap()
 
 
 def find_kdtree(center, target, allow_parent_sibling=True):
