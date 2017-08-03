@@ -1,9 +1,8 @@
 import logging
-from config import (MAX_KD_TREE_BRANCH, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH,
-                    REGULARIZE_FULLSCREEN, WindowGap)
+from config import MAX_KD_TREE_BRANCH, REGULARIZE_FULLSCREEN, WindowGap
 
-from tree import Node
 from helper.xlib import arrange
+from tree import Node
 from windowlist import windowlist
 from workarea import workarea
 
@@ -103,6 +102,9 @@ def insert_window_into_kdtree(winid, target):
         # overlapped
         return False
     target_node = _tree.leafnodemap()[target]
+    if target_node.parent.children_resized(gap=(WindowGap, WindowGap)):
+        # if node is resized by user, dont resize it in the same axis again.
+        pnode=target_node.create_parent()
     node = target_node.create_sibling()
     node.key = winid
     if REGULARIZE_FULLSCREEN:
@@ -317,3 +319,4 @@ def find_kdtree(center, target, allow_parent_sibling=True):
         return None
     else:
         return target.key
+

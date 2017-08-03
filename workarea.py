@@ -29,14 +29,14 @@ class WorkArea:
         x = self.x
         for col in range(cols):
             if col == cols - 1:
-                colwidth = self.width - x
+                colwidth = self.width + self.x - x
             rows = min(int(math.ceil(float(wincount) / cols)), windowsleft)
             windowsleft -= rows
             rowheight = int((WindowGap + self.height) / rows) - WindowGap
             y = self.y
             for row in range(rows):
                 if row == rows - 1:
-                    rowheight = self.height - y
+                    rowheight = self.height + self.y - y
                 layout.append([x, y, colwidth, rowheight])
                 y += rowheight + WindowGap
             x += colwidth + WindowGap

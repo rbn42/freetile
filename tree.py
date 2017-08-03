@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-import config
-
 from divide import divide
-
 
 
 class Node:
@@ -28,9 +25,10 @@ class Node:
 
     def leaf(self):
         return self.children is None
+
     def leafnodemap(self):
         if self.parent is None:
-            #root
+            # root
             return self.__leafnodemap
         else:
             return self.parent.leafnodemap()
@@ -60,8 +58,8 @@ class Node:
         if _input is None:
             return
         if parent is None:
-            #root
-            self.__leafnodemap={}
+            # root
+            self.__leafnodemap = {}
         else:
             self.parent = parent
 
@@ -84,7 +82,7 @@ class Node:
 
         self.position = self.init_position(_input)
 
-    def init_position(self, _input):
+    def init_position(self, _input=None):
         if self.leaf():
             position_children = [position for position, value in _input]
         else:
@@ -93,8 +91,8 @@ class Node:
         maxx, maxy = -10**6, -10**6
         minx = min([pos[0] for pos in position_children])
         miny = min([pos[1] for pos in position_children])
-        maxx = min([pos[2] for pos in position_children])
-        maxy = min([pos[3] for pos in position_children])
+        maxx = max([pos[2] for pos in position_children])
+        maxy = max([pos[3] for pos in position_children])
         return [min(10**6, minx), min(10**6, miny),
                 max(-10**6, maxx), max(-10**6, maxy), ]
 
@@ -117,14 +115,13 @@ class Node:
         new_parent.parent = self.parent
         new_parent.children = [self]
         new_parent.position = list(self.position)
-        
 
         if self.parent is not None:
             index = self.parent.children.index(self)
             self.parent.children[index] = new_parent
         else:
-            #root
-            new_parent.__leafnodemap=self.__leafnodemap
+            # root
+            new_parent.__leafnodemap = self.__leafnodemap
 
         self.parent = new_parent
 
@@ -138,6 +135,27 @@ class Node:
         index = self.parent.children.index(self)
         self.parent.children.insert(index + 1, sibling)
         return sibling
+
+    def children_resized(self, gap):
+        dmin, dmax = self.dimension()
+        start = self.position[dmin]
+        end = self.position[dmax]
+        gap = gap[dmin]
+        size = len(self.children)
+        interval = int((end - start + gap) / size) - gap
+        i = start
+        for index in range(size):
+            child = self.children[index]
+            min_expect = i
+            max_expect = i+ interval
+            i+=interval+gap
+            if index == size - 1:
+                max_expect = end
+            cmin = child.position[dmin]
+            cmax = child.position[dmax]
+            if not cmin == min_expect or not cmax == max_expect:
+                return True
+        return False
 
     def regularize(self, gap):
         """
