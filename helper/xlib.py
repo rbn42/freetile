@@ -24,22 +24,6 @@ def get_root_window_property(name):
                              Xlib.Xatom.CARDINAL, 0, 32).value
 
 
-def get_window(func):
-    def func_wrapper(win):
-        t = type(win)
-        if t == int:
-            win = disp.create_resource_object('window', win)
-            r = func(win)
-        elif t == type(root):
-            r = func(win)
-        elif "Xlib.display.Window" in str(win):
-            r = func(win)
-        else:
-            print(str(win))
-        return r
-    return func_wrapper
-
-
 def get_frame_extents(win):
     frame_extents = win.get_property(disp.intern_atom(
         "_NET_FRAME_EXTENTS"), Xlib.Xatom.CARDINAL, 0, 32)
@@ -49,7 +33,6 @@ def get_frame_extents(win):
         return frame_extents.value
 
 
-@get_window
 def get_wm_class_and_state(win):
     wm_class = win.get_wm_class()
     wm_state = win.get_wm_state()

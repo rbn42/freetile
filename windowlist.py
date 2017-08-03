@@ -45,7 +45,7 @@ class WindowList:
             if name in EXCLUDE_APPLICATIONS:
                 continue
 
-            wmclass, minimized = get_wm_class_and_state(winid)
+            wmclass, minimized = get_wm_class_and_state(win)
             dock = disp.intern_atom('_NET_WM_WINDOW_TYPE_DOCK')
             if dock in ewmh.getWmWindowType(win):
                 continue
