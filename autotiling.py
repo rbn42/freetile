@@ -69,31 +69,48 @@ def insert_window(win):
 for win in ewmh.getClientList():
     insert_window(win)
 
+
+def add_window(win):
+    for _ in range(50):
+        try:
+            lst = ewmh.getClientList()
+        except:
+            print('fail %s' % _)
+            return True
+    if win.id in [w.id for w in lst]:
+        if insert_window(win):
+            print([e.type, *wininfo[win.id]])
+            disp.flush()
+            disp.sync()
+            windowlist.reset()
+            num=len(windowlist.windowInCurrentWorkspaceInStackingOrder)
+            if num==2:
+                from main import force_tile
+                force_tile()
+                return True
+            else:
+                return insert_focused_window_into_kdtree(win.id)
+    return True
+
+
 while True:
     e = disp.next_event()
     if e.type == X.MapNotify:
         win = e.window
-        for _ in range(50):
-            try:
-                lst = ewmh.getClientList()
-            except:
-                print('fail %s' % _)
-                continue
-        if win.id in [w.id for w in lst]:
-            if insert_window(win):
-                print([e.type, *wininfo[win.id]])
-                windowlist.reset()
-                if not insert_focused_window_into_kdtree(win.id):
-                    break
+        if not add_window(win):
+            print('failed to add new window')
+            break
     elif e.type == X.UnmapNotify:
         win = e.window
         if win.id in wininfo:
             print([e.type, *wininfo.pop(win.id)])
             windowlist.reset(ignore=[win.id])
             if len(windowlist.windowInCurrentWorkspaceInStackingOrder) < 1:
+                print('no window exists')
                 # quit auto tiling when no window exists.
                 break
             if not regularize():
+                print('failed to remove window')
                 break
 # Quit loop when detect overlapped windows created by user.
 print('quit autotiling')

@@ -39,13 +39,15 @@ def regularize():
         return True
     elif num == 2:
         logging.info('layout')
-        return force_tile()
+        force_tile()
+        return True
     elif insert_focused_window_into_kdtree():
         logging.info('insert a window into the K-D Tree')
         return True
     else:
         logging.info('layout')
-        return force_tile()
+        force_tile()
+        return True
 
 
 def force_tile():

@@ -92,8 +92,8 @@ class WindowList:
             unmaximize_window(win)
 
         # TODO need correct frame extents after maximized windows unmaximized
-        # disp.flush()
-        # disp.sync()
+        disp.flush()
+        disp.sync()
         import time
         time.sleep(0.1)
 
