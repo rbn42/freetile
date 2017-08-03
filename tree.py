@@ -204,15 +204,14 @@ class Node:
         for child in l:
             child.remove_from_tree()
 
-    def getLayout(self,
-                  min_width=config.MIN_WINDOW_WIDTH,
-                  min_height=config.MIN_WINDOW_HEIGHT):
+    def getLayout(self, size_limit_map):
         """
         Extract layouts and window ids from a 2d tree.
         """
         if self.children is None:
             x0, y0, x1, y1 = self.position
-            if x1 - x0 < min_width or y1 - y0 < min_height:
+            minw, minh = size_limit_map[self.key]
+            if x1 - x0 < minw or y1 - y0 < minh:
                 return None, None, True,
             else:
                 layout = [int(x0), int(y0), int(x1 - x0), int(y1 - y0)]
@@ -220,7 +219,7 @@ class Node:
         else:
             layouts, values = [], []
             for child in self.children:
-                l, v, reach_size_limit, = child.getLayout()
+                l, v, reach_size_limit, = child.getLayout(size_limit_map)
                 if reach_size_limit:
                     break
                 layouts += l

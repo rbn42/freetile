@@ -1,4 +1,5 @@
-from config import EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS
+from config import (EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS, MIN_WINDOW_HEIGHT,
+                    MIN_WINDOW_WIDTH)
 
 from helper.ewmh import ewmh, get_window_list
 from helper.xlib import (disp, get_frame_extents, get_root_window_property,
@@ -10,6 +11,7 @@ class WindowList:
     windowInCurrentWorkspaceInStackingOrder = []
     windowPostion = {}
     windowName = {}
+    minGeometry = {}
     ewmhactive = None
 
     def reset(self, ignore=[]):
@@ -19,6 +21,7 @@ class WindowList:
         self.windowInCurrentWorkspaceInStackingOrder = []
         self.windowName = {}
         self.windowPostion = {}
+        self.minGeometry = {}
 
         for win, _desktop, name in get_window_list(ignore):
             winid = win.id
@@ -45,7 +48,11 @@ class WindowList:
             if not (0 <= x < workarea.width and 0 <= y < workarea.height):
                 continue
 
+            wnh = win.get_wm_normal_hints()
             f_left, f_right, f_top, f_bottom = get_frame_extents(winid)
+            minw = max(MIN_WINDOW_WIDTH, wnh.min_width + f_left, f_right)
+            minh = max(MIN_WINDOW_HEIGHT, wnh.min_height + f_top, f_right)
+            self.minGeometry[winid] = minw, minh
             self.windowPostion[winid] = [int(x) - f_left, int(y) - f_top,
                                          w + f_left + f_right, h + f_top + f_bottom]
 
