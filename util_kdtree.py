@@ -211,26 +211,6 @@ def move_kdtree(target, allow_create_new_node=True):
     return regularize_kd_tree(regularize_node, ignore_size_limit_error=True)
 
 
-def regularize_windows():
-    lay = windowlist.get_current_layout()
-    tree = getkdtree(
-        windowlist.windowInCurrentWorkspaceInStackingOrder, lay)
-    if tree.overlap():
-        logging.info('overlapped windows')
-        return False
-    if REGULARIZE_FULLSCREEN:
-        tree.position = [workarea.x, workarea.y, workarea.x +
-                         workarea.width, workarea.y + workarea.height]
-    tree.regularize(gap=(WindowGap, WindowGap))
-    # load k-d tree
-    a, b, reach_size_limit = tree.getLayout(windowlist.minGeometry)
-    if reach_size_limit:
-        logging.info('reach window minimal size')
-        return False
-    windowlist.arrange(a, b)
-    return True
-
-
 def search_for_regularized_windows(_min, _max, stack, layout_stack):
     """
     search for regularized windows from stack bottom

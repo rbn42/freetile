@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
+import logging
+
 from divide import divide
 
 
@@ -16,13 +18,13 @@ class Node:
     DIMENSION = 2
     __leafnodemap = None
 
-    def print(self):
+    def log(self):
         tab = '  ' * self.depth()
-        print('%s%s,%s,%s' % (tab,
-                              self.key, self.position, self.resized))
+        logging.debug('%s%s,%s,%s' % (tab,
+                                      self.key, self.position, self.resized))
         if self.children is not None:
             for child in self.children:
-                child.print()
+                child.log()
 
     def leaf(self):
         return self.children is None
@@ -193,12 +195,13 @@ class Node:
             default_interval_size = int(size / num)
             for child in self.children:
                 i += b
-                child.position[dmin] = i
                 if size == size_sum:
-                    i += child.interval_size()
+                    _size = child.interval_size()
                 else:
-                    i += default_interval_size
-                    # i += int(child.interval_size() * size / size_sum)
+                    _size = default_interval_size
+                    # _size += int(child.interval_size() * size / size_sum)
+                child.position[dmin] = i
+                i += _size
                 child.position[dmax] = i
         else:
             for i in range(num):
@@ -259,19 +262,15 @@ class Node:
         if self.children is None:
             x0, y0, x1, y1 = self.position
             minw, minh = size_limit_map[self.key]
-            if x1 - x0 < minw or y1 - y0 < minh:
-                return None, None, True,
-            else:
-                layout = [x0, y0, x1 - x0, y1 - y0]
-                return [layout], [self.key], False,
+            layout = [x0, y0, x1 - x0, y1 - y0]
+            return [layout], [self.key], x1 - x0 < minw or y1 - y0 < minh
         else:
-            layouts, values = [], []
+            layouts, values, reach_size_limit = [], [], False
             for child in self.children:
-                l, v, reach_size_limit, = child.getLayout(size_limit_map)
-                if reach_size_limit:
-                    break
+                l, v, r, = child.getLayout(size_limit_map)
                 layouts += l
                 values += v
+                reach_size_limit = reach_size_limit or r
             return layouts, values, reach_size_limit
 
 

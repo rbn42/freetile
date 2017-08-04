@@ -4,14 +4,15 @@
 Window tiling for X
 
 Usage:
-  main.py regularize
-  main.py (focus|move|swap) (up|down|left|right)
-  main.py (grow|shrink) (height|width)
+  main.py [options] regularize
+  main.py [options] (focus|move|swap) (up|down|left|right)
+  main.py [options] (grow|shrink) (height|width)
   main.py (save|load) <layout_id>
   main.py -h | --help
 
 Options:
   -h --help     Show this screen.
+  --debug       Debug
 """
 import config
 import logging
@@ -193,9 +194,15 @@ def focus(target):
 
 
 if __name__ == '__main__':
+
     windowlist.reset()
     from docopt import docopt
     arguments = docopt(__doc__)
+
+    if arguments['--debug']:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.INFO)
 
     for target in ('up', 'down', 'left', 'right'):
         if arguments[target]:
