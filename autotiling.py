@@ -77,19 +77,13 @@ def add_window(win):
         except BaseException:
             print('fail %s' % _)
             return True
+
     if win.id in [w.id for w in lst]:
         if insert_window(win):
             print([e.type, *wininfo[win.id]])
-            disp.flush()
-            disp.sync()
             windowlist.reset()
-            num = len(windowlist.windowInCurrentWorkspaceInStackingOrder)
-            if num == 2:
-                from main import force_tile
-                force_tile()
-                return True
-            else:
-                return insert_focused_window_into_kdtree(win.id)
+            regularize()
+
     return True
 
 
