@@ -25,7 +25,7 @@ from windowlist import windowlist
 from workarea import workarea
 
 
-def regularize():
+def regularize(force_tiling=True, minimum_regularized_window=None):
     '''
     Try to regularize windows or add a new window into the K-D tree.
     '''
@@ -39,19 +39,23 @@ def regularize():
         """
         Allow to insert 1/3 new windows to a regularized layout of the rest 2/3 windows.
         """
-        minimum_regularized_window = int(num * 2 / 3)  # 2
-        minimum_regularized_window = max(2, minimum_regularized_window)
+        if minimum_regularized_window is None:
+            minimum_regularized_window = int(num * 2 / 3)  # 2
+            minimum_regularized_window = max(2, minimum_regularized_window)
         if regularize_or_insert_windows(minimum_regularized_window):
             logging.info('regularize windows')
-        else:
+        elif force_tiling:
             logging.info('force tiling')
             force_tile()
+        else:
+            return False
 
         # Make sure the current active window is raised to top of the stack.
         # The stack order will be used to find out previous active windows.
         active = windowlist.get_active_window()
         if active is not None:
             windowlist.raise_window(active)
+    return True
 
 
 def force_tile():

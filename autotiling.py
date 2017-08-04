@@ -3,6 +3,8 @@ TODO
 """
 
 import setproctitle
+import logging
+logging.basicConfig(level=logging.DEBUG)
 from helper.helper_ewmh import ewmh
 from main import regularize
 from util_kdtree import insert_focused_window_into_kdtree
@@ -82,8 +84,10 @@ def add_window(win):
         if insert_window(win):
             print([e.type, *wininfo[win.id]])
             windowlist.reset()
-            regularize()
-
+            num = len(windowlist.windowInCurrentWorkspaceInStackingOrder)
+            if not regularize(force_tiling=False,
+                              minimum_regularized_window=num - 1):
+                return False
     return True
 
 
