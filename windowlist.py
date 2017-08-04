@@ -3,7 +3,7 @@ from config import (EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS, MIN_WINDOW_HEIGHT,
 
 import helper.xcb
 from helper.helper_ewmh import (ewmh, get_window_list, maximize_window,
-                                raise_window, unmaximize_window)
+                                raise_window, unmaximize_windows)
 from helper.xlib import disp, get_frame_extents, get_wm_class_and_state
 from workarea import workarea
 
@@ -90,14 +90,7 @@ class WindowList:
     def arrange(self, layout, windowids):
         windows = [self.windowObjectMap[wid]for wid in windowids]
         # unmaximize
-        for win in windows:
-            unmaximize_window(win)
-
-        # TODO need correct frame extents after maximized windows unmaximized
-        disp.flush()
-        disp.sync()
-        import time
-        time.sleep(0.1)
+        unmaximize_windows(windows)
 
         layout_final = []
         # move windows
