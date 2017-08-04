@@ -132,6 +132,8 @@ def move_kdtree(target, allow_create_new_node=True):
     lay = windowlist.get_current_layout()
     # generate k-d tree
     _tree = getkdtree(winlist, lay)
+    if active not in _tree.leafnodemap():
+        return False
     current_node = _tree.leafnodemap()[active]
 
     # whether promote node to its parent's level
