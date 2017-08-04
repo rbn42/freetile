@@ -109,9 +109,7 @@ while True:
                 print('no window exists')
                 # quit auto tiling when no window exists.
                 break
-            if not regularize():
-                print('failed to remove window')
-                break
+            regularize()
 # Quit loop when detect overlapped windows created by user.
 print('quit autotiling')
 

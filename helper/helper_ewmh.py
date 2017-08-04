@@ -48,8 +48,8 @@ def unmaximize_windows(winlist):
     unmaximized_windows = set()
     while len(maximized_windows) > len(unmaximized_windows):
         e = ewmh.display.next_event()
-        assert e.type == X.ConfigureNotify
-        unmaximized_windows.add(e.window.id)
+        if e.type == X.ConfigureNotify:
+            unmaximized_windows.add(e.window.id)
 
     # disable event
     for win in maximized_windows:

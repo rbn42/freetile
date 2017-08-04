@@ -50,7 +50,8 @@ def regularize():
         # Make sure the current active window is raised to top of the stack.
         # The stack order will be used to find out previous active windows.
         active = windowlist.get_active_window()
-        windowlist.raise_window(active)
+        if active is not None:
+            windowlist.raise_window(active)
 
 
 def force_tile():
