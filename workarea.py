@@ -43,5 +43,18 @@ class WorkArea:
 
         return layout[:wincount]
 
+    def windowInCurrentViewport(self, geo, threshold=1 / 2):
+        _threshold = geo.width * threshold
+        if _threshold > self.width - geo.x:
+            return False
+        if _threshold > geo.x + geo.width - self.x:
+            return False
+        _threshold = geo.height * threshold
+        if _threshold > self.height - geo.y:
+            return False
+        if _threshold > geo.y + geo.height - self.y:
+            return False
+        return True
+
 
 workarea = WorkArea()

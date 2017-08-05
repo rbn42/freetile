@@ -2,6 +2,7 @@ from config import (EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS, MIN_WINDOW_HEIGHT,
                     MIN_WINDOW_WIDTH)
 
 import helper.xcb
+import logging
 from helper.helper_ewmh import (ewmh, get_window_list, maximize_window,
                                 raise_window, unmaximize_windows)
 from helper.xlib import disp, get_frame_extents, get_wm_class_and_state
@@ -18,7 +19,11 @@ class WindowList:
 
     def maximize_window(self, winid):
         win = self.windowObjectMap[winid]
-        maximize_window(win)
+        geo = win.get_geometry()
+        if not workarea.windowInCurrentViewport(geo):
+            helper.xcb.move(winid, 0, 0)
+        logging.info('maximize window')
+        maximize_window(win, sync=False)
 
     def raise_window(self, winid):
         win = self.windowObjectMap[winid]
@@ -56,8 +61,8 @@ class WindowList:
             self.windowName[winid] = name
 
             geo = win.get_geometry()
-            if not (0 <= geo.x < workarea.width and 0 <=
-                    geo.y < workarea.height):
+            # window in current viewport?
+            if not workarea.windowInCurrentViewport(geo, threshold=0.1):
                 continue
 
             wnh = win.get_wm_normal_hints()

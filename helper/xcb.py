@@ -15,3 +15,11 @@ def arrange(layout, windowids):
                                | ConfigWindow.Width | ConfigWindow.Height,
                                lay)
     conn.flush()
+
+
+def move(winid, x, y, sync=True):
+    xproto.ConfigureWindow(winid,
+                           ConfigWindow.X | ConfigWindow.Y,
+                           [x, y])
+    if sync:
+        conn.flush()
