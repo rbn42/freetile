@@ -47,11 +47,17 @@ class WindowList:
             if name in EXCLUDE_APPLICATIONS:
                 continue
 
-            wmclass, minimized = get_wm_class_and_state(win)
-            dock = disp.intern_atom('_NET_WM_WINDOW_TYPE_DOCK')
-            if dock in ewmh.getWmWindowType(win):
+            if not {
+                disp.intern_atom('_NET_WM_STATE_SKIP_TASKBAR'),
+            }.isdisjoint(ewmh.getWmState(win)):
                 continue
 
+            if not {
+                disp.intern_atom('_NET_WM_WINDOW_TYPE_DOCK')
+            }.isdisjoint(ewmh.getWmWindowType(win)):
+                continue
+
+            wmclass, minimized = get_wm_class_and_state(win)
             if minimized:
                 continue
             wmclass = set(wmclass)

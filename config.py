@@ -6,11 +6,8 @@ TopPadding = 4
 RightPadding = 4
 NavigateAcrossWorkspaces = False  # True  # availabe in viewports desktops
 
-EXCLUDE_APPLICATIONS = ['<unknown>', 'x-nautilus-desktop', 'unity-launcher',
-                        'unity-panel', 'Hud', 'unity-dash', 'Desktop',
-                        'Docky', 'conky', 'Conky'
-                        'screenkey', 'XdndCollectionWindowImp']
-EXCLUDE_WM_CLASS = ['conky', 'Conky', ]
+EXCLUDE_APPLICATIONS = []
+EXCLUDE_WM_CLASS = []
 
 RESIZE_STEP = 72
 MOVE_STEP = 72
