@@ -7,6 +7,7 @@ _NET_WM_STATE_MAXIMIZED_VERT = ewmh.display.get_atom(
     '_NET_WM_STATE_MAXIMIZED_VERT')
 _NET_WM_STATE_MAXIMIZED_HORZ = ewmh.display.get_atom(
     '_NET_WM_STATE_MAXIMIZED_HORZ')
+_NET_WM_STATE_FULLSCREEN = ewmh.display.get_atom('_NET_WM_STATE_FULLSCREEN')
 
 
 def raise_window(win):
@@ -48,9 +49,9 @@ def unmaximize_windows(winlist):
     maximized_windows = set()
     for win in winlist:
         wmstate = ewmh.getWmState(win)
-        if _NET_WM_STATE_MAXIMIZED_HORZ in wmstate:
-            maximized_windows.add(win)
-        elif _NET_WM_STATE_MAXIMIZED_VERT in wmstate:
+        if not {_NET_WM_STATE_MAXIMIZED_HORZ,
+                _NET_WM_STATE_MAXIMIZED_VERT,
+                _NET_WM_STATE_FULLSCREEN}.isdisjoint(wmstate):
             maximized_windows.add(win)
 
     # enable and send event
@@ -58,7 +59,9 @@ def unmaximize_windows(winlist):
         win.change_attributes(event_mask=X.StructureNotifyMask)
         ewmh.setWmState(win, 0,
                         '_NET_WM_STATE_MAXIMIZED_VERT',
-                        '_NET_WM_STATE_MAXIMIZED_HORZ')
+                        '_NET_WM_STATE_MAXIMIZED_HORZ',)
+        ewmh.setWmState(win, 0,
+                        '_NET_WM_STATE_FULLSCREEN',)
 
     # flush
     ewmh.display.flush()
