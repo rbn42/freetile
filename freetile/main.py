@@ -1,26 +1,12 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-"""
-Window tiling for X
-
-Usage:
-  main.py [options] regularize
-  main.py [options] (focus|move|swap) (up|down|left|right)
-  main.py [options] (grow|shrink) (height|width)
-  main.py (save|load) <layout_id>
-  main.py -h | --help
-
-Options:
-  -h --help     Show this screen.
-  --debug       Debug
-"""
 from . import config
 import logging
 
-import freetile.helper.emacs
-import freetile.helper.vim
+from .helper import emacs
+from .helper import vim
 from .util_kdtree import (find_kdtree, move_kdtree,
-                         regularize_or_insert_windows, resize_kdtree)
+                          regularize_or_insert_windows, resize_kdtree)
 from .windowlist import windowlist
 from .workarea import workarea
 
@@ -29,6 +15,7 @@ def regularize(force_tiling=True, minimum_regularized_window=None):
     '''
     Try to regularize windows or add a new window into the K-D tree.
     '''
+    logging.info('regularize layout')
     stack = windowlist.windowInCurrentWorkspaceInStackingOrder
     num = len(stack)
     if num == 0:
@@ -175,9 +162,9 @@ def focus(target):
 
     if active is not None:
         window_name = windowlist.windowName[active]
-        if helper.vim.navigate(window_name, target):
+        if vim.navigate(window_name, target):
             return
-        if helper.emacs.navigate(window_name, target):
+        if emacs.navigate(window_name, target):
             return
 
     target_window_id = find_kdtree(active, target, allow_parent_sibling=False)
@@ -196,47 +183,3 @@ def focus(target):
     else:
         windowlist.raise_window(target_window_id)
     return True
-
-
-def main():
-
-    windowlist.reset()
-    from docopt import docopt
-    arguments = docopt(__doc__)
-
-    if arguments['--debug']:
-        logging.basicConfig(
-            level=logging.DEBUG,
-            format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-        )
-    else:
-        logging.basicConfig(level=logging.INFO)
-
-    for target in ('up', 'down', 'left', 'right'):
-        if arguments[target]:
-            break
-
-    if arguments['swap']:
-        swap(target)
-    elif arguments['move']:
-        move(target)
-    elif arguments['focus']:
-        focus(target)
-    elif arguments['regularize']:
-        logging.info('regularize layout')
-        regularize()
-    elif arguments['grow']:
-        if arguments['width']:
-            resize(config.RESIZE_STEP, 0)
-        else:
-            resize(0, config.RESIZE_STEP)
-    elif arguments['shrink']:
-        if arguments['width']:
-            resize(-config.RESIZE_STEP, 0)
-        else:
-            resize(0, -config.RESIZE_STEP)
-
-    elif arguments['save']:
-        print('not implemented')
-    elif arguments['load']:
-        print('not implemented')

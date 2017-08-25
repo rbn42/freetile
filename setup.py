@@ -7,8 +7,12 @@ setup(name='freetile',
       author='rbn42',
       author_email='bl100@students.waikato.ac.nz',
       license='MIT',
-      packages=['freetile'],
+      packages=['freetile', 'freetile.helper'],
+      package_dir={
+          'freetile': 'freetile',
+          'freetile.helper': 'freetile/helper',
+      },
       install_requires=[
-          'docopt','ewmh','xcffib','python-xlib'
+          'docopt', 'ewmh', 'xcffib', 'python-xlib'
       ],
       zip_safe=False)
