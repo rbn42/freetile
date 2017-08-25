@@ -1,9 +1,9 @@
 import logging
-from config import MAX_KD_TREE_BRANCH, REGULARIZE_FULLSCREEN, WindowGap
+from .config import MAX_KD_TREE_BRANCH, REGULARIZE_FULLSCREEN, WindowGap
 
-from tree import Node
-from windowlist import windowlist
-from workarea import workarea
+from .tree import Node
+from .windowlist import windowlist
+from .workarea import workarea
 
 
 def resize_kdtree(resize_width, resize_height):

@@ -1,6 +1,6 @@
 import re
 import subprocess
-from config import EMACS_NAVIGATION_CMD, EMACS_WINDOW_NAME
+from ..config import EMACS_NAVIGATION_CMD, EMACS_WINDOW_NAME
 
 debug = False
 

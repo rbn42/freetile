@@ -1,6 +1,6 @@
 import re
 import subprocess
-from config import VIM_NAVIGATION_CMD, VIM_SERVER_NAME
+from ..config import VIM_NAVIGATION_CMD, VIM_SERVER_NAME
 
 debug = False
 

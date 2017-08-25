@@ -1,12 +1,12 @@
-from config import (EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS, MIN_WINDOW_HEIGHT,
+from .config import (EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS, MIN_WINDOW_HEIGHT,
                     MIN_WINDOW_WIDTH)
 
-import helper.xcb
+from .helper import xcb
 import logging
-from helper.helper_ewmh import (ewmh, get_window_list, maximize_window,
+from .helper.helper_ewmh import (ewmh, get_window_list, maximize_window,
                                 raise_window, unmaximize_windows)
-from helper.xlib import disp, get_frame_extents, get_wm_class_and_state
-from workarea import workarea
+from .helper.xlib import disp, get_frame_extents, get_wm_class_and_state
+from .workarea import workarea
 
 
 class WindowList:
@@ -118,7 +118,7 @@ class WindowList:
                 y += f_top
                 x += f_left
             layout_final.append([x, y, width, height])
-        return helper.xcb.arrange(layout_final, windowids)
+        return xcb.arrange(layout_final, windowids)
 
 
 windowlist = WindowList()

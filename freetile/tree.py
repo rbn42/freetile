@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 import logging
 
-from divide import divide
+from .divide import divide
 
 
 class Node:

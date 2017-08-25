@@ -14,15 +14,15 @@ Options:
   -h --help     Show this screen.
   --debug       Debug
 """
-import config
+from . import config
 import logging
 
-import helper.emacs
-import helper.vim
-from util_kdtree import (find_kdtree, move_kdtree,
+import freetile.helper.emacs
+import freetile.helper.vim
+from .util_kdtree import (find_kdtree, move_kdtree,
                          regularize_or_insert_windows, resize_kdtree)
-from windowlist import windowlist
-from workarea import workarea
+from .windowlist import windowlist
+from .workarea import workarea
 
 
 def regularize(force_tiling=True, minimum_regularized_window=None):
@@ -198,7 +198,7 @@ def focus(target):
     return True
 
 
-if __name__ == '__main__':
+def main():
 
     windowlist.reset()
     from docopt import docopt
