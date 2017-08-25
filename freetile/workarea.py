@@ -1,6 +1,6 @@
 import math
 from .config import (BottomPadding, LeftPadding, RightPadding, TopPadding,
-                    WindowGap)
+                     WindowGap)
 
 from .helper.helper_ewmh import ewmh
 

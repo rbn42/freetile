@@ -1,10 +1,10 @@
 from .config import (EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS, MIN_WINDOW_HEIGHT,
-                    MIN_WINDOW_WIDTH)
+                     MIN_WINDOW_WIDTH)
 
 from .helper import xcb
 import logging
 from .helper.helper_ewmh import (ewmh, get_window_list, maximize_window,
-                                raise_window, unmaximize_windows)
+                                 raise_window, unmaximize_windows)
 from .helper.xlib import disp, get_frame_extents, get_wm_class_and_state
 from .workarea import workarea
 
