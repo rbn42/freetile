@@ -12,23 +12,12 @@ See [[https://github.com/rbn42/freetile/wiki/Previews][screencasts]] in differen
 
   PKGBUILD is provided for Arch Linux users.
 * Getting Started
-** Free Mode and Strict Mode
- freetile can be run in a free mode or a strict mode. In the free mode, you must run 
- #+BEGIN_EXAMPLE
- $ freetile tile
- #+END_EXAMPLE
-  every time when you want to tile windows. Otherwise nothing unexpected would happen to your windows layout. In the strict mode, you can open a daemon by 
- #+BEGIN_EXAMPLE
- $ freetile autotile
- #+END_EXAMPLE
- The daemon will trigger tiling windows every time it detects a window created or destroyed. 
 ** Key Bindings
- This is an [[https://i3wm.org/][i3-wm]] like key binding. You may want to add it to your desktop setting manager or the standalone [[http://www.nongnu.org/xbindkeys/xbindkeys.html][xbindkeys]] ([[freetile.scm][configuration file for xbindkeys]]).
+ These are [[https://i3wm.org/][i3-wm]] like key bindings. Please add them to your desktop setting manager or the standalone [[http://www.nongnu.org/xbindkeys/xbindkeys.html][xbindkeys]] ([[freetile.scm][configuration file for xbindkeys]]).
 
  | Keys                     | Command                |
  |--------------------------+------------------------|
  | <Super> <Space>          | freetile tile          |
- | <Super> <Shift> <Space>  | freetile autotile      |
  | <Super> h                | freetile focus left    |
  | <Super> j                | freetile focus down    |
  | <Super> k                | freetile focus up      |
@@ -45,8 +34,16 @@ See [[https://github.com/rbn42/freetile/wiki/Previews][screencasts]] in differen
  | <Super> <Shift> <Ctrl> j | freetile grow height   |
  | <Super> <Shift> <Ctrl> k | freetile shrink height |
  | <Super> <Shift> <Ctrl> l | freetile grow width    |
-
-
+** Free Mode and Strict Mode
+ freetile can be run in a free mode or a strict mode. In the free mode, you must run 
+ #+BEGIN_EXAMPLE
+ $ freetile tile
+ #+END_EXAMPLE
+  every time when you want to tile windows. Otherwise nothing unexpected would happen to your windows layout. In the strict mode, you can open a daemon by 
+ #+BEGIN_EXAMPLE
+ $ freetile autotile
+ #+END_EXAMPLE
+ The daemon will trigger tiling windows every time it detects a window created or destroyed. 
 * Troubleshooting
 ** freetile can't focus window in KDE5.
    KDE5 doesn't allow focus stealing by default. To turn off "Focus stealing prevention level", please go to System-Settings->Window behavior.

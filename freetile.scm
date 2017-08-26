@@ -1,5 +1,4 @@
 (xbindkey '(mod4 "space")           "freetile tile")
-(xbindkey '(mod4 shift "space")     "freetile autotile")
 (xbindkey '(mod4 "h")               "freetile focus left")
 (xbindkey '(mod4 "j")               "freetile focus down")
 (xbindkey '(mod4 "k")               "freetile focus up  ")
