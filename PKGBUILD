@@ -9,7 +9,7 @@ depends=('python-docopt' 'python-xlib' 'python-xcffib' 'python-ewmh' 'python-set
 makedepends=('git' 'python-wheel')
 provides=('freetile')
 conflicts=('freetile')
-source=("git+https://github.com/rbn42/freetile")
+source=("$pkgname::git+https://github.com/rbn42/freetile")
 md5sums=('SKIP')
 
 pkgver() {
