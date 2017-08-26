@@ -76,13 +76,27 @@ class WindowList:
             minw = max(MIN_WINDOW_WIDTH, wnh.min_width + f_left, f_right)
             minh = max(MIN_WINDOW_HEIGHT, wnh.min_height + f_top, f_right)
             self.minGeometry[winid] = minw, minh
-            self.windowGeometry[winid] = [
+
+            self.get_absolute_geo(win)
+
+            self.windowInCurrentWorkspaceInStackingOrder.append(winid)
+
+    def get_absolute_geo(self,win):
+        if win.id not in self.windowGeometry:
+            geo = win.get_geometry()
+            f_left, f_right, f_top, f_bottom = get_frame_extents(win)
+            self.windowGeometry[win.id] = [
                 geo.x - f_left,
                 geo.y - f_top,
                 geo.width + f_left + f_right,
                 geo.height + f_top + f_bottom]
+            p=win.query_tree().parent
+            if p:
+                pgeo=self.get_absolute_geo(p)
+                self.windowGeometry[win.id][0]+=pgeo[0]
+                self.windowGeometry[win.id][1]+=pgeo[1]
+        return self.windowGeometry[win.id]
 
-            self.windowInCurrentWorkspaceInStackingOrder.append(winid)
 
     def get_current_layout(self):
         return [self.windowGeometry[_id]
