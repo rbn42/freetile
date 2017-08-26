@@ -72,11 +72,20 @@ def loop():
                 logging.info('fail %s' % _)
                 return True
 
-        plst = [w.query_tree().parent for w in lst]
-        lst = [w.id for w in lst] + [w.id for w in plst if w]
-        logging.debug('window id:%s', win.id)
-        logging.debug('client list:%s', lst)
-        if win.id in lst:
+        newwin=None
+        for w in lst:
+            if w.id == win.id:
+                newwin=w
+                break
+        else:
+            # search parent windows
+            for w in lst:
+                pwin=w.query_tree().parent
+                if pwin and pwin.id==win.id:
+                    newwin=w
+                    break
+        if newwin:
+            win=newwin
             logging.debug('window id:%s', win.id)
             if insert_window(win):
                 logging.info([e.type, *wininfo[win.id]])
