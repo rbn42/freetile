@@ -11,6 +11,24 @@ from .util_kdtree import insert_focused_window_into_kdtree
 from .windowlist import windowlist
 
 
+def search_window(win, lst):
+    logging.debug('search window')
+    for win_target, win_test in lst:
+        logging.debug('%s', win_test.id)
+        if win_test.id == win.id:
+            return win_target
+    else:
+        plst = []
+        for win_target, win_test in lst:
+            pwin = win_test.query_tree().parent
+            if pwin:
+                plst.append((win_target, pwin))
+        if len(plst) > 0:
+            return search_window(win, plst)
+        else:
+            return None
+
+
 def loop():
     setproctitle.setproctitle("freetile-auto")
 
@@ -62,23 +80,6 @@ def loop():
 
     for win in ewmh.getClientList():
         insert_window(win)
-
-    def search_window(win, lst):
-        logging.debug('search window')
-        for win_target, win_test in lst:
-            logging.debug('%s', win_test.id)
-            if win_test.id == win.id:
-                return win_target
-        else:
-            plst = []
-            for win_target, win_test in lst:
-                pwin = win_test.query_tree().parent
-                if pwin:
-                    plst.append((win_target, pwin))
-            if len(plst) > 0:
-                return search_window(win, plst)
-            else:
-                return None
 
     def add_window(win):
         logging.debug('add window')
