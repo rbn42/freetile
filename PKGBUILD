@@ -1,0 +1,27 @@
+pkgname=freetile-git
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="X"
+arch=('any')
+url="http://github.com/rbn42/freetile"
+license=('MIT')
+depends=('python') 
+makedepends=('git' 'python-wheel')
+provides=('freetile')
+conflicts=('freetile')
+source=("$pkgname::git+https://github.com/rbn42/freetile")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "$srcdir/$pkgname"
+  git describe --always | sed -e 's|-|.|g' -e '1s|^.||'
+}
+
+package() {
+  cd "$srcdir/$pkgname"
+  #https://github.com/JonathonReinhart/scuba/issues/71
+  python setup.py bdist_wheel
+  pip install --compile --no-deps --ignore-installed --root="$pkgdir" dist/freetile-*.whl
+  install -Dm644 LICENSE $pkgdir/usr/share/licenses/${pkgname%-*}/LICENSE
+}
+

@@ -1,13 +1,11 @@
-#!/usr/bin/python
-# -*- coding: UTF-8 -*-
 """
-Window tiling for X
+Freely Tiling Script for X
 
 Usage:
-  main.py [options] regularize
-  main.py [options] (focus|move|swap) (up|down|left|right)
-  main.py [options] (grow|shrink) (height|width)
-  main.py -h | --help
+  freetile [options] regularize
+  freetile [options] (focus|move|swap) (up|down|left|right)
+  freetile [options] (grow|shrink) (height|width)
+  freetile -h | --help
 
 Options:
   -h --help     Show this screen.
@@ -15,8 +13,10 @@ Options:
 """
 import logging
 from docopt import docopt
+from freetile.main import *
 
-if '__main__' == __name__:
+def main():
+
     arguments = docopt(__doc__)
 
     if arguments['--debug']:
@@ -31,7 +31,6 @@ if '__main__' == __name__:
         if arguments[target]:
             break
 
-    from .main import *
     windowlist.reset()
 
     if arguments['swap']:
@@ -52,3 +51,6 @@ if '__main__' == __name__:
             resize(-config.RESIZE_STEP, 0)
         else:
             resize(0, -config.RESIZE_STEP)
+
+if '__main__' == __name__:
+    main()
