@@ -64,7 +64,9 @@ def loop():
         insert_window(win)
 
     def search_window(win, lst):
+        logging.debug('search window')
         for win_target, win_test in lst:
+            logging.debug('%s', win_test.id)
             if win_test.id == win.id:
                 return win_target
         else:
