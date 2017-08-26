@@ -1,50 +1,20 @@
-This is a window tiling and navigation tool based on
-[[//github.com/TheWanderer/stiler][stiler]]. It tries to imitate the
-very basic functions of i3-wm.
-[[https://raw.githubusercontent.com/wiki/rbn42/stiler/show2.gif]]
-* A Simple Explanation 
-This is a simple explanation for people who are familiar with i3-wm 
-or other tiling window managers.
-So what would this script do when you run it?
-First, it will try to construct a K-D tree for all windows in the current desktop. 
-  - If succeeded, it will take your command like commands of i3's tiling mode,
-    to move or to resize a node in the K-D tree.
-  - And if there exists overlapping windows and the tree construction failed, 
-    then your command will be taken as commands of i3's floating mode, that means to move
-    or to resize a window like stacking window managers.
-* Dependency
-** Ubuntu
- #+BEGIN_EXAMPLE
-     sudo apt install python-docopt -y
- #+END_EXAMPLE
-* Usage
-See
-#+BEGIN_EXAMPLE
-    python main.py -h
-#+END_EXAMPLE
-* Configuration
-A sample file of configuration is provided.
-#+BEGIN_EXAMPLE
-    cp .tilerc.sample ~/.tilerc
-#+END_EXAMPLE
 * Recommended Keyboard Mapping
-| Keys                     | Command                      |
-|--------------------------+------------------------------|
-| <Super> <Space>          | python main.py layout next   |
-| <Super> <Shift> <Space>  | python main.py layout prev   |
-| <Super> h                | python main.py focus left    |
-| <Super> <Shift> h        | python main.py swap left     |
-| <Super> <Ctrl> h         | python main.py move left     |
-| <Super> <Shift> <Ctrl> h | python main.py shrink width  |
-| <Super> j                | python main.py focus down    |
-| <Super> <Shift> j        | python main.py swap down     |
-| <Super> <Ctrl> j         | python main.py move down     |
-| <Super> <Shift> <Ctrl> j | python main.py grow height   |
-| <Super> k                | python main.py focus up      |
-| <Super> <Shift> k        | python main.py swap up       |
-| <Super> <Ctrl> k         | python main.py move up       |
-| <Super> <Shift> <Ctrl> k | python main.py shrink height |
-| <Super> l                | python main.py focus right   |
-| <Super> <Shift> l        | python main.py swap right    |
-| <Super> <Ctrl> l         | python main.py move right    |
-| <Super> <Shift> <Ctrl> l | python main.py grow width    |
+| Keys                     | Command                |
+|--------------------------+------------------------|
+| <Super> <Space>          | freetile regularize    |
+| <Super> h                | freetile focus left    |
+| <Super> j                | freetile focus down    |
+| <Super> k                | freetile focus up      |
+| <Super> l                | freetile focus right   |
+| <Super> <Shift> h        | freetile swap left     |
+| <Super> <Shift> j        | freetile swap down     |
+| <Super> <Shift> k        | freetile swap up       |
+| <Super> <Shift> l        | freetile swap right    |
+| <Super> <Ctrl> h         | freetile move left     |
+| <Super> <Ctrl> j         | freetile move down     |
+| <Super> <Ctrl> k         | freetile move up       |
+| <Super> <Ctrl> l         | freetile move right    |
+| <Super> <Shift> <Ctrl> h | freetile shrink width  |
+| <Super> <Shift> <Ctrl> j | freetile grow height   |
+| <Super> <Shift> <Ctrl> k | freetile shrink height |
+| <Super> <Shift> <Ctrl> l | freetile grow width    |
