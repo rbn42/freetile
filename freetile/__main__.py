@@ -2,7 +2,7 @@
 Freely Tiling Script for X
 
 Usage:
-  freetile [options] regularize
+  freetile [options] tile
   freetile [options] (focus|move|swap) (up|down|left|right)
   freetile [options] (grow|shrink) (height|width)
   freetile [options] autotile
@@ -40,7 +40,7 @@ def main():
         move(target)
     elif arguments['focus']:
         focus(target)
-    elif arguments['regularize']:
+    elif arguments['tile']:
         regularize()
     elif arguments['grow']:
         if arguments['width']:

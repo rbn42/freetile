@@ -1,7 +1,9 @@
+This is a tiling script for X. It can be run in a free mode or a strict mode. In the free mode, you must run `freetile tile` every time when you want to tile windows. Otherwise nothing unexpected would happen to your windows layout. In the strict mode, you can open a daemon by `freetile autotile`. The daemon will trigger tiling windows every time it detects a window created or destroyed. 
 * Recommended Keyboard Mapping
 | Keys                     | Command                |
 |--------------------------+------------------------|
-| <Super> <Space>          | freetile regularize    |
+| <Super> <Space>          | freetile tile          |
+| <Super> <Shift> <Space>  | freetile autotile      |
 | <Super> h                | freetile focus left    |
 | <Super> j                | freetile focus down    |
 | <Super> k                | freetile focus up      |
