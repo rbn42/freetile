@@ -79,6 +79,7 @@ def loop():
         return True
 
     while True:
+        logging.debug('next event')
         e = disp.next_event()
         if e.type == X.MapNotify:
             win = e.window
