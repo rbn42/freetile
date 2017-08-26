@@ -81,7 +81,7 @@ class WindowList:
 
             self.windowInCurrentWorkspaceInStackingOrder.append(winid)
 
-    def get_absolute_geo(self,win):
+    def get_absolute_geo(self, win):
         if win.id not in self.windowGeometry:
             geo = win.get_geometry()
             f_left, f_right, f_top, f_bottom = get_frame_extents(win)
@@ -90,13 +90,12 @@ class WindowList:
                 geo.y - f_top,
                 geo.width + f_left + f_right,
                 geo.height + f_top + f_bottom]
-            p=win.query_tree().parent
+            p = win.query_tree().parent
             if p:
-                pgeo=self.get_absolute_geo(p)
-                self.windowGeometry[win.id][0]+=pgeo[0]
-                self.windowGeometry[win.id][1]+=pgeo[1]
+                pgeo = self.get_absolute_geo(p)
+                self.windowGeometry[win.id][0] += pgeo[0]
+                self.windowGeometry[win.id][1] += pgeo[1]
         return self.windowGeometry[win.id]
-
 
     def get_current_layout(self):
         return [self.windowGeometry[_id]
