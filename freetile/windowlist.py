@@ -26,6 +26,7 @@ class WindowList:
         maximize_window(win, sync=False)
 
     def raise_window(self, winid):
+        logging.debug('raise window %s',winid)
         win = self.windowObjectMap[winid]
         raise_window(win)
 
