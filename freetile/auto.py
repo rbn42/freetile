@@ -10,6 +10,7 @@ from .main import regularize
 from .util_kdtree import insert_focused_window_into_kdtree
 from .windowlist import windowlist
 
+
 def loop():
     setproctitle.setproctitle("freetile-auto")
 
@@ -28,10 +29,6 @@ def loop():
         disp.intern_atom('_NET_WM_WINDOW_TYPE_UTILITY'),
         disp.intern_atom('_NET_WM_WINDOW_TYPE_SPLASH'),
         disp.intern_atom('_NET_WM_WINDOW_TYPE_DIALOG'),
-        #    390,  # emerald
-        #    391,  # volnoti
-        #    348,  # docky setting
-        #        disp.intern_atom('_NET_WM_WINDOW_TYPE_NORMAL'),
     ]
     IGNORE_STATES = [
         disp.intern_atom('_NET_WM_STATE_ABOVE'),
@@ -42,11 +39,7 @@ def loop():
     IGNORE_TYPES = set(IGNORE_TYPES)
     IGNORE_STATES = set(IGNORE_STATES)
 
-
-
-    windowlist.reset()
     regularize()
-
 
     def insert_window(win):
         c = win.get_wm_class()
@@ -54,9 +47,9 @@ def loop():
         s = ewmh.getWmState(win)
         t = ewmh.getWmWindowType(win)
 
-        if len(IGNORE_STATES.intersection(s)) > 0:
+        if not IGNORE_STATES.isdisjoint(s):
             return False
-        if len(IGNORE_TYPES.intersection(t)) < 0 or len(t) < 1:
+        if len(t) < 1 or not IGNORE_TYPES.isdisjoint(t):
             return False
         if c is not None and 'Popup' in c:
             return False
@@ -64,10 +57,8 @@ def loop():
         wininfo[win.id] = c, n, t, s
         return True
 
-
     for win in ewmh.getClientList():
         insert_window(win)
-
 
     def add_window(win):
         for _ in range(50):
@@ -86,7 +77,6 @@ def loop():
                                   minimum_regularized_window=num - 1):
                     return False
         return True
-
 
     while True:
         e = disp.next_event()
@@ -107,9 +97,3 @@ def loop():
                 regularize()
     # Quit loop when detect overlapped windows created by user.
     print('quit autotiling')
-
-    #    elif win.id in wininfo:
-    #        print([e.type, *wininfo[win.id]])
-    #        for attr in vars(X):
-    #            if vars(X)[attr] == e.type:
-    #                print(attr)

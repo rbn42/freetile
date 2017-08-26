@@ -4,9 +4,6 @@ from Xlib import X, display, protocol
 disp = display.Display()
 screen = disp.screen()
 root = screen.root
-# sync lock
-# TODO
-# disp.sync()
 
 
 def edit_prop(window, mode, name, value):

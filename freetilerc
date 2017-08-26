@@ -1,4 +1,8 @@
 #!/usr/bin/python
+"""
+Example of ~/.config/freetilerc
+"""
+
 WindowGap = 4
 LeftPadding = 4
 BottomPadding = 4
@@ -26,13 +30,3 @@ VIM_SERVER_NAME = None
 EMACS_WINDOW_NAME = ".+emacs.+"
 EMACS_NAVIGATION_CMD = "emacsclient -e '(evil-window-{target} 1)'"
 EMACS_WINDOW_NAME = None
-
-# overwrite default configuration
-import os.path
-
-config_file = os.path.expanduser("~/.config/freetilerc")
-try:
-    s = open(config_file).read()
-    exec(s)
-except BaseException:
-    pass

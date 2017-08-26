@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding: UTF-8 -*-
 from . import config
 import logging
 
@@ -183,3 +181,19 @@ def focus(target):
     else:
         windowlist.raise_window(target_window_id)
     return True
+
+
+def grow_width():
+    resize(config.RESIZE_STEP, 0)
+
+
+def grow_height():
+    resize(0, config.RESIZE_STEP)
+
+
+def shrink_width():
+    resize(-config.RESIZE_STEP, 0)
+
+
+def shrink_height():
+    resize(0, -config.RESIZE_STEP)

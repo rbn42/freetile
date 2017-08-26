@@ -14,18 +14,18 @@ Options:
 """
 import logging
 from docopt import docopt
-from freetile.main import *
+from freetile.main import swap, move, regularize, focus, grow_width, grow_height, shrink_width, shrink_height
+from freetile.windowlist import windowlist
+from freetile.auto import loop
 
 
 def main():
-
     arguments = docopt(__doc__)
 
     if arguments['--debug']:
         logging.basicConfig(
             level=logging.DEBUG,
-            format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-        )
+            format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
     else:
         logging.basicConfig(level=logging.INFO)
 
@@ -34,7 +34,6 @@ def main():
             break
 
     windowlist.reset()
-
     if arguments['swap']:
         swap(target)
     elif arguments['move']:
@@ -45,17 +44,16 @@ def main():
         regularize()
     elif arguments['grow']:
         if arguments['width']:
-            resize(config.RESIZE_STEP, 0)
+            grow_width()
         else:
-            resize(0, config.RESIZE_STEP)
+            grow_height()
     elif arguments['shrink']:
         if arguments['width']:
-            resize(-config.RESIZE_STEP, 0)
+            shrink_width()
         else:
-            resize(0, -config.RESIZE_STEP)
+            shrink_height()
     elif arguments['autotile']:
-        import freetile.auto
-        freetile.auto.loop()
+        loop()
 
 
 if '__main__' == __name__:
