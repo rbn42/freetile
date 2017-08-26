@@ -6,6 +6,7 @@ Usage:
   freetile [options] (focus|move|swap) (up|down|left|right)
   freetile [options] (grow|shrink) (height|width)
   freetile [options] autotile
+  freetile [options] test
   freetile -h | --help
 
 Options:
@@ -16,7 +17,6 @@ import logging
 from docopt import docopt
 from freetile.main import swap, move, regularize, focus, grow_width, grow_height, shrink_width, shrink_height
 from freetile.windowlist import windowlist
-from freetile.auto import loop
 
 
 def main():
@@ -53,7 +53,11 @@ def main():
         else:
             shrink_height()
     elif arguments['autotile']:
+        from freetile.auto import loop
         loop()
+    elif arguments['test']:
+        from freetile.test import main
+        main()
 
 
 if '__main__' == __name__:
