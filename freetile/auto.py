@@ -48,10 +48,13 @@ def loop():
         t = ewmh.getWmWindowType(win)
 
         if not IGNORE_STATES.isdisjoint(s):
+            logging.debug('wmstate:%s',s)
             return False
         if len(t) < 1 or not IGNORE_TYPES.isdisjoint(t):
+            logging.debug('window type:%s',t)
             return False
         if c is not None and 'Popup' in c:
+            logging.debug('wmclass:%s',c)
             return False
 
         wininfo[win.id] = c, n, t, s
