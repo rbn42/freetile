@@ -4,13 +4,13 @@ TODO
 
 import setproctitle
 import logging
+from Xlib import X, display
 from .helper.helper_ewmh import ewmh
 from .main import regularize
 from .util_kdtree import insert_focused_window_into_kdtree
 from .windowlist import windowlist
-from Xlib import X, display
 
-def main():
+def loop():
     setproctitle.setproctitle("freetile-auto")
 
     disp = display.Display()
