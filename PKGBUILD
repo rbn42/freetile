@@ -19,7 +19,8 @@ pkgver() {
 
 package() {
   cd "$srcdir/$pkgname"
-  #https://github.com/JonathonReinhart/scuba/issues/71
+  # pip install direct from source results slow behavior.
+  # see https://github.com/JonathonReinhart/scuba/issues/71#issuecomment-238057064
   python setup.py bdist_wheel
   pip install --compile --no-deps --ignore-installed --root="$pkgdir" dist/${pkgname%-*}-*.whl
   install -Dm644 LICENSE $pkgdir/usr/share/licenses/${pkgname%-*}/LICENSE
