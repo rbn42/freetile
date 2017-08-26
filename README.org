@@ -8,7 +8,7 @@ $ freetile autotile
 #+END_EXAMPLE
 The daemon will trigger tiling windows every time it detects a window created or destroyed. 
 * Installing
-  Please note pip install direct from source may result bad performance (see here)[https://github.com/JonathonReinhart/scuba/issues/71#issuecomment-238057064].
+  Please note pip install direct from source may result bad performance ([[https://github.com/JonathonReinhart/scuba/issues/71#issuecomment-238057064][see here]]).
 
   It is recommended to build a wheel package and install from the wheel package.
 #+BEGIN_EXAMPLE
