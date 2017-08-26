@@ -61,6 +61,7 @@ def loop():
         insert_window(win)
 
     def add_window(win):
+        logging.debug('add window')
         for _ in range(50):
             try:
                 lst = ewmh.getClientList()
