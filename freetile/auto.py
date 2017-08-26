@@ -48,13 +48,13 @@ def loop():
         t = ewmh.getWmWindowType(win)
 
         if not IGNORE_STATES.isdisjoint(s):
-            logging.debug('wmstate:%s',s)
+            logging.debug('wmstate:%s', s)
             return False
         if len(t) < 1 or not IGNORE_TYPES.isdisjoint(t):
-            logging.debug('window type:%s',t)
+            logging.debug('window type:%s', t)
             return False
         if c is not None and 'Popup' in c:
-            logging.debug('wmclass:%s',c)
+            logging.debug('wmclass:%s', c)
             return False
 
         wininfo[win.id] = c, n, t, s
@@ -62,6 +62,21 @@ def loop():
 
     for win in ewmh.getClientList():
         insert_window(win)
+
+    def search_window(win, lst):
+        for win_target, win_test in lst:
+            if win_test.id == win.id:
+                return win_target
+        else:
+            plst = []
+            for win_target, win_test in lst:
+                pwin = win_test.query_tree().parent
+                if pwin:
+                    plst.append((win_target, pwin))
+            if len(plst) > 0:
+                return search_window(win, plst)
+            else:
+                return None
 
     def add_window(win):
         logging.debug('add window')
@@ -72,20 +87,9 @@ def loop():
                 logging.info('fail %s' % _)
                 return True
 
-        newwin=None
-        for w in lst:
-            if w.id == win.id:
-                newwin=w
-                break
-        else:
-            # search parent windows
-            for w in lst:
-                pwin=w.query_tree().parent
-                if pwin and pwin.id==win.id:
-                    newwin=w
-                    break
+        newwin = search_window(win, zip(lst, lst))
         if newwin:
-            win=newwin
+            win = newwin
             logging.debug('window id:%s', win.id)
             if insert_window(win):
                 logging.info([e.type, *wininfo[win.id]])
@@ -94,6 +98,8 @@ def loop():
                 if not regularize(force_tiling=False,
                                   minimum_regularized_window=num - 1):
                     return False
+        else:
+            logging.info("can't find window:%s", win.id)
         return True
 
     while True:
