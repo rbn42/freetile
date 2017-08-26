@@ -8,7 +8,7 @@ $ freetile autotile
 #+END_EXAMPLE
 The daemon will trigger tiling windows every time it detects a window created or destroyed. 
 * Installing
-  Please note pip install direct from source may result bad performance ([[https://github.com/JonathonReinhart/scuba/issues/71#issuecomment-238057064][see here]]).
+  Please note pip install direct from source may result bad performance ([[https://github.com/JonathonReinhart/scuba/issues/71#issuecomment-238057064][more detail]]).
 
   It is recommended to build a wheel package and install from the wheel package.
 #+BEGIN_EXAMPLE
@@ -18,7 +18,7 @@ The daemon will trigger tiling windows every time it detects a window created or
 
   PKGBUILD is provided for Arch Linux users.
 * Getting Started
-This is an [[https://i3wm.org/][i3-wm]] like key binding. You may want to add it to your desktop setting manager or the standalone [[https://wiki.archlinux.org/index.php/Xbindkeys][xbindkeys]] ([[freetile.scm][config file for xbindkeys]]).
+This is an [[https://i3wm.org/][i3-wm]] like key binding. You may want to add it to your desktop setting manager or the standalone [[http://www.nongnu.org/xbindkeys/xbindkeys.html][xbindkeys]] ([[freetile.scm][configuration file for xbindkeys]]).
 
 | Keys                     | Command                |
 |--------------------------+------------------------|
