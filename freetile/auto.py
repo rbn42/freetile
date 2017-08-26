@@ -31,7 +31,7 @@ def search_window(win, lst):
     if len(plst) > 0:
         return search_window(win, plst)
     else:
-        logging.info("can't find window:%s", win.id)
+        logging.debug("can't find window:%s", win.id)
         return None
 
 
@@ -91,6 +91,8 @@ def loop():
         logging.debug('add window')
         for _ in range(50):
             try:
+                ewmh.display.flush()
+                ewmh.display.sync()
                 lst = ewmh.getClientList()
                 newwin = search_window(win, zip(lst, lst))
                 if newwin:
