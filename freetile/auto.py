@@ -22,14 +22,14 @@ def search_window(win, lst):
         plst = []
         for win_target, win_test in lst:
             pwin = win_test.query_tree().parent
-            if pwin:
+            logging.debug('window %s has parent %s',win_test.id,pwin.id)
+            if pwin is not None:
                 plst.append((win_target, pwin))
         if len(plst) > 0:
             return search_window(win, plst)
         else:
             logging.info("can't find window:%s", win.id)
             return None
-
 
 def loop():
     setproctitle.setproctitle("freetile-auto")
