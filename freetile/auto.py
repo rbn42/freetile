@@ -40,6 +40,7 @@ def loop():
     IGNORE_STATES = set(IGNORE_STATES)
 
     regularize()
+    logging.debug('regularize end')
 
     def insert_window(win):
         c = win.get_wm_class()
