@@ -58,7 +58,7 @@ This is an [[https://i3wm.org/][i3-wm]] like key binding. You may want to add it
 | <Super> <Shift> <Ctrl> k | freetile shrink height |
 | <Super> <Shift> <Ctrl> l | freetile grow width    |
 * Troubleshooting
-** freetile can't focus window in KDE5.
-   KDE5 doesn't allow focus stealing by default. To turn off "Focus stealing prevention level", please go to System-Settings->Window behavior.
+*** freetile can't focus window in KDE5.
+    KDE5 doesn't allow focus stealing by default. To turn off "Focus stealing prevention level", please go to System-Settings->Window behavior.
 
 
