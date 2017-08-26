@@ -54,8 +54,8 @@ def main():
         else:
             resize(0, -config.RESIZE_STEP)
     elif arguments['autotile']:
-        from freetile.autotiling import loop as autotile
-        autotile()
+        import freetile.auto
+        freetile.auto.loop()
 
 
 if '__main__' == __name__:
