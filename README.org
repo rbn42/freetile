@@ -1,29 +1,6 @@
-This is a tiling script for X. It can be run in a free mode or a strict mode. In the free mode, you must run 
-#+BEGIN_EXAMPLE
-$ freetile tile
-#+END_EXAMPLE
- every time when you want to tile windows. Otherwise nothing unexpected would happen to your windows layout. In the strict mode, you can open a daemon by 
-#+BEGIN_EXAMPLE
-$ freetile autotile
-#+END_EXAMPLE
-The daemon will trigger tiling windows every time it detects a window created or destroyed. 
-* Preview
-- Compiz Reloaded
-      #+CAPTION: compiz
-      #+NAME:   fig:compiz
-      [[https://github.com/rbn42/gif/raw/master/compiz.gif]]
-- Gnome
-      #+CAPTION: gnome
-      #+NAME:   fig:gnome
-      [[https://github.com/rbn42/gif/raw/master/gnome.gif]]
-- Xfce4
-      #+CAPTION: Xfce4 
-      #+NAME:   fig:xfce
- [[https://user-images.githubusercontent.com/8784753/29739779-77898372-8a9a-11e7-8e80-d9579e1b4df5.gif]]
-- KDE5 
-      #+CAPTION: kde5
-      #+NAME:   fig:kde
-      [[https://github.com/rbn42/gif/raw/master/kde.gif]]
+This is a tiling script for X. 
+* Previews
+See [[https://github.com/rbn42/freetile/wiki/Previews][screencasts]] in different Desktop Environments.
 * Installing
   Please note pip install direct from source may result bad performance ([[https://github.com/JonathonReinhart/scuba/issues/71#issuecomment-238057064][more detail]]).
 
@@ -35,28 +12,41 @@ The daemon will trigger tiling windows every time it detects a window created or
 
   PKGBUILD is provided for Arch Linux users.
 * Getting Started
-This is an [[https://i3wm.org/][i3-wm]] like key binding. You may want to add it to your desktop setting manager or the standalone [[http://www.nongnu.org/xbindkeys/xbindkeys.html][xbindkeys]] ([[freetile.scm][configuration file for xbindkeys]]).
+** Free Mode and Strict Mode
+ freetile can be run in a free mode or a strict mode. In the free mode, you must run 
+ #+BEGIN_EXAMPLE
+ $ freetile tile
+ #+END_EXAMPLE
+  every time when you want to tile windows. Otherwise nothing unexpected would happen to your windows layout. In the strict mode, you can open a daemon by 
+ #+BEGIN_EXAMPLE
+ $ freetile autotile
+ #+END_EXAMPLE
+ The daemon will trigger tiling windows every time it detects a window created or destroyed. 
+** Key Bindings
+ This is an [[https://i3wm.org/][i3-wm]] like key binding. You may want to add it to your desktop setting manager or the standalone [[http://www.nongnu.org/xbindkeys/xbindkeys.html][xbindkeys]] ([[freetile.scm][configuration file for xbindkeys]]).
 
-| Keys                     | Command                |
-|--------------------------+------------------------|
-| <Super> <Space>          | freetile tile          |
-| <Super> <Shift> <Space>  | freetile autotile      |
-| <Super> h                | freetile focus left    |
-| <Super> j                | freetile focus down    |
-| <Super> k                | freetile focus up      |
-| <Super> l                | freetile focus right   |
-| <Super> <Shift> h        | freetile swap left     |
-| <Super> <Shift> j        | freetile swap down     |
-| <Super> <Shift> k        | freetile swap up       |
-| <Super> <Shift> l        | freetile swap right    |
-| <Super> <Ctrl> h         | freetile move left     |
-| <Super> <Ctrl> j         | freetile move down     |
-| <Super> <Ctrl> k         | freetile move up       |
-| <Super> <Ctrl> l         | freetile move right    |
-| <Super> <Shift> <Ctrl> h | freetile shrink width  |
-| <Super> <Shift> <Ctrl> j | freetile grow height   |
-| <Super> <Shift> <Ctrl> k | freetile shrink height |
-| <Super> <Shift> <Ctrl> l | freetile grow width    |
+ | Keys                     | Command                |
+ |--------------------------+------------------------|
+ | <Super> <Space>          | freetile tile          |
+ | <Super> <Shift> <Space>  | freetile autotile      |
+ | <Super> h                | freetile focus left    |
+ | <Super> j                | freetile focus down    |
+ | <Super> k                | freetile focus up      |
+ | <Super> l                | freetile focus right   |
+ | <Super> <Shift> h        | freetile swap left     |
+ | <Super> <Shift> j        | freetile swap down     |
+ | <Super> <Shift> k        | freetile swap up       |
+ | <Super> <Shift> l        | freetile swap right    |
+ | <Super> <Ctrl> h         | freetile move left     |
+ | <Super> <Ctrl> j         | freetile move down     |
+ | <Super> <Ctrl> k         | freetile move up       |
+ | <Super> <Ctrl> l         | freetile move right    |
+ | <Super> <Shift> <Ctrl> h | freetile shrink width  |
+ | <Super> <Shift> <Ctrl> j | freetile grow height   |
+ | <Super> <Shift> <Ctrl> k | freetile shrink height |
+ | <Super> <Shift> <Ctrl> l | freetile grow width    |
+
+
 * Troubleshooting
 ** freetile can't focus window in KDE5.
    KDE5 doesn't allow focus stealing by default. To turn off "Focus stealing prevention level", please go to System-Settings->Window behavior.
