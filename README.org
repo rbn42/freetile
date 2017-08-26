@@ -8,19 +8,19 @@ $ freetile autotile
 #+END_EXAMPLE
 The daemon will trigger tiling windows every time it detects a window created or destroyed. 
 * Preview
-** Compiz Reloaded
+- Compiz Reloaded
       #+CAPTION: compiz
       #+NAME:   fig:compiz
       [[https://github.com/rbn42/gif/raw/master/compiz.gif]]
-** Gnome
+- Gnome
       #+CAPTION: gnome
       #+NAME:   fig:gnome
       [[https://github.com/rbn42/gif/raw/master/gnome.gif]]
-** Xfce4
+- Xfce4
       #+CAPTION: Xfce4 
       #+NAME:   fig:xfce
  [[https://user-images.githubusercontent.com/8784753/29739779-77898372-8a9a-11e7-8e80-d9579e1b4df5.gif]]
-** KDE5 
+- KDE5 
       #+CAPTION: kde5
       #+NAME:   fig:kde
       [[https://github.com/rbn42/gif/raw/master/kde.gif]]
