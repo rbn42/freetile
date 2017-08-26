@@ -17,7 +17,9 @@ The daemon will trigger tiling windows every time it detects a window created or
 #+END_EXAMPLE
 
   PKGBUILD is provided for Arch Linux users.
-* Recommended Keyboard Mapping
+* Getting Started
+This is an [[https://i3wm.org/][i3-wm]] like key binding. You may want to add it to your desktop setting manager or the standalone [[https://wiki.archlinux.org/index.php/Xbindkeys][xbindkeys]] ([[freetile.scm][config file for xbindkeys]]).
+
 | Keys                     | Command                |
 |--------------------------+------------------------|
 | <Super> <Space>          | freetile tile          |
