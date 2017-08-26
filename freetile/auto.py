@@ -70,6 +70,7 @@ def loop():
                 return True
 
         if win.id in [w.id for w in lst]:
+            logging.debug('window id:%s',win.id)
             if insert_window(win):
                 logging.info([e.type, *wininfo[win.id]])
                 windowlist.reset()
