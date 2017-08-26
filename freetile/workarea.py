@@ -12,8 +12,6 @@ class WorkArea:
     height = None
 
     def __init__(self):
-        # TODO
-        # get_root_window_property("_NET_WORKAREA")
         x, y, w, h = ewmh.getWorkArea()[:4]
         self.width = w - LeftPadding - RightPadding
         self.height = h - TopPadding - BottomPadding

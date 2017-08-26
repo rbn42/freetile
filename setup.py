@@ -26,7 +26,11 @@ setup(
         'freetile.helper': 'freetile/helper'
     },
     install_requires=[
-        'docopt', 'ewmh', 'xcffib', 'python-xlib'
+        'docopt',
+        'ewmh',
+        'xcffib',
+        'python-xlib',
+        'setproctitle',
     ],
     entry_points={
         'console_scripts': [

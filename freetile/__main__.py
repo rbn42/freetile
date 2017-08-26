@@ -5,6 +5,7 @@ Usage:
   freetile [options] regularize
   freetile [options] (focus|move|swap) (up|down|left|right)
   freetile [options] (grow|shrink) (height|width)
+  freetile [options] autotile
   freetile -h | --help
 
 Options:
@@ -14,6 +15,7 @@ Options:
 import logging
 from docopt import docopt
 from freetile.main import *
+
 
 def main():
 
@@ -51,6 +53,10 @@ def main():
             resize(-config.RESIZE_STEP, 0)
         else:
             resize(0, -config.RESIZE_STEP)
+    elif arguments['autotile']:
+        from freetile.autotiling import loop as autotile
+        autotile()
+
 
 if '__main__' == __name__:
     main()
