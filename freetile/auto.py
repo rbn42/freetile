@@ -65,12 +65,12 @@ def loop():
             try:
                 lst = ewmh.getClientList()
             except BaseException:
-                print('fail %s' % _)
+                logging.info('fail %s' % _)
                 return True
 
         if win.id in [w.id for w in lst]:
             if insert_window(win):
-                print([e.type, *wininfo[win.id]])
+                logging.info([e.type, *wininfo[win.id]])
                 windowlist.reset()
                 num = len(windowlist.windowInCurrentWorkspaceInStackingOrder)
                 if not regularize(force_tiling=False,
@@ -83,17 +83,17 @@ def loop():
         if e.type == X.MapNotify:
             win = e.window
             if not add_window(win):
-                print('failed to add new window')
+                logging.info('failed to add new window')
                 break
         elif e.type == X.UnmapNotify:
             win = e.window
             if win.id in wininfo:
-                print([e.type, *wininfo.pop(win.id)])
+                logging.info([e.type, *wininfo.pop(win.id)])
                 windowlist.reset(ignore=[win.id])
                 if len(windowlist.windowInCurrentWorkspaceInStackingOrder) < 1:
-                    print('no window exists')
+                    logging.info('no window exists')
                     # quit auto tiling when no window exists.
                     break
                 regularize()
     # Quit loop when detect overlapped windows created by user.
-    print('quit autotiling')
+    logging.info('quit autotiling')
