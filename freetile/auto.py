@@ -16,6 +16,7 @@ def search_window(win, lst):
     for win_target, win_test in lst:
         logging.debug('%s', win_test.id)
         if win_test.id == win.id:
+            logging.debug('find window:%s',win_target.id)
             return win_target
     else:
         plst = []
@@ -26,6 +27,7 @@ def search_window(win, lst):
         if len(plst) > 0:
             return search_window(win, plst)
         else:
+            logging.info("can't find window:%s", win.id)
             return None
 
 
@@ -101,8 +103,6 @@ def loop():
                 if not regularize(force_tiling=False,
                                   minimum_regularized_window=num - 1):
                     return False
-        else:
-            logging.info("can't find window:%s", win.id)
         return True
 
     while True:
