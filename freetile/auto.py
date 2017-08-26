@@ -40,7 +40,6 @@ def loop():
     IGNORE_STATES = set(IGNORE_STATES)
 
     regularize()
-    logging.debug('regularize end')
 
     def insert_window(win):
         c = win.get_wm_class()
@@ -83,11 +82,13 @@ def loop():
         logging.debug('next event')
         e = disp.next_event()
         if e.type == X.MapNotify:
+            logging.debug('MapNotify event')
             win = e.window
             if not add_window(win):
                 logging.info('failed to add new window')
                 break
         elif e.type == X.UnmapNotify:
+            logging.debug('UnmapNotify event')
             win = e.window
             if win.id in wininfo:
                 logging.info([e.type, *wininfo.pop(win.id)])
