@@ -5,11 +5,11 @@ pkgdesc="X"
 arch=('any')
 url="http://github.com/rbn42/freetile"
 license=('MIT')
-depends=('python') 
+depends=('python-docopt' 'python-xlib' 'python-xcffib' 'python-ewmh') 
 makedepends=('git' 'python-wheel')
 provides=('freetile')
 conflicts=('freetile')
-source=("$pkgname::git+https://github.com/rbn42/freetile")
+source=("git+https://github.com/rbn42/freetile")
 md5sums=('SKIP')
 
 pkgver() {
@@ -21,7 +21,7 @@ package() {
   cd "$srcdir/$pkgname"
   #https://github.com/JonathonReinhart/scuba/issues/71
   python setup.py bdist_wheel
-  pip install --compile --no-deps --ignore-installed --root="$pkgdir" dist/freetile-*.whl
+  pip install --compile --no-deps --ignore-installed --root="$pkgdir" dist/${pkgname%-*}-*.whl
   install -Dm644 LICENSE $pkgdir/usr/share/licenses/${pkgname%-*}/LICENSE
 }
 
