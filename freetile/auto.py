@@ -92,11 +92,13 @@ def loop():
         for _ in range(50):
             try:
                 lst = ewmh.getClientList()
+                newwin = search_window(win, zip(lst, lst))
+                if newwin:
+                    break
             except BaseException:
                 logging.info('fail %s' % _)
                 return True
 
-        newwin = search_window(win, zip(lst, lst))
         if newwin:
             win = newwin
             logging.debug('window id:%s', win.id)
