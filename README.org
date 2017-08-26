@@ -10,11 +10,15 @@ The daemon will trigger tiling windows every time it detects a window created or
 * Preview
 ** compiz reloaded
       #+CAPTION: compiz
-      #+NAME:   fig:SED-HR4049
+      #+NAME:   fig:compiz
       [[https://github.com/rbn42/gif/raw/master/compiz.gif]]
+** gnome
+      #+CAPTION: gnome
+      #+NAME:   fig:gnome
+      [[https://github.com/rbn42/gif/raw/master/gnome.gif]]
 ** xfce4
       #+CAPTION: Xfce4 
-      #+NAME:   fig:SED-HR4049
+      #+NAME:   fig:xfce
  [[https://user-images.githubusercontent.com/8784753/29739779-77898372-8a9a-11e7-8e80-d9579e1b4df5.gif]]
 * Installing
   Please note pip install direct from source may result bad performance ([[https://github.com/JonathonReinhart/scuba/issues/71#issuecomment-238057064][more detail]]).
