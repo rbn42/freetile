@@ -11,7 +11,7 @@ The daemon will trigger tiling windows every time it detects a window created or
 ** compiz reloaded
       #+CAPTION: compiz
       #+NAME:   fig:SED-HR4049
-[[http://i.imgur.com/8yKiqIj.mp4]]
+      [[https://github.com/rbn42/gif/raw/master/compiz.gif]]
 ** xfce4
       #+CAPTION: Xfce4 
       #+NAME:   fig:SED-HR4049
