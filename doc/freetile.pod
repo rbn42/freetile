@@ -1,0 +1,39 @@
+=head1 NAME
+
+freetile - freely window tiling script for X
+
+
+
+
+=head1 SYNOPSIS
+
+B<freetile> [<OPTIONS>] [<ACTIONS>]
+
+
+
+
+=head1 DESCRIPTION
+
+freetile is a window tiling script based on Xlib.
+
+
+
+
+=head1 RESOURCES
+
+I<This manual> contains instructions on how to use and configure ranger.
+
+
+=head1 OPTIONS
+
+=over 14
+
+=item B<--debug>
+
+Currently for development purposes only.
+
+=back
+
+
+=head1 ACTIONS
+
