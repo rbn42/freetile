@@ -13,7 +13,7 @@ See [[https://github.com/rbn42/freetile/wiki/Previews][screencasts]] in differen
   PKGBUILD is provided for Arch Linux users.
 * Getting Started
 ** Key Bindings
- These are [[https://i3wm.org/][i3-wm]] like key bindings. Please add them to your desktop setting manager or the standalone [[http://www.nongnu.org/xbindkeys/xbindkeys.html][xbindkeys]] ([[freetile.scm][configuration file for xbindkeys]]).
+ These are [[https://i3wm.org/][i3-wm]] like key bindings. Please add them to your desktop setting manager or the standalone [[http://www.nongnu.org/xbindkeys/xbindkeys.html][xbindkeys]] ([[doc/config/freetile.scm][configuration file for xbindkeys]]).
 
  | Keys                     | Command                |
  |--------------------------+------------------------|
