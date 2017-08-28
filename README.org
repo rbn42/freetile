@@ -1,4 +1,8 @@
 This is a tiling script for X. 
+* Features
+  - Use Xlib.
+  - Use a tree as window layout structure, like [[https://i3wm.org/][i3-wm]].
+  - The tree is not required to synchronize with the X server. It is generated directly from the windows' geometry every time you run the script.
 * Previews
 See [[https://github.com/rbn42/freetile/wiki/Previews][screencasts]] in different Desktop Environments.
 * Installing
