@@ -10,7 +10,7 @@ from .windowlist import windowlist
 from .workarea import workarea
 
 
-def regularize(force_tiling=True, minimum_regularized_window=None):
+def regularize(ignore_overlapped_layout=True, minimum_regularized_window=None):
     '''
     Try to regularize windows or add a new window into the K-D tree.
     '''
@@ -30,7 +30,7 @@ def regularize(force_tiling=True, minimum_regularized_window=None):
 
         if regularize_or_insert_windows(minimum_regularized_window):
             logging.info('regularize windows')
-        elif force_tiling:
+        elif ignore_overlapped_layout:
             logging.info('force tiling')
             force_tiling()
         else:

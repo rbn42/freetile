@@ -113,7 +113,7 @@ def loop():
                 windowlist.windowInCurrentWorkspaceInStackingOrder.append(
                     win.id)
                 num = len(windowlist.windowInCurrentWorkspaceInStackingOrder)
-                if not regularize(force_tiling=False,
+                if not regularize(ignore_overlapped_layout=True,
                                   minimum_regularized_window=num - 1):
                     return False
         return True

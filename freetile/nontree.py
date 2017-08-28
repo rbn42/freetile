@@ -1,7 +1,8 @@
 """
-Operations for overlapping layout.
+Operations for overlapped layout.
 """
 from .windowlist import windowlist
+from .workarea import workarea
 
 
 def moveandresize(target):
@@ -24,12 +25,14 @@ def move(target):
     return moveandresize(target)
 
 
+def cal_center(x, y, w, h): return [x + w / 2.2, y + h / 2.2]
+
+
 def find(center, target, allow_outofworkspace=False):
     '''
     find the nearest window in the target direction.
     '''
 
-    def cal_center(x, y, w, h): return [x + w / 2.2, y + h / 2.2]
     if center is None:
         lay_center = workarea.width / 2.0, workarea.height / 2.0
     else:
