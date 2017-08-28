@@ -29,7 +29,7 @@ class Node:
             'children': [
                 child.to_json() for child in self.children] if self.children else None,
             'key': self.key,
-            'resized':self.resized,
+            'resized': self.resized,
         }
 
     def leaf(self):
@@ -47,8 +47,8 @@ class Node:
         The dimension expected to be controlled by current node and divided between children.
         """
         # column first
-        index_min = self.depth() % self.DIMENSION
-        index_max = self.depth() % self.DIMENSION + self.DIMENSION
+        index_min = (1 + self.depth()) % self.DIMENSION
+        index_max = (1 + self.depth()) % self.DIMENSION + self.DIMENSION
         return index_min, index_max
 
     def targets(self):

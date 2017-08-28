@@ -28,51 +28,22 @@ def resize_kdtree(resize_width, resize_height):
         return False
     current_node = _tree.leafnodemap()[active]
 
-    # determine the size of current node and parent node.
-    if current_node.depth() % 2 == 0:
-        resize_current = resize_height
-        resize_parent = resize_width
-        index_current = 3
-        index_parent = 2
-    else:
-        resize_current = resize_width
-        resize_parent = resize_height
-        index_current = 2
-        index_parent = 3
-
     regularize_node = None
 
     # resize nodes
-    if not resize_current == 0:
-        if not current_node.overlap():
-            if current_node.parent is not None:
-                node = current_node
-                index = index_current
-                _resize = resize_current
+    for node in [current_node, current_node.parent]:
+        if not node.overlap():
+            index_min, index_max = node.parent.dimension()
+            _resize = [resize_width, resize_height][index_min]
+            if not _resize == 0:
                 node.resized = True
                 regularize_node = node.parent
                 # invert the operation if the node is the last child of its
                 # parent
-                if regularize_node.children[-1] == node:
-                    node.position[index] -= _resize
+                if regularize_node.children[-1] is node:
+                    node.position[index_max] -= _resize
                 else:
-                    node.position[index] += _resize
-
-    if not resize_parent == 0:
-        if current_node.parent is not None:
-            if not current_node.parent.overlap():
-                if current_node.parent.parent is not None:
-                    node = current_node.parent
-                    index = index_parent
-                    _resize = resize_parent
-                    node.resized = True
-                    regularize_node = node.parent
-                    # invert the operation if the node is the last child of its
-                    # parent
-                    if regularize_node.children[-1] == node:
-                        node.position[index] -= _resize
-                    else:
-                        node.position[index] += _resize
+                    node.position[index_max] += _resize
 
     if regularize_node is None:
         return False
@@ -137,10 +108,8 @@ def move_kdtree(target, allow_create_new_node=True):
     current_node = _tree.leafnodemap()[active]
 
     # whether promote node to its parent's level
-    if current_node.depth() % 2 == 0:
-        promote = target in ['right', 'left']
-    else:
-        promote = target in ['down', 'up']
+    promote = target not in current_node.targets()
+
     shift = 0 if target in ['left', 'up'] else 1
 
     if promote:
@@ -332,10 +301,7 @@ def find_kdtree(center, target, allow_parent_sibling=True):
         return None
     current_node = _tree.leafnodemap()[active]
 
-    if current_node.depth() % 2 == 0:
-        promote = target in ['right', 'left']
-    else:
-        promote = target in ['down', 'up']
+    promote = target not in current_node.targets()
 
     shift = -1 if target in ['left', 'up'] else 1
 
