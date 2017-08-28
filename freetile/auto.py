@@ -119,7 +119,6 @@ def loop():
         return True
 
     while True:
-        logging.debug('next event')
         e = disp.next_event()
         if e.type == X.MapNotify:
             logging.debug('MapNotify event')
@@ -138,5 +137,15 @@ def loop():
                     # quit auto tiling when no window exists.
                     break
                 regularize()
+        elif e.type == X.ConfigureNotify:
+            logging.debug('ConfigureNotify event')
+        elif e.type == X.ClientMessage:
+            logging.debug('ClientMessag event')
+        elif e.type == X.MappingNotify:
+            logging.debug('MappingNotify event')
+        elif e.type == X.DestroyNotify:
+            logging.debug('DestroyNotify event')
+        else:
+            logging.debug('unknown event:%s', e.type)
     # Quit loop when detect overlapped windows created by user.
     logging.info('quit autotiling')
