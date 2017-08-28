@@ -32,7 +32,7 @@ def resize_kdtree(resize_width, resize_height):
 
     # resize nodes
     for node in [current_node, current_node.parent]:
-        if not node.overlap():
+        if node and node.parent and not node.overlap():
             index_min, index_max = node.parent.dimension()
             _resize = [resize_width, resize_height][index_min]
             if not _resize == 0:
@@ -59,7 +59,7 @@ def resize_kdtree(resize_width, resize_height):
 def getkdtree(winlist, lay):
     origin_lay = [[x, y, x + w, y + h] for x, y, w, h in lay]
     lst = list(zip(origin_lay, winlist))
-    return Node(lst).create_parent().create_parent()
+    return Node(lst)
 
 
 def insert_window_into_kdtree(winid, target):
@@ -72,9 +72,14 @@ def insert_window_into_kdtree(winid, target):
         # overlapped
         return False
     target_node = _tree.leafnodemap()[target]
-    if target_node.parent.children_resized(gap=(WindowGap, WindowGap)):
-        # if node is resized by user, dont resize it in the same axis again.
+    if target_node.parent is None:
+        # If there is only one window node and it is root.
+        _tree = target_node.create_parent()
+    elif target_node.parent.children_resized(gap=(WindowGap, WindowGap)):
+        # If the node is resized by user, don't resize it in the same axis
+        # again.
         target_node.create_parent()
+
     node = target_node.create_sibling()
     node.key = winid
     if REGULARIZE_FULLSCREEN:
@@ -107,14 +112,16 @@ def move_kdtree(target, allow_create_new_node=True):
         return False
     current_node = _tree.leafnodemap()[active]
 
-    # whether promote node to its parent's level
-    promote = target not in current_node.targets()
-
     shift = 0 if target in ['left', 'up'] else 1
 
-    if promote:
+    # whether promote node to its parent's level
+    if target not in current_node.targets():
         current_node.parent.children.remove(current_node)
         regularize_node = current_node.parent.parent
+        if regularize_node is None:
+            # If parent node is root.
+            _tree = _tree.create_parent().create_parent()
+            regularize_node = current_node.parent.parent
         index_parent = regularize_node.children.index(current_node.parent)
         regularize_node.children.insert(index_parent + shift, current_node)
     else:
@@ -217,7 +224,10 @@ def regularize_or_insert_windows(min_regularized_window):
 
     tree.regularize(gap=(WindowGap, WindowGap))
 
-    if target_node.parent.children_resized(gap=(WindowGap, WindowGap)):
+    if target_node.parent is None:
+        # If there is only one window node and it is root.
+        tree = target_node.create_parent()
+    elif target_node.parent.children_resized(gap=(WindowGap, WindowGap)):
         # if node is resized by user, dont resize it in the same axis
         # again.
         target_node.create_parent()
