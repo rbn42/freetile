@@ -241,7 +241,7 @@ def regularize_or_insert_windows(min_regularized_window):
     if result is None:
         return False
     tree, winlist, num = result
-    logging.debug('tree:%s', tree)
+    logging.debug('original tree:%s', tree)
 
     target = winlist[-1]
     target_node = tree.leafnodemap()[target]
@@ -256,11 +256,13 @@ def regularize_or_insert_windows(min_regularized_window):
     for winid in stack[num:]:
         node = target_node.create_sibling()
         node.key = winid
+    logging.debug('new tree:%s', tree)
 
     if REGULARIZE_FULLSCREEN:
         tree.position = [workarea.x, workarea.y, workarea.x +
                          workarea.width, workarea.y + workarea.height]
     tree.regularize(gap=(WindowGap, WindowGap))
+    logging.debug('regularized new tree:%s', tree)
     # load k-d tree
     a, b, reach_size_limit = tree.getLayout(windowlist.minGeometry)
     if reach_size_limit:

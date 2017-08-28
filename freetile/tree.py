@@ -29,15 +29,8 @@ class Node:
             'children': [
                 child.to_json() for child in self.children] if self.children else None,
             'key': self.key,
+            'resized':self.resized,
         }
-
-    def log(self):
-        tab = '  ' * self.depth()
-        logging.debug('%s%s,%s,%s' % (tab,
-                                      self.key, self.position, self.resized))
-        if self.children is not None:
-            for child in self.children:
-                child.log()
 
     def leaf(self):
         return self.children is None
