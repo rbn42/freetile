@@ -54,17 +54,14 @@ def force_tiling():
 
 
 def resize(resize_width, resize_height):
-    if resize_kdtree(resize_width, resize_height):
-        return True
-    return nontree.moveandresize([0, 0, resize_width, resize_height])
+    return resize_kdtree(resize_width, resize_height) \
+        or nontree.moveandresize([0, 0, resize_width, resize_height])
 
 
 def move(target):
-    if move_kdtree(target, allow_create_new_node=True):
-        return True
-    if move_kdtree(target, allow_create_new_node=False):
-        return True
-    return nontree.move(target)
+    return move_kdtree(target, allow_create_new_node=True) \
+        or move_kdtree(target, allow_create_new_node=False) \
+        or nontree.move(target)
 
 
 def swap(target):
@@ -74,14 +71,9 @@ def swap(target):
     if active is None:
         return False
 
-    target_window_id = find_kdtree(active, target, allow_parent_sibling=False)
-
-    if target_window_id is None:
-        target_window_id = nontree.find(active, target)
-
-    if target_window_id is None:
-        target_window_id = find_kdtree(
-            active, target, allow_parent_sibling=True)
+    target_window_id = find_kdtree(active, target, False) \
+        or nontree.find(active, target) \
+        or find_kdtree(active, target, True)
 
     if target_window_id is None:
         return False
@@ -104,16 +96,9 @@ def focus(target):
         if emacs.navigate(window_name, target):
             return
 
-    target_window_id = find_kdtree(active, target, allow_parent_sibling=False)
-
-    if target_window_id is None:
-        target_window_id = nontree.find(
-            active, target,
-            allow_outofworkspace=config.NavigateAcrossWorkspaces)
-
-    if target_window_id is None:
-        target_window_id = find_kdtree(
-            active, target, allow_parent_sibling=True)
+    target_window_id = find_kdtree(active, target, False) \
+        or nontree.find(active, target, config.NavigateAcrossWorkspaces) \
+        or find_kdtree(active, target, True)
 
     if target_window_id is None:
         windowlist.raise_window(active)
