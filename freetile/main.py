@@ -25,7 +25,7 @@ def regularize(force_tiling=True, minimum_regularized_window=None):
         Allow to insert 1/3 new windows to a regularized layout of the rest 2/3 windows.
         """
         if minimum_regularized_window is None:
-            minimum_regularized_window = int(num * 2 / 3)  # 2
+            minimum_regularized_window = num * 2 // 3
             minimum_regularized_window = max(2, minimum_regularized_window)
         if regularize_or_insert_windows(minimum_regularized_window):
             logging.info('regularize windows')

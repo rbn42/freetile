@@ -108,8 +108,10 @@ def loop():
                 logging.info([e.type, *wininfo[win.id]])
                 windowlist.reset()
                 # move new window to top.
-                windowlist.windowInCurrentWorkspaceInStackingOrder.remove(win.id)
-                windowlist.windowInCurrentWorkspaceInStackingOrder.append(win.id)
+                windowlist.windowInCurrentWorkspaceInStackingOrder.remove(
+                    win.id)
+                windowlist.windowInCurrentWorkspaceInStackingOrder.append(
+                    win.id)
                 num = len(windowlist.windowInCurrentWorkspaceInStackingOrder)
                 if not regularize(force_tiling=False,
                                   minimum_regularized_window=num - 1):
