@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 import logging
+import json
 
 from .divide import divide
 
@@ -17,6 +18,18 @@ class Node:
     resized = False
     DIMENSION = 2
     __leafnodemap = None
+
+    def __str__(self):
+        obj = self.to_json()
+        return json.dumps(obj, indent=4, sort_keys=True)
+
+    def to_json(self):
+        return {
+            'position': self.position,
+            'children': [
+                child.to_json() for child in self.children] if self.children else None,
+            'key': self.key,
+        }
 
     def log(self):
         tab = '  ' * self.depth()

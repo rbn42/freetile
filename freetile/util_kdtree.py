@@ -241,6 +241,7 @@ def regularize_or_insert_windows(min_regularized_window):
     if result is None:
         return False
     tree, winlist, num = result
+    logging.debug('tree:%s', tree)
 
     target = winlist[-1]
     target_node = tree.leafnodemap()[target]
