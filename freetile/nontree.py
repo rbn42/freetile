@@ -3,6 +3,7 @@ Operations for overlapped layout.
 """
 from .windowlist import windowlist
 from .workarea import workarea
+from . import config
 
 
 def moveandresize(target):
