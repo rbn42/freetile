@@ -5,6 +5,9 @@ This is a tiling script for X.
   - The tree is not required to synchronize with the X server in a background session. It is generated directly from the windows' geometry every time you run the script.
 * Previews
 See [[https://github.com/rbn42/freetile/wiki/Previews][screencasts]] in different Desktop Environments.
+      #+CAPTION: compiz
+      #+NAME:   fig:compiz
+  [[https://github.com/rbn42/freetile/wiki/screenshot.png]]
 * Installing
   Please note pip install direct from source may result bad performance ([[https://github.com/JonathonReinhart/scuba/issues/71#issuecomment-238057064][more detail]]).
 
