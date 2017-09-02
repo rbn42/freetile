@@ -2,8 +2,6 @@ from . import config
 from . import nontree
 import logging
 
-from .helper import emacs
-from .helper import vim
 from .util_kdtree import (find_kdtree, move_kdtree,
                           regularize_or_insert_windows, resize_kdtree)
 from .windowlist import windowlist
@@ -88,13 +86,6 @@ def swap(target):
 def focus(target):
 
     active = windowlist.get_active_window(allow_outofworkspace=False)
-
-    if active is not None:
-        window_name = windowlist.windowName[active]
-        if vim.navigate(window_name, target):
-            return
-        if emacs.navigate(window_name, target):
-            return
 
     target_window_id = find_kdtree(active, target, False) \
         or nontree.find(active, target, config.NavigateAcrossWorkspaces) \
