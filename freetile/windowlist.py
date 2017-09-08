@@ -1,5 +1,5 @@
-from .config import (EXCLUDE_APPLICATIONS, EXCLUDE_WM_CLASS, MIN_WINDOW_HEIGHT,
-                     MIN_WINDOW_WIDTH)
+from .config import (exclude_applications, exclude_wm_class, min_window_height,
+                     min_window_width)
 
 from .helper import xcb
 import logging
@@ -45,7 +45,7 @@ class WindowList:
             self.windowObjectMap[winid] = win
             if not _desktop == desktop:
                 continue
-            if name in EXCLUDE_APPLICATIONS:
+            if name in exclude_applications:
                 continue
 
             if not {
@@ -62,7 +62,7 @@ class WindowList:
             if minimized:
                 continue
             wmclass = set(wmclass)
-            if not wmclass == wmclass - set(EXCLUDE_WM_CLASS):
+            if not wmclass == wmclass - set(exclude_wm_class):
                 continue
 
             self.windowName[winid] = name
@@ -74,8 +74,8 @@ class WindowList:
 
             wnh = win.get_wm_normal_hints()
             f_left, f_right, f_top, f_bottom = get_frame_extents(win)
-            minw = max(MIN_WINDOW_WIDTH, wnh.min_width + f_left, f_right)
-            minh = max(MIN_WINDOW_HEIGHT, wnh.min_height + f_top, f_right)
+            minw = max(min_window_width, wnh.min_width + f_left, f_right)
+            minh = max(min_window_height, wnh.min_height + f_top, f_right)
             self.minGeometry[winid] = minw, minh
 
             self.get_absolute_geo(win)

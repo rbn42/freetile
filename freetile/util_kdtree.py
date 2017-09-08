@@ -1,5 +1,5 @@
 import logging
-from .config import MAX_KD_TREE_BRANCH, REGULARIZE_FULLSCREEN, WindowGap
+from .config import max_tree_branch, fullscreen_tiling, window_gap
 
 from .tree import Node
 from .windowlist import windowlist
@@ -49,7 +49,7 @@ def resize_kdtree(resize_width, resize_height):
         return False
     regularize_node = regularize_node.parent
 
-    if REGULARIZE_FULLSCREEN:
+    if fullscreen_tiling:
         _tree.position = [workarea.x, workarea.y, workarea.x +
                           workarea.width, workarea.y + workarea.height]
         return regularize_kd_tree(_tree, ignore_size_limit_error=True)
@@ -75,14 +75,14 @@ def insert_window_into_kdtree(winid, target):
     if target_node.parent is None:
         # If there is only one window node and it is root.
         _tree = target_node.create_parent()
-    elif target_node.parent.children_resized(gap=(WindowGap, WindowGap)):
+    elif target_node.parent.children_resized(gap=(window_gap, window_gap)):
         # If the node is resized by user, don't resize it in the same axis
         # again.
         target_node.create_parent()
 
     node = target_node.create_sibling()
     node.key = winid
-    if REGULARIZE_FULLSCREEN:
+    if fullscreen_tiling:
         _tree.position = [workarea.x, workarea.y, workarea.x +
                           workarea.width, workarea.y + workarea.height]
         return regularize_kd_tree(_tree, ignore_size_limit_error=True)
@@ -149,9 +149,9 @@ def move_kdtree(target, allow_create_new_node=True):
                     # But allow no more than one branch for each node
                     non_leaf_node_count = 0
                     for sibling in new_parent.parent.children:
-                        if not sibling.leaf() or MAX_KD_TREE_BRANCH < 1:
+                        if not sibling.leaf() or max_tree_branch < 1:
                             non_leaf_node_count += 1
-                            if not non_leaf_node_count < MAX_KD_TREE_BRANCH:
+                            if not non_leaf_node_count < max_tree_branch:
                                 # Just swap them.
                                 _swap = True
                                 break
@@ -182,7 +182,7 @@ def move_kdtree(target, allow_create_new_node=True):
 
     # regularize k-d tree
     regularize_node = regularize_node.parent
-    if REGULARIZE_FULLSCREEN:
+    if fullscreen_tiling:
         _tree.position = [workarea.x, workarea.y, workarea.x +
                           workarea.width, workarea.y + workarea.height]
         return regularize_kd_tree(_tree, ignore_size_limit_error=True)
@@ -222,12 +222,12 @@ def regularize_or_insert_windows(min_regularized_window):
     target = winlist[-1]
     target_node = tree.leafnodemap()[target]
 
-    tree.regularize(gap=(WindowGap, WindowGap))
+    tree.regularize(gap=(window_gap, window_gap))
 
     if target_node.parent is None:
         # If there is only one window node and it is root.
         tree = target_node.create_parent()
-    elif target_node.parent.children_resized(gap=(WindowGap, WindowGap)):
+    elif target_node.parent.children_resized(gap=(window_gap, window_gap)):
         # if node is resized by user, dont resize it in the same axis
         # again.
         target_node.create_parent()
@@ -237,10 +237,10 @@ def regularize_or_insert_windows(min_regularized_window):
         node.key = winid
     logging.debug('new tree:%s', tree)
 
-    if REGULARIZE_FULLSCREEN:
+    if fullscreen_tiling:
         tree.position = [workarea.x, workarea.y, workarea.x +
                          workarea.width, workarea.y + workarea.height]
-    tree.regularize(gap=(WindowGap, WindowGap))
+    tree.regularize(gap=(window_gap, window_gap))
     logging.debug('regularized new tree:%s', tree)
     # load k-d tree
     a, b, reach_size_limit = tree.getLayout(windowlist.minGeometry)
@@ -258,7 +258,7 @@ def regularize_kd_tree(regularize_node,
     if regularize_node.overlap():
         return False
     # regularize k-d tree
-    regularize_node.regularize(gap=(WindowGap, WindowGap))
+    regularize_node.regularize(gap=(window_gap, window_gap))
 
     # load k-d tree
     a, b, reach_size_limit = regularize_node.getLayout(windowlist.minGeometry)

@@ -1,22 +1,23 @@
 #!/usr/bin/python
-WindowGap = 4
-LeftPadding = 4
-BottomPadding = 4
-TopPadding = 4
-RightPadding = 4
-NavigateAcrossWorkspaces = False  # True  # availabe in viewports desktops
+window_gap = 4
+left_padding = 4
+bottom_padding = 4
+top_padding = 4
+right_padding = 4
+navigate_across_workspaces = False  # True  # availabe in viewports desktops
 
-EXCLUDE_APPLICATIONS = []
-EXCLUDE_WM_CLASS = []
+exclude_applications = []
+exclude_wm_class = []
 
-RESIZE_STEP = 72
-MOVE_STEP = 72
-MIN_WINDOW_WIDTH = 50
-MIN_WINDOW_HEIGHT = 50
+resize_step = 72
+move_step = 72
+min_window_width = 50
+min_window_height = 50
 
-MAX_KD_TREE_BRANCH = 3
+max_tree_branch = 3
 
-REGULARIZE_FULLSCREEN = True
+fullscreen_tiling = True
+maximize_single_window = True
 
 
 # overwrite default configuration

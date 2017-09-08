@@ -19,10 +19,10 @@ def moveandresize(target):
 
 
 def move(target):
-    target = {'left': [-config.MOVE_STEP, 0, 0, 0],
-              'down': [0, config.MOVE_STEP, 0, 0],
-              'up': [0, -config.MOVE_STEP, 0, 0],
-              'right': [config.MOVE_STEP, 0, 0, 0], }[target]
+    target = {'left': [-config.move_step, 0, 0, 0],
+              'down': [0, config.move_step, 0, 0],
+              'up': [0, -config.move_step, 0, 0],
+              'right': [config.move_step, 0, 0, 0], }[target]
     return moveandresize(target)
 
 

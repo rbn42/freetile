@@ -88,7 +88,7 @@ def focus(target):
     active = windowlist.get_active_window(allow_outofworkspace=False)
 
     target_window_id = find_kdtree(active, target, False) \
-        or nontree.find(active, target, config.NavigateAcrossWorkspaces) \
+        or nontree.find(active, target, config.navigate_across_workspaces) \
         or find_kdtree(active, target, True)
 
     if target_window_id is None:
@@ -99,16 +99,16 @@ def focus(target):
 
 
 def grow_width():
-    resize(config.RESIZE_STEP, 0)
+    resize(config.resize_step, 0)
 
 
 def grow_height():
-    resize(0, config.RESIZE_STEP)
+    resize(0, config.resize_step)
 
 
 def shrink_width():
-    resize(-config.RESIZE_STEP, 0)
+    resize(-config.resize_step, 0)
 
 
 def shrink_height():
-    resize(0, -config.RESIZE_STEP)
+    resize(0, -config.resize_step)
