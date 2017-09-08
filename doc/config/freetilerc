@@ -21,3 +21,4 @@ min_window_height = 50
 max_tree_branch = 3
 
 fullscreen_tiling = True
+maximize_single_window = True

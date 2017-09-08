@@ -19,14 +19,14 @@ def regularize(
     num = len(stack)
     if num == 0:
         pass
-    elif num == 1:
+    elif num == 1 and config.maximize_single_window:
         windowlist.maximize_window(stack[0])
     else:
         """
         Allow to insert 1/3 new windows to a regularized layout of the rest 2/3 windows.
         """
         if minimum_regularized_window is None:
-            minimum_regularized_window = max(min(num - 1, 2), num * 2 // 3)
+            minimum_regularized_window = max(min(num - 1, 2), num * 2 // 3, 1)
 
         if regularize_or_insert_windows(minimum_regularized_window):
             logging.info('regularize windows')
