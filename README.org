@@ -13,8 +13,9 @@ See [[https://github.com/rbn42/freetile/wiki/Previews][screencasts]] in differen
   python setup.py bdist_wheel
   pip install dist/freetile-*.whl --user
 #+END_EXAMPLE
-
-  PKGBUILD is provided for Arch Linux users.
+  [[PKGBUILD]] is provided for Arch Linux users.
+* Configuration
+  [[./doc/config/freetilerc][An example]] of ~/.config/freetilerc.
 * Getting Started
 ** Key Bindings
  These are [[https://i3wm.org/][i3-wm]] like key bindings. Please add them to your desktop setting manager or the standalone [[http://www.nongnu.org/xbindkeys/xbindkeys.html][xbindkeys]] ([[doc/config/freetile.scm][configuration file for xbindkeys]]).
@@ -49,7 +50,5 @@ See [[https://github.com/rbn42/freetile/wiki/Previews][screencasts]] in differen
  #+END_EXAMPLE
  The daemon will trigger tiling windows every time it detects a window created or destroyed. And it will quit automatically when no more window exists or it failed to tile the windows for any reason. 
 * Troubleshooting
-** freetile can't focus window in KDE5.
-   KDE5 doesn't allow focus stealing by default. To turn off "Focus stealing prevention level", please go to System-Settings->Window behavior.
-
-
+** freetile cannot focus window in KDE5.
+   KDE5 does not allow focus stealing by default. To turn off "Focus stealing prevention level", please go to System-Settings->Window behavior.
