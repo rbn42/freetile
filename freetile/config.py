@@ -6,7 +6,7 @@ top_padding = 4
 right_padding = 4
 navigate_across_workspaces = False  # True  # availabe in viewports desktops
 
-exclude_applications = []
+exclude_wm_name = []
 exclude_wm_class = []
 
 resize_step = 72

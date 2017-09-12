@@ -1,4 +1,4 @@
-from .config import (exclude_applications, exclude_wm_class, min_window_height,
+from .config import (exclude_wm_name, exclude_wm_class, min_window_height,
                      min_window_width)
 
 from .helper import xcb
@@ -45,7 +45,7 @@ class WindowList:
             self.windowObjectMap[winid] = win
             if not _desktop == desktop:
                 continue
-            if name in exclude_applications:
+            if name in exclude_wm_name:
                 continue
 
             if not {
