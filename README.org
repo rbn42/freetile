@@ -47,7 +47,7 @@ See [[https://github.com/rbn42/freetile/wiki/Previews][screencasts]] in differen
  #+BEGIN_EXAMPLE
  $ freetile autotile
  #+END_EXAMPLE
- The daemon will trigger tiling windows every time it detects a window created or destroyed. 
+ The daemon will trigger tiling windows every time it detects a window created or destroyed. And it will quit automatically when no more window exists or it failed to tile the windows for any reason. 
 * Troubleshooting
 ** freetile can't focus window in KDE5.
    KDE5 doesn't allow focus stealing by default. To turn off "Focus stealing prevention level", please go to System-Settings->Window behavior.
