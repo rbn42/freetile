@@ -1,7 +1,11 @@
-#!/usr/bin/python
-"""
-Example of ~/.config/freetilerc
-"""
+#------------------------------------------------------------------------------
+#
+#                         freetile v0.1 Configuration
+#
+# This configuration file is a Python script that will be executed when
+# freetile is started.  In order for freetile to start properly, make sure that
+# this file contains proper Python formatting and no syntax errors.
+#------------------------------------------------------------------------------
 
 window_gap = 4
 left_padding = 4
