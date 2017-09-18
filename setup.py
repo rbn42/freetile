@@ -26,6 +26,9 @@ setup(
         'python-xlib',
         'setproctitle',
     ],
+    data_files=[
+        ('share/doc/visualbar/config', glob.glob('doc/config/*')),
+    ],
     entry_points={
         'console_scripts': [
             'freetile=freetile.__main__:main',
