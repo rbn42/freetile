@@ -18,13 +18,7 @@ setup(
         'Topic :: Desktop Environment :: Window Managers',
     ],
     keywords=['window', 'tiling', 'xorg'],
-    packages=[
-        'freetile', 'freetile.helper'
-    ],
-    package_dir={
-        'freetile': 'freetile',
-        'freetile.helper': 'freetile/helper'
-    },
+    packages=['freetile'],
     install_requires=[
         'docopt',
         'ewmh',
