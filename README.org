@@ -53,4 +53,4 @@ See [[https://github.com/rbn42/freetile/wiki/Previews][screencasts]] in differen
 ** freetile cannot focus window in KDE5.
    KDE5 does not allow focus stealing by default. To turn off "Focus stealing prevention level", please go to System-Settings->Window behavior.
 * Credits
-This script is inspired by [[i3-wm][https://i3wm.org/]] and [[stiler][https://github.com/TheWanderer/stiler]]
+This script is inspired by [[https://i3wm.org/][i3-wm]] and [[https://github.com/TheWanderer/stiler][stiler]]
