@@ -3,10 +3,10 @@ import glob
 
 setup(
     name='freetile',
-    version='0.1.1',
+    version='v0.1.2',
     description='freely tiling script for X',
     url='http://github.com/rbn42/freetile',
-    download_url='https://github.com/rbn42/freetile/archive/0.1.1.tar.gz',
+    download_url='https://github.com/rbn42/freetile/archive/v0.1.2.tar.gz',
     author='rbn42',
     author_email='bl100@students.waikato.ac.nz',
     license='MIT',
