@@ -1,9 +1,11 @@
-import logging
 from .config import max_tree_branch, fullscreen_tiling, window_gap
 
 from .tree import Node
 from .windowlist import windowlist
 from .workarea import workarea
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 def resize_kdtree(resize_width, resize_height):
@@ -12,19 +14,20 @@ def resize_kdtree(resize_width, resize_height):
     '''
 
     winlist = windowlist.windowInCurrentWorkspaceInStackingOrder
-    # ignore layouts with less than 2 windows
     if len(winlist) < 2:
+        logger.debug('ignore layouts with less than 2 windows')
         return False
 
     active = windowlist.get_active_window()
-    # can find target window
     if active is None:
+        logger.debug('cannot find target window')
         return False
 
     lay = windowlist.get_current_layout()
     # generate k-d tree
     _tree = getkdtree(winlist, lay)
     if active not in _tree.leafnodemap():
+        logger.debug('not a tree layout')
         return False
     current_node = _tree.leafnodemap()[active]
 
@@ -46,7 +49,8 @@ def resize_kdtree(resize_width, resize_height):
                     node.position[index_max] += _resize
 
     if regularize_node is None:
-        return False
+        logger.debug('cannot find target node')
+        return True
     regularize_node = regularize_node.parent
 
     if fullscreen_tiling:
@@ -217,7 +221,7 @@ def regularize_or_insert_windows(min_regularized_window):
     if result is None:
         return False
     tree, winlist, num = result
-    logging.debug('original tree:%s', tree)
+    logger.debug('original tree:%s', tree)
 
     target = winlist[-1]
     target_node = tree.leafnodemap()[target]
@@ -235,17 +239,17 @@ def regularize_or_insert_windows(min_regularized_window):
     for winid in stack[num:]:
         node = target_node.create_sibling()
         node.key = winid
-    logging.debug('new tree:%s', tree)
+    logger.debug('new tree:%s', tree)
 
     if fullscreen_tiling:
         tree.position = [workarea.x, workarea.y, workarea.x +
                          workarea.width, workarea.y + workarea.height]
     tree.regularize(gap=(window_gap, window_gap))
-    logging.debug('regularized new tree:%s', tree)
+    logger.debug('regularized new tree:%s', tree)
     # load k-d tree
     a, b, reach_size_limit = tree.getLayout(windowlist.minGeometry)
     if reach_size_limit:
-        logging.info('reach window minimal size')
+        logger.info('reach window minimal size')
         return True
     windowlist.arrange(a, b)
     return True
@@ -263,7 +267,7 @@ def regularize_kd_tree(regularize_node,
     # load k-d tree
     a, b, reach_size_limit = regularize_node.getLayout(windowlist.minGeometry)
     if reach_size_limit:
-        logging.info('reach window minimal size')
+        logger.info('reach window minimal size')
         if ignore_size_limit_error:
             return True
         return False

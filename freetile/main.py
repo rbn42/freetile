@@ -1,12 +1,13 @@
 from . import config
 from . import nontree
-import logging
 
 from .util_kdtree import (find_kdtree, move_kdtree,
                           regularize_or_insert_windows, resize_kdtree)
 from .windowlist import windowlist
 from .workarea import workarea
 
+import logging
+logger = logging.getLogger(__name__)
 
 def regularize(
         ignore_overlapped_layout=False,
@@ -14,7 +15,7 @@ def regularize(
     '''
     Try to regularize windows or add a new window into the K-D tree.
     '''
-    logging.info('regularize layout')
+    logger.info('regularize layout')
     stack = windowlist.windowInCurrentWorkspaceInStackingOrder
     num = len(stack)
     if num == 0:
@@ -29,9 +30,9 @@ def regularize(
             minimum_regularized_window = max(min(num - 1, 2), num * 2 // 3, 1)
 
         if regularize_or_insert_windows(minimum_regularized_window):
-            logging.info('regularize windows')
+            logger.info('regularize windows')
         elif not ignore_overlapped_layout:
-            logging.info('force tiling')
+            logger.info('force tiling')
             force_tiling()
         else:
             return False
@@ -52,8 +53,11 @@ def force_tiling():
 
 
 def resize(resize_width, resize_height):
-    return resize_kdtree(resize_width, resize_height) \
-        or nontree.moveandresize([0, 0, resize_width, resize_height])
+    if resize_kdtree(resize_width, resize_height):
+        return True
+    logger.debug('failed to resize as a tree layout')
+    if nontree.moveandresize([0, 0, resize_width, resize_height]):
+        return True
 
 
 def move(target):
