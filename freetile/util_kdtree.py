@@ -63,7 +63,7 @@ def resize_kdtree(resize_width, resize_height):
 def getkdtree(winlist, lay):
     origin_lay = [[x, y, x + w, y + h] for x, y, w, h in lay]
     lst = list(zip(origin_lay, winlist))
-    return Node(lst).create_parent().create_parent()
+    return Node(lst)
 
 
 def insert_window_into_kdtree(winid, target):
@@ -111,7 +111,7 @@ def move_kdtree(target, allow_create_new_node=True):
 
     lay = windowlist.get_current_layout()
     # generate k-d tree
-    _tree = getkdtree(winlist, lay)
+    _tree = getkdtree(winlist, lay).create_parent().create_parent()
     if active not in _tree.leafnodemap():
         return False
     current_node = _tree.leafnodemap()[active]
