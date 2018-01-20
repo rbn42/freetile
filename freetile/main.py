@@ -79,6 +79,11 @@ def swap(target):
         or find_kdtree(active, target, True)
 
     if target_window_id is None:
+        from .monitor import monitor
+        if monitor.available:
+            target_window_id = nontree.find(active, target, True)
+
+    if target_window_id is None:
         return False
 
     lay0 = windowlist.windowGeometry[active]
