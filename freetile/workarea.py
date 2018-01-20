@@ -1,8 +1,9 @@
 import math
 from .config import (bottom_padding, left_padding, right_padding, top_padding,
-                     window_gap)
+                     window_gap, )
 
 from .helper.helper_ewmh import ewmh
+from .monitor import monitor
 
 
 class WorkArea:
@@ -13,6 +14,7 @@ class WorkArea:
 
     def __init__(self):
         x, y, w, h = ewmh.getWorkArea()[:4]
+        x, y, w, h = monitor.findMonitor(x, y, w, h)
         self.width = w - left_padding - right_padding
         self.height = h - top_padding - bottom_padding
         self.x = x + left_padding
@@ -43,12 +45,12 @@ class WorkArea:
 
     def windowInCurrentViewport(self, geo, threshold=1 / 2):
         _threshold = geo.width * threshold
-        if _threshold > self.width - geo.x:
+        if _threshold > self.width + self.x - geo.x:
             return False
         if _threshold > geo.x + geo.width - self.x:
             return False
         _threshold = geo.height * threshold
-        if _threshold > self.height - geo.y:
+        if _threshold > self.height + self.y - geo.y:
             return False
         if _threshold > geo.y + geo.height - self.y:
             return False

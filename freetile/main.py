@@ -9,6 +9,7 @@ from .workarea import workarea
 import logging
 logger = logging.getLogger(__name__)
 
+
 def regularize(
         ignore_overlapped_layout=False,
         minimum_regularized_window=None):
@@ -94,6 +95,11 @@ def focus(target):
     target_window_id = find_kdtree(active, target, False) \
         or nontree.find(active, target, config.navigate_across_workspaces) \
         or find_kdtree(active, target, True)
+
+    if target_window_id is None:
+        from .monitor import monitor
+        if monitor.available:
+            target_window_id = nontree.find(active, target, True)
 
     if target_window_id is None:
         windowlist.raise_window(active)

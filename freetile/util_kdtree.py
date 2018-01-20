@@ -315,6 +315,9 @@ def find_kdtree(center, target, allow_parent_sibling=True):
         return None
     current_node = _tree.leafnodemap()[active]
 
+    if len(lay)==1:
+        return None
+
     promote = target not in current_node.targets()
 
     shift = -1 if target in ['left', 'up'] else 1

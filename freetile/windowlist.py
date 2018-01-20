@@ -21,7 +21,11 @@ class WindowList:
         win = self.windowObjectMap[winid]
         geo = win.get_geometry()
         if not workarea.windowInCurrentViewport(geo):
-            helper.xcb.move(winid, 0, 0)
+            from .monitor import monitor
+            if monitor.available:
+                xcb.move(winid, monitor.x, monitor.y)
+            else:
+                xcb.move(winid, 0, 0)
         logging.info('maximize window')
         maximize_window(win, sync=False)
 
@@ -68,6 +72,7 @@ class WindowList:
             self.windowName[winid] = name
 
             geo = win.get_geometry()
+            self.get_absolute_geo(win)
             # window in current viewport?
             if not workarea.windowInCurrentViewport(geo, threshold=0.1):
                 continue
@@ -77,8 +82,6 @@ class WindowList:
             minw = max(min_window_width, wnh.min_width + f_left, f_right)
             minh = max(min_window_height, wnh.min_height + f_top, f_right)
             self.minGeometry[winid] = minw, minh
-
-            self.get_absolute_geo(win)
 
             self.windowInCurrentWorkspaceInStackingOrder.append(winid)
 
