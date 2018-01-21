@@ -1,6 +1,9 @@
 from .config import (bottom_padding, left_padding, right_padding, top_padding,
-                     window_gap, monitors)
+                     window_gap, )
 from .helper.helper_ewmh import ewmh
+
+import subprocess
+import re
 
 
 class Monitor:
@@ -14,6 +17,9 @@ class Monitor:
         """
         find current monitor
         """
+        s = subprocess.check_output('xrandr').decode()
+        l = re.findall('(\d+)x(\d+)\+(\d+)\+(\d+)', s)
+        monitors = [(int(x), int(y), int(w), int(h)) for w, h, x, y in l]
         if len(monitors) > 0:
             window = ewmh.getActiveWindow()
             if window:

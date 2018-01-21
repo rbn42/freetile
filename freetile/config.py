@@ -19,10 +19,6 @@ max_tree_branch = 3
 fullscreen_tiling = True
 maximize_single_window = True
 
-# multiple monitors
-monitors = [[0, 0, 1920, 1080], [1920, 1080 - 900, 1440, 900]]
-monitors = []
-
 # overwrite default configuration
 import os.path
 
