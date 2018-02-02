@@ -19,14 +19,17 @@ def moveandresize(target):
 
 
 def move(target):
-    target = {'left': [-config.move_step, 0, 0, 0],
-              'down': [0, config.move_step, 0, 0],
-              'up': [0, -config.move_step, 0, 0],
-              'right': [config.move_step, 0, 0, 0], }[target]
+    target = {
+        'left': [-config.move_step, 0, 0, 0],
+        'down': [0, config.move_step, 0, 0],
+        'up': [0, -config.move_step, 0, 0],
+        'right': [config.move_step, 0, 0, 0],
+    }[target]
     return moveandresize(target)
 
 
-def cal_center(x, y, w, h): return [x + w / 2.2, y + h / 2.2]
+def cal_center(x, y, w, h):
+    return [x + w / 2.2, y + h / 2.2]
 
 
 def find(center, target, allow_outofworkspace=False):
@@ -52,19 +55,19 @@ def find(center, target, allow_outofworkspace=False):
         bias = 4.0
         if target == 'down':
             delta = l[1] - lay_center[1]
-            delta2 = (l[1] - lay_center[1]) ** 2 - (l[0] - lay_center[0]) ** 2
+            delta2 = (l[1] - lay_center[1])**2 - (l[0] - lay_center[0])**2
             bias1 = bias
         if target == 'up':
             delta = lay_center[1] - l[1]
-            delta2 = (l[1] - lay_center[1]) ** 2 - (l[0] - lay_center[0]) ** 2
+            delta2 = (l[1] - lay_center[1])**2 - (l[0] - lay_center[0])**2
             bias1 = bias
         if target == 'right':
             delta = l[0] - lay_center[0]
-            delta2 = (l[0] - lay_center[0]) ** 2 - (l[1] - lay_center[1]) ** 2
+            delta2 = (l[0] - lay_center[0])**2 - (l[1] - lay_center[1])**2
             bias2 = bias
         if target == 'left':
             delta = lay_center[0] - l[0]
-            delta2 = (l[0] - lay_center[0]) ** 2 - (l[1] - lay_center[1]) ** 2
+            delta2 = (l[0] - lay_center[0])**2 - (l[1] - lay_center[1])**2
             bias2 = bias
         distance = bias1 * (l[0] - lay_center[0]) ** 2 + \
             bias2 * (l[1] - lay_center[1]) ** 2

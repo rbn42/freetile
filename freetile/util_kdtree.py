@@ -54,8 +54,7 @@ def resize_kdtree(resize_width, resize_height):
     regularize_node = regularize_node.parent
 
     if fullscreen_tiling:
-        _tree.position = [workarea.x, workarea.y, workarea.x +
-                          workarea.width, workarea.y + workarea.height]
+        _tree.position = [workarea.x, workarea.y, workarea.x + workarea.width, workarea.y + workarea.height]
         return regularize_kd_tree(_tree, ignore_size_limit_error=True)
     return regularize_kd_tree(regularize_node, ignore_size_limit_error=True)
 
@@ -67,9 +66,7 @@ def getkdtree(winlist, lay):
 
 
 def insert_window_into_kdtree(winid, target):
-    winlist = [
-        w for w in windowlist.windowInCurrentWorkspaceInStackingOrder
-        if not w == winid]
+    winlist = [w for w in windowlist.windowInCurrentWorkspaceInStackingOrder if not w == winid]
     lay = windowlist.get_current_layout()
     _tree = getkdtree(winlist, lay)
     if target not in _tree.leafnodemap():
@@ -87,8 +84,7 @@ def insert_window_into_kdtree(winid, target):
     node = target_node.create_sibling()
     node.key = winid
     if fullscreen_tiling:
-        _tree.position = [workarea.x, workarea.y, workarea.x +
-                          workarea.width, workarea.y + workarea.height]
+        _tree.position = [workarea.x, workarea.y, workarea.x + workarea.width, workarea.y + workarea.height]
         return regularize_kd_tree(_tree, ignore_size_limit_error=True)
     return regularize_kd_tree(node.parent, ignore_size_limit_error=True)
 
@@ -141,11 +137,9 @@ def move_kdtree(target, allow_create_new_node=True):
             if len(regularize_node.children) == 1:
                 #
                 shift = -1 if target in ['left', 'up'] else 1
-                regularize_node.children.insert(
-                    index_current + shift, current_node)
+                regularize_node.children.insert(index_current + shift, current_node)
             else:
-                new_parent = regularize_node.children[
-                    index_current - 1 + shift]
+                new_parent = regularize_node.children[index_current - 1 + shift]
                 # If there is a leaf node at the target direction, build a new
                 # parent node for the leaf node and the current node.
                 _swap = False or not allow_create_new_node
@@ -163,17 +157,14 @@ def move_kdtree(target, allow_create_new_node=True):
                         new_parent = new_parent.create_parent()
                 if _swap:
                     shift = -1 if target in ['left', 'up'] else 1
-                    regularize_node.children.insert(
-                        index_current + shift, current_node)
+                    regularize_node.children.insert(index_current + shift, current_node)
                 else:
                     new_parent.children.append(current_node)
         else:
             # promote the current node.
             regularize_node = current_node.parent.parent.parent
-            index_current = regularize_node.children.index(
-                current_node.parent.parent)
-            regularize_node.children.insert(
-                index_current + shift, current_node)
+            index_current = regularize_node.children.index(current_node.parent.parent)
+            regularize_node.children.insert(index_current + shift, current_node)
 
         if len(regularize_node.children) == 1:
             regularize_node = regularize_node.parent
@@ -187,8 +178,7 @@ def move_kdtree(target, allow_create_new_node=True):
     # regularize k-d tree
     regularize_node = regularize_node.parent
     if fullscreen_tiling:
-        _tree.position = [workarea.x, workarea.y, workarea.x +
-                          workarea.width, workarea.y + workarea.height]
+        _tree.position = [workarea.x, workarea.y, workarea.x + workarea.width, workarea.y + workarea.height]
         return regularize_kd_tree(_tree, ignore_size_limit_error=True)
     return regularize_kd_tree(regularize_node, ignore_size_limit_error=True)
 
@@ -216,8 +206,7 @@ def regularize_or_insert_windows(min_regularized_window):
     layout_stack = windowlist.get_current_layout()
     num = len(stack)
 
-    result = search_for_regularized_windows(
-        min_regularized_window, num, stack, layout_stack)
+    result = search_for_regularized_windows(min_regularized_window, num, stack, layout_stack)
     if result is None:
         return False
     tree, winlist, num = result
@@ -242,8 +231,7 @@ def regularize_or_insert_windows(min_regularized_window):
     logger.debug('new tree:%s', tree)
 
     if fullscreen_tiling:
-        tree.position = [workarea.x, workarea.y, workarea.x +
-                         workarea.width, workarea.y + workarea.height]
+        tree.position = [workarea.x, workarea.y, workarea.x + workarea.width, workarea.y + workarea.height]
     tree.regularize(gap=(window_gap, window_gap))
     logger.debug('regularized new tree:%s', tree)
     # load k-d tree
@@ -255,8 +243,7 @@ def regularize_or_insert_windows(min_regularized_window):
     return True
 
 
-def regularize_kd_tree(regularize_node,
-                       ignore_size_limit_error=False):
+def regularize_kd_tree(regularize_node, ignore_size_limit_error=False):
     if regularize_node is None:
         return False
     if regularize_node.overlap():
@@ -315,7 +302,7 @@ def find_kdtree(center, target, allow_parent_sibling=True):
         return None
     current_node = _tree.leafnodemap()[active]
 
-    if len(lay)==1:
+    if len(lay) == 1:
         return None
 
     promote = target not in current_node.targets()

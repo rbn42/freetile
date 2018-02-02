@@ -4,7 +4,7 @@ left_padding = 4
 bottom_padding = 4
 top_padding = 4
 right_padding = 4
-navigate_across_workspaces = False  # True  # availabe in viewports desktops
+navigate_across_workspaces = False    # True  # availabe in viewports desktops
 
 exclude_wm_name = []
 exclude_wm_class = []

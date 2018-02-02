@@ -10,16 +10,11 @@ xproto = xcffib.xproto.xprotoExtension(conn)
 
 def arrange(layout, windowids):
     for lay, winid in zip(layout, windowids):
-        xproto.ConfigureWindow(winid,
-                               ConfigWindow.X | ConfigWindow.Y
-                               | ConfigWindow.Width | ConfigWindow.Height,
-                               lay)
+        xproto.ConfigureWindow(winid, ConfigWindow.X | ConfigWindow.Y | ConfigWindow.Width | ConfigWindow.Height, lay)
     conn.flush()
 
 
 def move(winid, x, y, sync=True):
-    xproto.ConfigureWindow(winid,
-                           ConfigWindow.X | ConfigWindow.Y,
-                           [x, y])
+    xproto.ConfigureWindow(winid, ConfigWindow.X | ConfigWindow.Y, [x, y])
     if sync:
         conn.flush()

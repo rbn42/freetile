@@ -28,8 +28,7 @@ class Node:
             '1.key': self.key,
             '2.position': self.position,
             '3.resized': self.resized,
-            '4.children': [
-                child.to_json() for child in self.children] if self.children else None,
+            '4.children': [child.to_json() for child in self.children] if self.children else None,
         }
 
     def leaf(self):
@@ -102,8 +101,12 @@ class Node:
         miny = min([pos[1] for pos in position_children])
         maxx = max([pos[2] for pos in position_children])
         maxy = max([pos[3] for pos in position_children])
-        return [min(10**6, minx), min(10**6, miny),
-                max(-10**6, maxx), max(-10**6, maxy), ]
+        return [
+            min(10**6, minx),
+            min(10**6, miny),
+            max(-10**6, maxx),
+            max(-10**6, maxy),
+        ]
 
     def depth(self):
         if self.parent is None:

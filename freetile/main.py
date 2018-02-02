@@ -1,8 +1,7 @@
 from . import config
 from . import nontree
 
-from .util_kdtree import (find_kdtree, move_kdtree,
-                          regularize_or_insert_windows, resize_kdtree)
+from .util_kdtree import (find_kdtree, move_kdtree, regularize_or_insert_windows, resize_kdtree)
 from .windowlist import windowlist
 from .workarea import workarea
 
@@ -10,9 +9,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def regularize(
-        ignore_overlapped_layout=False,
-        minimum_regularized_window=None):
+def regularize(ignore_overlapped_layout=False, minimum_regularized_window=None):
     '''
     Try to regularize windows or add a new window into the K-D tree.
     '''

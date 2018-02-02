@@ -1,6 +1,11 @@
 import math
-from .config import (bottom_padding, left_padding, right_padding, top_padding,
-                     window_gap, )
+from .config import (
+    bottom_padding,
+    left_padding,
+    right_padding,
+    top_padding,
+    window_gap,
+)
 
 from .helper.helper_ewmh import ewmh
 from .monitor import monitor

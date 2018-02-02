@@ -23,9 +23,7 @@ def main():
     arguments = docopt(__doc__)
 
     if arguments['--debug']:
-        logging.basicConfig(
-            level=logging.DEBUG,
-            format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
+        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
     else:
         logging.basicConfig(level=logging.INFO)
 

@@ -1,10 +1,8 @@
-from .config import (exclude_wm_name, exclude_wm_class, min_window_height,
-                     min_window_width)
+from .config import (exclude_wm_name, exclude_wm_class, min_window_height, min_window_width)
 
 from .helper import xcb
 import logging
-from .helper.helper_ewmh import (ewmh, get_window_list, maximize_window,
-                                 raise_window, unmaximize_windows)
+from .helper.helper_ewmh import (ewmh, get_window_list, maximize_window, raise_window, unmaximize_windows)
 from .helper.xlib import disp, get_frame_extents, get_wm_class_and_state
 from .workarea import workarea
 
@@ -53,13 +51,11 @@ class WindowList:
                 continue
 
             if not {
-                disp.intern_atom('_NET_WM_STATE_SKIP_TASKBAR'),
+                    disp.intern_atom('_NET_WM_STATE_SKIP_TASKBAR'),
             }.isdisjoint(ewmh.getWmState(win)):
                 continue
 
-            if not {
-                disp.intern_atom('_NET_WM_WINDOW_TYPE_DOCK')
-            }.isdisjoint(ewmh.getWmWindowType(win)):
+            if not {disp.intern_atom('_NET_WM_WINDOW_TYPE_DOCK')}.isdisjoint(ewmh.getWmWindowType(win)):
                 continue
 
             wmclass, minimized = get_wm_class_and_state(win)
@@ -90,10 +86,8 @@ class WindowList:
             geo = win.get_geometry()
             f_left, f_right, f_top, f_bottom = get_frame_extents(win)
             self.windowGeometry[win.id] = [
-                geo.x - f_left,
-                geo.y - f_top,
-                geo.width + f_left + f_right,
-                geo.height + f_top + f_bottom]
+                geo.x - f_left, geo.y - f_top, geo.width + f_left + f_right, geo.height + f_top + f_bottom
+            ]
             p = win.query_tree().parent
             if p:
                 pgeo = self.get_absolute_geo(p)
@@ -102,8 +96,7 @@ class WindowList:
         return self.windowGeometry[win.id]
 
     def get_current_layout(self):
-        return [self.windowGeometry[_id]
-                for _id in self.windowInCurrentWorkspaceInStackingOrder]
+        return [self.windowGeometry[_id] for _id in self.windowInCurrentWorkspaceInStackingOrder]
 
     def get_active_window(self, allow_outofworkspace=False):
         active = self.ewmhactive
@@ -116,13 +109,16 @@ class WindowList:
             return active
 
     def arrange(self, layout, windowids):
-        windows = [self.windowObjectMap[wid]for wid in windowids]
+        windows = [self.windowObjectMap[wid] for wid in windowids]
         # unmaximize
         unmaximize_windows(windows)
 
         layout_final = []
         # move windows
-        for win, lay, in zip(windows, layout, ):
+        for win, lay, in zip(
+                windows,
+                layout,
+        ):
             normal_hints = win.get_wm_normal_hints()
 
             x, y, width, height = lay
