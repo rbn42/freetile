@@ -42,8 +42,7 @@ def unmaximize_windows(winlist):
     maximized_windows = set()
     for win in winlist:
         wmstate = ewmh.getWmState(win)
-        if not {_NET_WM_STATE_MAXIMIZED_HORZ, _NET_WM_STATE_MAXIMIZED_VERT, _NET_WM_STATE_FULLSCREEN
-                }.isdisjoint(wmstate):
+        if not {_NET_WM_STATE_MAXIMIZED_HORZ, _NET_WM_STATE_MAXIMIZED_VERT, _NET_WM_STATE_FULLSCREEN}.isdisjoint(wmstate):
             maximized_windows.add(win)
 
     # enable and send event

@@ -34,5 +34,4 @@ setup(
         'console_scripts': [
             'freetile=freetile.__main__:main',
         ]
-    }
-)
+    })

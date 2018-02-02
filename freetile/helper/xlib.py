@@ -7,8 +7,7 @@ root = screen.root
 
 
 def edit_prop(window, mode, name, value):
-    cm_event = protocol.event.ClientMessage(
-        window=window, client_type=disp.intern_atom(name), data=(32, [mode, disp.intern_atom(value), 0, 0, 0]))
+    cm_event = protocol.event.ClientMessage(window=window, client_type=disp.intern_atom(name), data=(32, [mode, disp.intern_atom(value), 0, 0, 0]))
     disp.send_event(root, cm_event, (X.SubstructureRedirectMask | X.SubstructureNotifyMask))
 
 

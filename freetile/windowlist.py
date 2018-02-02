@@ -85,9 +85,7 @@ class WindowList:
         if win.id not in self.windowGeometry:
             geo = win.get_geometry()
             f_left, f_right, f_top, f_bottom = get_frame_extents(win)
-            self.windowGeometry[win.id] = [
-                geo.x - f_left, geo.y - f_top, geo.width + f_left + f_right, geo.height + f_top + f_bottom
-            ]
+            self.windowGeometry[win.id] = [geo.x - f_left, geo.y - f_top, geo.width + f_left + f_right, geo.height + f_top + f_bottom]
             p = win.query_tree().parent
             if p:
                 pgeo = self.get_absolute_geo(p)
