@@ -35,7 +35,7 @@ class Monitor:
                     xin = win.x < x0 + self.x + self.width and win.x + win.width > x0 + self.x
                     yin = win.y < y0 + self.y + self.width and win.y + win.width > y0 + self.y
                     if xin and yin:
-                        self.available = True
+                        self.available = True and len(monitors) > 2
                         return self.x + x0, self.y + y0, \
                             min(self.width, w0 + x0 - self.x), \
                             min(self.height, h0 + y0 - self.y)
