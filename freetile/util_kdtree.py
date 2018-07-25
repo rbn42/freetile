@@ -319,7 +319,7 @@ def find_kdtree(center, target, allow_parent_sibling=True):
     while True:
         i = c.parent.children.index(c)
         if 0 <= i + shift < len(c.parent.children):
-            target = c.parent.children[i + shift]
+            target_node = c.parent.children[i + shift]
             break
         if c.parent.parent is None or c.parent.parent.parent is None:
             return None
@@ -328,9 +328,20 @@ def find_kdtree(center, target, allow_parent_sibling=True):
 
     if promoted:
         if not allow_parent_sibling:
-            if not target.leaf():
+            if not target_node.leaf():
                 return None
-    if target is None or target.overlap():
+    if target_node is None or target_node.overlap():
         return None
+
+    return find_kdtree_get_leaf(target_node,target)
+
+def find_kdtree_get_leaf(node,target):
+    # is leaf
+    if node.key:
+        return node.key
+    # is not leaf
+    if target not in node.targets() and target in ['up','left']:
+        node=node.children[-1]
     else:
-        return target.key
+        node=node.children[0]
+    return find_kdtree_get_leaf(node,target)
