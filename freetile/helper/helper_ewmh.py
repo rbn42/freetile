@@ -85,7 +85,12 @@ def get_window_list(ignore=[]):
     for win in ewmh.getClientListStacking():
         if win.id in ignore:
             continue
-        name = ewmh.getWmName(win)
+        try:
+            name = ewmh.getWmName(win)
+            d=ewmh.getWmDesktop(win)
+        except:
+            name=None
+            d=None
         if name is not None:
             name = name.decode('utf8')
-        yield win, ewmh.getWmDesktop(win), name
+        yield win, d, name
