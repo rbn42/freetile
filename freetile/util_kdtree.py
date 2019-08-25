@@ -333,15 +333,16 @@ def find_kdtree(center, target, allow_parent_sibling=True):
     if target_node is None or target_node.overlap():
         return None
 
-    return find_kdtree_get_leaf(target_node,target)
+    return find_kdtree_get_leaf(target_node, target)
 
-def find_kdtree_get_leaf(node,target):
+
+def find_kdtree_get_leaf(node, target):
     # is leaf
     if node.key:
         return node.key
     # is not leaf
-    if target not in node.targets() and target in ['up','left']:
-        node=node.children[-1]
+    if target not in node.targets() and target in ['up', 'left']:
+        node = node.children[-1]
     else:
-        node=node.children[0]
-    return find_kdtree_get_leaf(node,target)
+        node = node.children[0]
+    return find_kdtree_get_leaf(node, target)

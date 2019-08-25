@@ -18,8 +18,9 @@ class WorkArea:
     height = None
 
     def __init__(self):
-        x, y, w, h = ewmh.getWorkArea()[:4]
-        x, y, w, h = monitor.findMonitor(x, y, w, h)
+        xywh = ewmh.getWorkArea()
+        xywh = None if xywh is None else xywh[:4]
+        x, y, w, h = monitor.findMonitor(xywh)
         self.width = w - left_padding - right_padding
         self.height = h - top_padding - bottom_padding
         self.x = x + left_padding

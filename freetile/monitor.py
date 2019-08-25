@@ -18,7 +18,7 @@ class Monitor:
     height = None
     available = False
 
-    def findMonitor(self, x0, y0, w0, h0):
+    def findMonitor(self, xywh0):
         """
         find current monitor
         """
@@ -31,6 +31,8 @@ class Monitor:
                 win = window.get_geometry()
                 for item in monitors:
                     self.x, self.y, self.width, self.height = item
+                    if xywh0 is None:
+                        return (0, 0, self.width, self.height)
 
                     xin = win.x < x0 + self.x + self.width and win.x + win.width > x0 + self.x
                     yin = win.y < y0 + self.y + self.width and win.y + win.width > y0 + self.y
