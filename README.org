@@ -18,7 +18,7 @@ See [[https://github.com/rbn42/freetile/wiki/Previews][screencasts]] in differen
   [[./doc/config/freetilerc][An example]] of ~/.config/freetilerc.
 * Getting Started
 ** Key Bindings
- These are [[https://i3wm.org/][i3-wm]] like key bindings. Please add them to your desktop setting manager or the standalone [[http://www.nongnu.org/xbindkeys/xbindkeys.html][xbindkeys]] ([[doc/config/freetile.scm][configuration file for xbindkeys]]).
+ These are [[https://i3wm.org/][i3-wm]] like key bindings. Configuration files for [[doc/config/freetile.khotkeys][KDE]] and [[doc/config/freetile.scm][xbindkeys]] are provided.
 
  | Keys                     | Command                |
  |--------------------------+------------------------|
