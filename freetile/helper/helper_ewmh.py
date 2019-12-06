@@ -92,5 +92,5 @@ def get_window_list(ignore=[]):
             name=None
             d=None
         if name is not None:
-            name = name.decode('utf8')
+            name = name.decode(errors='ignore')
         yield win, d, name
